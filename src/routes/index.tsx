@@ -21,6 +21,19 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: '/session',
+        element: <>session</>,
+      },
+      {
+        path: '/booth',
+        element: <>booth</>,
+      },
+    ],
+  },
+  {
+    element: <DefaultLayout />,
+    children: [
+      {
         path: '/participant-login',
         element: <LoginPage />,
       },
@@ -44,19 +57,6 @@ const router = createBrowserRouter([
         path: '/reset-password',
         element: <ResetPasswordPage />,
       },
-      {
-        path: '/session',
-        element: <>session</>,
-      },
-      {
-        path: '/booth',
-        element: <>booth</>,
-      },
-    ],
-  },
-  {
-    element: <DefaultLayout />,
-    children: [
       {
         path: '/onboarding',
         element: <OnBoarding />,
