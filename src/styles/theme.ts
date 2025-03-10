@@ -1,32 +1,66 @@
-import { Theme } from '@emotion/react';
+import { createTheme } from '@mui/material/styles';
 
-// 예시입니다.
-
-const color = {
-	black: '#222',
-	primary: '#a1c4fd',
-	gray500: '#555',
+const customTheme = {
+  color: {
+    black: '#222',
+    primary: '#a1c4fd',
+    gray500: '#555',
+  },
+  fontSize: {
+    small: '14px',
+    medium: '16px',
+    title: '42px',
+    subtitle: '20px',
+  },
+  border: {
+    primary: '#e5e7eb',
+  },
 } as const;
 
-const fontSize = {
-	small: '14px',
-	medium: '16px',
-	title: '42px',
-	subtitle: '20px',
-} as const;
+export type CustomThemeType = typeof customTheme;
 
-export const border = {
-	primary: '#e5e7eb',
-} as const;
-
-export type ColorsTypes = keyof typeof color;
-export type FontSizeTypes = keyof typeof fontSize;
-export type BordersTypes = keyof typeof border;
-
-const theme: Theme = {
-	color,
-	fontSize,
-	border,
-};
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#a1c4fd',
+    },
+    text: {
+      primary: '#222',
+      secondary: '#555',
+    },
+  },
+  typography: {
+    fontFamily: 'Pretendard',
+    fontSize: 16,
+    h1: {
+      fontSize: '42px',
+    },
+    h2: {
+      fontSize: '20px',
+    },
+    body1: {
+      fontSize: '14px',
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          border: '2px solid #ddd',
+          backgroundColor: 'white',
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Pretendard',
+        },
+      },
+    },
+  },
+  custom: customTheme,
+});
 
 export default theme;
