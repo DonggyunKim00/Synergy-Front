@@ -4,7 +4,6 @@ import {
   FormControlLabel,
   FormGroup,
   Typography,
-  css,
 } from '@mui/material';
 import { useState } from 'react';
 import { checkboxItems } from 'src/constant/onboarding';
