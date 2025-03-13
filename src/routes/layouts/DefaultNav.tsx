@@ -1,14 +1,27 @@
 import { NavLink, Outlet, ScrollRestoration } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Button } from '@mui/material';
+import { Button, css, useTheme } from '@mui/material';
 
 const DefaultNavLayout = () => {
+  const { palette } = useTheme();
+
   return (
-    <Layout>
+    <div
+      css={css`
+        min-height: 100vh;
+        min-height: 100svh;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 1rem;
+        box-shadow: 0 0 20px #0000000d;
+        position: relative;
+        background-color: ${palette.background.primary};
+      `}
+    >
       <Outlet />
       <ScrollRestoration />
       <Navigation />
-    </Layout>
+    </div>
   );
 };
 
@@ -29,16 +42,6 @@ const Navigation = () => {
     </Nav>
   );
 };
-
-const Layout = styled.div`
-  min-height: 100vh;
-  min-height: 100svh;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem;
-  box-shadow: 0 0 20px #0000000d;
-  position: relative;
-`;
 
 const Nav = styled.nav`
   display: flex;

@@ -1,4 +1,16 @@
 import { css } from '@emotion/react';
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/500.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/montserrat/700.css';
+import '@fontsource/montserrat/800.css';
+import '@fontsource/montserrat/900.css';
+import '@fontsource/pretendard/400.css';
+import '@fontsource/pretendard/500.css';
+import '@fontsource/pretendard/600.css';
+import '@fontsource/pretendard/700.css';
+import '@fontsource/pretendard/800.css';
+import '@fontsource/pretendard/900.css';
 
 export const globalStyles = css`
   * {
@@ -145,13 +157,6 @@ export const globalStyles = css`
   }
   input:focus {
     outline: none;
-  }
-  @font-face {
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 700;
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff')
-      format('woff');
   }
 
   html,

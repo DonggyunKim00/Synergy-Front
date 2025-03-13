@@ -6,16 +6,21 @@ export type Jobs = {
 };
 
 export type Infos = {
+  // 필수 속성
   hope_job: string;
+  education: string;
+  age: string;
   skills: string;
   experience: string;
-  others_experience: string;
+  hope_location: string;
+  profile_img: File | string;
   cover_letter: string;
-  location?: string; // 추가 가능
-  company?: string; // 추가 가능
-  culture?: string; // 추가 가능
-  purpose?: string; // 추가 가능
+  // 선택 속성
+  others_experience?: string;
   salary?: string;
+  company?: string;
+  culture?: string;
+  purpose?: string;
 };
 
 // 1. 아무것도 입력 안됨

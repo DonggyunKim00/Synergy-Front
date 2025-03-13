@@ -52,11 +52,9 @@ export const hope_job = jobs.flatMap((job) => job.children);
 // 경력 선택
 export const experience_range = [
   { value: 'entry', text: '신입' },
-  { value: '1-3', text: '1~3년차' },
-  { value: '3-5', text: '3~5년차' },
-  { value: '5-7', text: '5~7년차' },
-  { value: '7-10', text: '7~10년차' },
-  { value: '10+', text: '10년차 이상' },
+  { value: '1-3', text: '1~2년 이하' },
+  { value: '3-5', text: '3~4년 이하' },
+  { value: '5+', text: '5년 이상' },
 ];
 
 // 희망 연봉 선택
@@ -89,4 +87,29 @@ export const conference_purpose = [
   { value: 'learning', text: '최신 기술 트렌드 학습' },
   { value: 'career', text: '커리어 기회 탐색' },
   { value: 'project', text: '프로젝트 아이디어 구상' },
+];
+
+export const location = [
+  { value: 'seoul', text: '서울' },
+  { value: 'gyeonggi', text: '경기' },
+  { value: 'gangwon', text: '강원' },
+  { value: 'gyeongsang', text: '경상' },
+  { value: 'jeolla', text: '전라' },
+  { value: 'chungcheong', text: '충청' },
+  { value: 'jeju', text: '제주' },
+];
+
+export const age_range = [
+  { value: '20-24', text: '20~24세 이하' },
+  { value: '25-29', text: '25~29세 이하' },
+  { value: '30-34', text: '30~34세 이하' },
+  { value: '35+', text: '35세 이상' },
+];
+
+export const education_levels = [
+  { value: 'high_school', text: '고등학교 졸업' },
+  { value: 'associate_degree', text: '2~3년제 대학 졸업' },
+  { value: 'bachelor_degree', text: '4년제 대학 졸업' },
+  { value: 'master_degree', text: '대학원 석사' },
+  { value: 'doctorate', text: '박사' },
 ];

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { css, keyframes } from '@emotion/react';
+import { keyframes } from '@emotion/react';
+import { css, useTheme } from '@mui/material';
 
 const ErrorPopover = ({ error }: { error: string | null }) => {
+  const { palette } = useTheme();
   const [visible, setVisible] = useState(false);
   const [key, setKey] = useState(0); // UI 갱신을 위한 키값
 
@@ -25,19 +27,23 @@ const ErrorPopover = ({ error }: { error: string | null }) => {
       key={key} // key를 변경하여 UI 리렌더링 유도
       css={css`
         position: fixed;
-        top: 20px;
+        bottom: 100px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: rgba(255, 0, 0, 0.7);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: ${palette.opacity.opa200};
+        color: ${palette.text.primary};
+        padding: 10px;
+        border-radius: 20px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         font-weight: bold;
         animation:
           ${shake} 0.3s ease-in-out,
           ${fadeOut} 2.5s ease-in-out 0.5s forwards;
         z-index: 1000;
+        width: 327px;
       `}
     >
       {error}

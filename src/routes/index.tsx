@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: '/rolesection',
+        path: '/role-selection',
         element: <RoleSelectionPage />,
       },
       {
