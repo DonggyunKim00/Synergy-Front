@@ -1,47 +1,57 @@
 export const checkboxItems = [
-  { id: 'ai', label: 'AI' },
-  { id: 'machine-learning', label: '머신러닝' },
-  { id: 'design', label: '디자인' },
-  { id: 'big-data', label: '빅데이터' },
-  { id: 'frontend', label: '프론트엔드 개발' },
-  { id: 'backend', label: '백엔드 개발' },
-  { id: 'cloud', label: '클라우드 기술' },
+  { id: 'AI', label: 'AI' },
+  { id: '데이터 분석', label: '데이터 분석' },
+  { id: '클라우드', label: '클라우드' },
+  { id: 'DevOps', label: 'DevOps' },
+  { id: '소프트웨어 개발', label: '소프트웨어 개발' },
+  { id: 'UI/UX 디자인', label: 'UI/UX 디자인' },
+  { id: '정보 보안', label: '정보 보안' },
+  { id: '신기술 연구', label: '신기술 연구' },
+  { id: '커리어 개발', label: '커리어 개발' },
 ];
 
 export const jobs = [
   {
-    value: 'developer',
-    text: '개발자',
+    value: '개발',
+    text: '개발',
     children: [
-      { value: 'frontend', text: '프론트엔드 개발자' },
-      { value: 'backend', text: '백엔드 개발자' },
-      { value: 'fullstack', text: '풀스택 개발자' },
-      { value: 'devops', text: '데브옵스 엔지니어' },
+      { value: '프론트엔드 개발자', text: '프론트엔드 개발자' },
+      { value: '백엔드 개발자', text: '백엔드 개발자' },
+      { value: '풀스택 개발자', text: '풀스택 개발자' },
+      { value: 'AI/머신러닝 엔지니어', text: 'AI/머신러닝 엔지니어' },
+      { value: '클라우드 엔지니어', text: '클라우드 엔지니어' },
+      { value: 'DevOps 엔지니어', text: 'DevOps 엔지니어' },
+      { value: '데이터 엔지니어', text: '데이터 엔지니어' },
+      { value: '모바일 앱 개발자', text: '모바일 앱 개발자' },
+      { value: '임베디드 시스템 개발자', text: '임베디드 시스템 개발자' },
+      { value: '블록체인 개발자', text: '블록체인 개발자' },
     ],
   },
   {
-    value: 'designer',
-    text: '디자이너',
+    value: '디자인',
+    text: '디자인',
     children: [
-      { value: 'uiux', text: 'UI/UX 디자이너' },
-      { value: 'graphic', text: '그래픽 디자이너' },
-      { value: 'motion', text: '모션 그래픽 디자이너' },
+      { value: 'UI/UX 디자이너', text: 'UI/UX 디자이너' },
+      { value: '그래픽 디자이너', text: '그래픽 디자이너' },
+      { value: '웹 디자이너', text: '웹 디자이너' },
     ],
   },
   {
-    value: 'pm',
-    text: 'PM',
+    value: '기획/운영',
+    text: '기획/운영',
     children: [
-      { value: 'product', text: '프로덕트 매니저' },
-      { value: 'project', text: '프로젝트 매니저' },
+      { value: '프로젝트 매니저', text: '프로젝트 매니저' },
+      { value: '데이터 분석가', text: '데이터 분석가' },
+      { value: '마케터', text: '마케터' },
     ],
   },
   {
-    value: 'marketer',
-    text: '마케터',
+    value: '기타',
+    text: '기타',
     children: [
-      { value: 'digital', text: '디지털 마케터' },
-      { value: 'brand', text: '브랜드 마케터' },
+      { value: '학생', text: '학생' },
+      { value: '취업 준비생', text: '취업 준비생' },
+      { value: '연구원', text: '연구원' },
     ],
   },
 ];
@@ -55,14 +65,6 @@ export const experience_range = [
   { value: '1-3', text: '1~2년 이하' },
   { value: '3-5', text: '3~4년 이하' },
   { value: '5+', text: '5년 이상' },
-];
-
-// 희망 연봉 선택
-export const salary_range = [
-  { value: '3000-5000', text: '3000~5000 만원' },
-  { value: '5000-7000', text: '5000~7000 만원' },
-  { value: '7000-10000', text: '7000~10000 만원' },
-  { value: '10000+', text: '10000 만원 이상' },
 ];
 
 // 희망 회사 규모
@@ -89,6 +91,7 @@ export const conference_purpose = [
   { value: 'project', text: '프로젝트 아이디어 구상' },
 ];
 
+// 근무 지역
 export const location = [
   { value: 'seoul', text: '서울' },
   { value: 'gyeonggi', text: '경기' },

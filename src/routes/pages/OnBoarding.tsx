@@ -33,8 +33,6 @@ const OnBoarding = () => {
     },
   });
 
-  console.log(funnel.context);
-
   const [error, setError] = useState<string | null>(null);
 
   const handleSetError = (newError: string) => {
@@ -42,7 +40,7 @@ const OnBoarding = () => {
     setTimeout(() => setError(newError), 50);
   };
 
-  const { setForm, initForm } = useFormStore();
+  const { setForm, initForm, form } = useFormStore();
 
   return (
     <>
@@ -134,7 +132,7 @@ const OnBoarding = () => {
                 setError(null);
                 setForm('info', info);
 
-                console.log('최종 데이터:', { ...context, info }); // 최종 데이터 확인
+                console.log('최종 데이터:', { ...form }); // 최종 데이터 확인
                 // TODO: initForm, API 요청
                 initForm();
               }}

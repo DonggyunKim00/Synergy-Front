@@ -1,17 +1,20 @@
 import { css, FormControl, MenuItem, Select, useTheme } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-interface Props {
+
+type SelectBoxProps<T extends boolean> = {
   id: string;
   label: string;
   items: { value: string | number; text: string }[];
-  value: string;
-  onChange: (value: string) => void;
+  value: T extends true ? string[] : string; // 조건부 타입
+  onChange: (value: T extends true ? string[] : string) => void;
   disabled?: boolean;
   isRequired?: boolean;
   placeholder?: string;
-}
+  multiple?: T;
+};
 
-const SelectBox = ({
+// 제네릭 <T extends boolean>을 사용하여 multiple에 따라 타입이 결정되도록 설정
+const SelectBox = <T extends boolean = false>({
   id,
   label,
   items,
@@ -20,7 +23,8 @@ const SelectBox = ({
   disabled,
   isRequired,
   placeholder,
-}: Props) => {
+  multiple,
+}: SelectBoxProps<T>) => {
   const { palette, typo, radius } = useTheme();
 
   return (
@@ -46,29 +50,46 @@ const SelectBox = ({
       </span>
       <Select
         displayEmpty
+        multiple={multiple}
         labelId={`${id}-label`}
         id={id}
         value={value}
-        renderValue={(v) => (v ? value : placeholder)}
-        onChange={(e) => onChange(e.target.value)}
-        css={css`
-          padding-left: 10px;
-          border-radius: ${radius.sm};
-          border: 1px solid ${palette.border.secondary};
-          color: ${palette.text.tertiary};
-          background-color: ${palette.background.quaternary};
-        `}
-        sx={{
-          '.MuiSvgIcon-root ': {
-            fill: 'white !important',
-          },
+        renderValue={(selected) => {
+          if (!selected || (Array.isArray(selected) && selected.length === 0)) {
+            return placeholder;
+          }
+          return Array.isArray(selected)
+            ? selected
+                .map((v) => items.find((item) => item.value === v)?.text || v)
+                .join(', ')
+            : items.find((item) => item.value === selected)?.text || selected;
         }}
+        onChange={(e) => {
+          const selectedValues = multiple
+            ? (e.target.value as string[]) // multiple이 true이면 배열로 변환
+            : (e.target.value as string); // multiple이 false이면 string으로 설정
+          onChange(selectedValues as any);
+        }}
+        css={css`
+          color: ${value ? palette.text.primary : palette.text.tertiary};
+          border-radius: ${radius.sm};
+          background-color: ${palette.background.quaternary};
+          fieldset {
+            border: 1px solid ${palette.border.secondary};
+            padding: 0;
+          }
+          .MuiSelect-select {
+            padding: 15px 20px;
+          }
+          .MuiSvgIcon-root {
+            fill: ${palette.icon.primary} !important;
+          }
+        `}
         IconComponent={(props) => (
           <KeyboardArrowDownIcon
             css={css`
-              margin-right: 15px;
+              margin-right: 6px;
             `}
-            color={palette.icon.primary}
             {...props}
           />
         )}

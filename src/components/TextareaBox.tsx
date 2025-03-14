@@ -1,4 +1,4 @@
-import { css, FormControl, InputBase, useTheme } from '@mui/material';
+import { css, FormControl, OutlinedInput, useTheme } from '@mui/material';
 import { useState } from 'react';
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
   placeholder?: string;
   onChange?: (value: string) => void;
   max_length: number;
+  value?: string;
 }
 
 const TextareaBox = ({
@@ -17,6 +18,7 @@ const TextareaBox = ({
   onChange,
   placeholder,
   max_length,
+  value = '',
 }: Props) => {
   const { typo, palette } = useTheme();
   const [text, setText] = useState('');
@@ -36,34 +38,43 @@ const TextareaBox = ({
       >
         {`${label} ${isRequired ? '*' : ''}`}
       </span>
-      <InputBase
+      <OutlinedInput
         id={id}
         multiline
         inputProps={{ maxLength: max_length }}
         rows={5}
         required={isRequired}
+        defaultValue={value}
         onChange={handleChange}
         placeholder={placeholder || ''}
         css={css`
-          border: 1px solid ${palette.border.secondary};
           border-radius: 10px;
           padding: 15px 20px;
           background-color: ${palette.background.quaternary};
+          color: ${palette.text.primary};
+          fieldset {
+            border: 1px solid ${palette.border.secondary};
+            padding: 0;
+          }
+          &::-webkit-scrollbar {
+            width: 5px;
+          }
+          & ::-webkit-scrollbar-track {
+            background-color: ${palette.background.quaternary};
+          }
+          & ::-webkit-scrollbar-thumb {
+            background-color: ${palette.background.secondary};
+          }
+          & ::-webkit-scrollbar-thumb:hover {
+            background-color: '#555';
+          }
+          .MuiInputBase-input {
+            &::placeholder {
+              color: ${palette.text.tertiary};
+              opacity: 1;
+            }
+          }
         `}
-        sx={{
-          '& ::-webkit-scrollbar': {
-            width: '5px',
-          },
-          '& ::-webkit-scrollbar-track': {
-            background: palette.background.quaternary,
-          },
-          '& ::-webkit-scrollbar-thumb': {
-            backgroundColor: palette.background.secondary,
-          },
-          '& ::-webkit-scrollbar-thumb:hover': {
-            background: '#555',
-          },
-        }}
       />
       <span
         css={css`

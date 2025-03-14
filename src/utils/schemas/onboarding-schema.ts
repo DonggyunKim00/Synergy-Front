@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 // 관심 있는 분야 선택 (최소 1개 이상 필수)
 export const InterestedSchema = z.object({
-  interested_list: z.array(z.string()).min(1, '관심 있는 분야를 선택해주세요.'),
+  interested_list: z
+    .array(z.string())
+    .min(1, '관심 있는 분야를 선택해주세요.')
+    .max(3, '최대 3개까지 선택 가능합니다.'),
 });
 
 // 하고 있는 일 선택
@@ -35,17 +38,23 @@ export const MoreInfoSchema = z.object({
     age: z.string().min(1, '연령대를 선택해 주세요.'),
     skills: z.string().min(1, '보유한 기술을 입력해주세요.'),
     experience: z.string().min(1, '경력을 선택해주세요.'),
-    hope_location: z.string().min(1, '희망하는 근무 지역을 선택해주세요.'),
+    hope_location: z
+      .array(z.string())
+      .min(1, '희망하는 근무 지역을 1개 이상 선택해주세요.'),
     profile_img: z
       .any()
-      .refine((file: File) => !file.name, '증명 사진을 넣어주세요.')
+      .optional()
       .refine(
-        (file) => file.size < 5000000,
-        '사진의 사이즈는 5MB를 넘어갈 수 없습니다..',
+        (file) => !file || file instanceof File, // file이 존재하면 File 인스턴스여야 함
+        '유효한 파일을 업로드해주세요.',
       )
       .refine(
-        (file) => checkFileType(file),
-        '사진은 jpg, jepg, png 형식만 등록 가능합니다.',
+        (file) => !file || file.size < 5000000, // file이 존재할 때만 검사 실행
+        '사진의 사이즈는 5MB를 넘어갈 수 없습니다.',
+      )
+      .refine(
+        (file) => !file || checkFileType(file), // file이 존재할 때만 검사 실행
+        '사진은 jpg, jpeg, png 형식만 등록 가능합니다.',
       ),
     cover_letter: z.string().min(10, '자기소개서를 10자 이상 입력해주세요.'),
     others_experience: z.string().optional(),

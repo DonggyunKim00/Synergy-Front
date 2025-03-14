@@ -12,12 +12,11 @@ export type Infos = {
   age: string;
   skills: string;
   experience: string;
-  hope_location: string;
-  profile_img: File | string;
+  hope_location: string[];
   cover_letter: string;
   // 선택 속성
+  profile_img?: File | null;
   others_experience?: string;
-  salary?: string;
   company?: string;
   culture?: string;
   purpose?: string;

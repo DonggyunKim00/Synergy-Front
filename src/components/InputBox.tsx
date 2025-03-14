@@ -1,4 +1,5 @@
-import { css, FormControl, Input, useTheme } from '@mui/material';
+import { css, FormControl, OutlinedInput, useTheme } from '@mui/material';
+import { HTMLInputTypeAttribute } from 'react';
 
 interface Props {
   label: string;
@@ -6,9 +7,19 @@ interface Props {
   isRequired?: boolean;
   placeholder?: string;
   onChange?: (value: string) => void;
+  value?: string;
+  type?: HTMLInputTypeAttribute;
 }
 
-const InputBox = ({ label, id, isRequired, placeholder, onChange }: Props) => {
+const InputBox = ({
+  label,
+  id,
+  isRequired,
+  placeholder,
+  onChange,
+  value = '',
+  type = 'text',
+}: Props) => {
   const { palette, typo, radius } = useTheme();
 
   return (
@@ -22,16 +33,27 @@ const InputBox = ({ label, id, isRequired, placeholder, onChange }: Props) => {
       >
         {`${label} ${isRequired ? '*' : ''}`}
       </span>
-      <Input
-        disableUnderline
+      <OutlinedInput
         id={id}
         placeholder={placeholder || ''}
+        type={type}
+        defaultValue={value}
         onChange={(e) => onChange?.(e.target.value)}
         css={css`
-          border: 1px solid ${palette.border.secondary};
+          color: ${palette.text.primary};
           border-radius: ${radius.sm};
-          padding: 11px 20px 10px;
           background-color: ${palette.background.quaternary};
+          input {
+            padding: 15px 20px;
+            &::placeholder {
+              color: ${palette.text.tertiary};
+              opacity: 1;
+            }
+          }
+          fieldset {
+            border: 1px solid ${palette.border.secondary};
+            padding: 0;
+          }
         `}
       />
     </FormControl>
