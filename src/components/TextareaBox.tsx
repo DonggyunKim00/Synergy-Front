@@ -56,23 +56,20 @@ const TextareaBox = ({
             border: 1px solid ${palette.border.secondary};
             padding: 0;
           }
-          &::-webkit-scrollbar {
-            width: 5px;
-          }
-          & ::-webkit-scrollbar-track {
-            background-color: ${palette.background.quaternary};
-          }
-          & ::-webkit-scrollbar-thumb {
-            background-color: ${palette.background.secondary};
-          }
-          & ::-webkit-scrollbar-thumb:hover {
-            background-color: '#555';
-          }
+
           .MuiInputBase-input {
             &::placeholder {
               color: ${palette.text.tertiary};
               opacity: 1;
             }
+          }
+
+          &.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: ${palette.border.focused};
+          }
+
+          & ::-webkit-scrollbar-track {
+            background: ${palette.background.quaternary};
           }
         `}
       />

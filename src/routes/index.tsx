@@ -11,28 +11,44 @@ import FindIdPage from './pages/FindIdPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
+import SessionDetail from './pages/Session';
+import BoothDetail from './pages/Booth';
+import Mypage from './pages/Mypage';
+import SessionDetails from './pages/SessionDetails';
+import BoothPage from './pages/BoothPage';
+import BoothDetails from './pages/BoothDetails';
+import SessionPage from './pages/SessionPage';
+import MyInfo from './pages/MyInfo';
+import RecruiterNavLayout from './layouts/RecruiterNav';
+import RecruiterPage from './pages/RecruiterPage';
+import RecruiterMyPage from './pages/RecruiterMypage';
+import RecruiterMain from './pages/RecruiterMain';
 
 const router = createBrowserRouter([
   {
     element: <DefaultNavLayout />,
     children: [
       {
-        path: '/',
-        element: <Home />,
+        path: '/mypage',
+        element: <Mypage />,
       },
       {
         path: '/session',
-        element: <>session</>,
+        element: <SessionPage />,
       },
       {
         path: '/booth',
-        element: <>booth</>,
+        element: <BoothPage />,
       },
     ],
   },
   {
     element: <DefaultLayout />,
     children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
       {
         path: '/participant-login',
         element: <LoginPage />,
@@ -63,11 +79,27 @@ const router = createBrowserRouter([
       },
       {
         path: '/session/:id',
-        element: <>/session/:id</>,
+        element: <SessionDetails />,
+      },
+      {
+        path: '/booth/:id',
+        element: <BoothDetails />,
+      },
+      {
+        path: '/my-info/:id',
+        element: <MyInfo />,
       },
       {
         path: '*',
         element: <NotFound />,
+      },
+      {
+        path: '/admin/session',
+        element: <SessionDetail />,
+      },
+      {
+        path: '/admin/booth',
+        element: <BoothDetail />,
       },
     ],
   },
@@ -76,7 +108,6 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/admin',
-        element: <div>AdminPage</div>,
       },
       {
         path: '*',
@@ -84,6 +115,24 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/recruiter',
+    element: <RecruiterNavLayout />,
+    children: [
+      {
+        path: 'list',
+        element: <RecruiterPage />,
+      },
+      {
+        path: 'mypage',
+        element: <RecruiterMyPage />,
+      },
+      {
+        path: 'main',
+        element: <RecruiterMain />,
+      }
+    ],
+  }
 ]);
 
 export default function Router() {

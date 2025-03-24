@@ -37,16 +37,13 @@ declare module '@mui/material/styles' {
     secondary: string;
     tertiary: string;
     dark_warning: string;
-    interactive: string;
+    focused: string;
   }
 
   interface TypeDividerCustom {
     primary: string;
     secondary: string;
     tertiary: string;
-    dark_warning: string;
-    inverse: string;
-    interactive: string;
   }
 
   interface TypeOpacity {
@@ -59,6 +56,12 @@ declare module '@mui/material/styles' {
     secondary: string;
     tertiary: string;
     inverse: string;
+    quaternary: string;
+  }
+
+  interface TypeGraph {
+    default: string;
+    hovered: string;
   }
 
   interface Palette {
@@ -67,6 +70,7 @@ declare module '@mui/material/styles' {
     divider_custom: TypeDividerCustom;
     opacity: TypeOpacity;
     icon: TypeIcon;
+    graph: TypeGraph;
   }
 
   interface PaletteOptions {
@@ -75,5 +79,6 @@ declare module '@mui/material/styles' {
     divider_custom?: TypeDividerCustom;
     opacity?: TypeOpacity;
     icon?: TypeIcon;
+    graph?: TypeGraph;
   }
 }

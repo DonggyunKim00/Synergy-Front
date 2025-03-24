@@ -5,7 +5,7 @@ import { Button, css, useTheme } from '@mui/material';
 import {
   age_range,
   company_culture,
-  company_type,
+  company_selection_factors,
   conference_purpose,
   education_levels,
   experience_range,
@@ -27,7 +27,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
   return (
     <div
       css={css`
-        margin-top: 20px;
+        margin-top: 40px;
       `}
     >
       <div
@@ -117,9 +117,10 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
         {/* 증명 사진 */}
         <FileInputBox
           id="profile_img"
-          label="증명사진"
+          label="프로필 사진"
           onChange={(value) => handleChange('profile_img', value)}
           placeholder="JPG, PNG 파일 업로드"
+          description="사진은 이력서 형식으로 채용담당자에게 공개되니 신중히 업로드해주세요."
         />
 
         {/* 경험 및 기타 정보 */}
@@ -135,10 +136,11 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
         {/* 직장 선택 요소 */}
         <SelectBox
           id="company"
-          label="희망 회사 규모"
-          items={company_type}
+          label="직장 선택 요소"
+          items={company_selection_factors}
           value={form.company || ''}
           onChange={(value) => handleChange('company', value)}
+          placeholder="선택"
         />
 
         {/* 선호하는 기업 문화 */}
@@ -148,6 +150,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           items={company_culture}
           value={form.culture || ''}
           onChange={(value) => handleChange('culture', value)}
+          placeholder="선택"
         />
 
         {/* 컨퍼런스 참여 목적 */}
@@ -157,6 +160,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           items={conference_purpose}
           value={form.purpose || ''}
           onChange={(value) => handleChange('purpose', value)}
+          placeholder="선택"
         />
       </div>
 

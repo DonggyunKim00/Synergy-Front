@@ -28,16 +28,7 @@ const SelectBox = <T extends boolean = false>({
   const { palette, typo, radius } = useTheme();
 
   return (
-    <FormControl
-      fullWidth
-      disabled={disabled}
-      sx={{
-        '& .MuiSelect-root.Mui-disabled': {
-          backgroundColor: palette.opacity.opa200,
-          opacity: 0.5,
-        },
-      }}
-    >
+    <FormControl fullWidth disabled={disabled}>
       <span
         css={css`
           ${typo.sub.m}
@@ -70,29 +61,43 @@ const SelectBox = <T extends boolean = false>({
             : (e.target.value as string); // multiple이 false이면 string으로 설정
           onChange(selectedValues as any);
         }}
+        IconComponent={KeyboardArrowDownIcon}
+        MenuProps={{
+          PaperProps: {
+            sx: menuPaperSx({ palette, typo }),
+          },
+        }}
         css={css`
           color: ${value ? palette.text.primary : palette.text.tertiary};
           border-radius: ${radius.sm};
-          background-color: ${palette.background.quaternary};
+          background-color: ${disabled
+            ? palette.opacity.opa100
+            : palette.background.quaternary};
           fieldset {
             border: 1px solid ${palette.border.secondary};
             padding: 0;
+          }
+          fieldset:disabled {
+            border: 1px solid ${palette.border.primary};
           }
           .MuiSelect-select {
             padding: 15px 20px;
           }
           .MuiSvgIcon-root {
-            fill: ${palette.icon.primary} !important;
+            fill: ${disabled ? '#00000061' : palette.icon.primary} !important;
+            margin-right: 6px;
+          }
+          &.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: ${palette.border.focused};
+          }
+          .MuiMenu-list {
+            border-radius: 8px;
+            padding: 0;
+          }
+          .MuiPaper-root {
+            border-radius: 8px;
           }
         `}
-        IconComponent={(props) => (
-          <KeyboardArrowDownIcon
-            css={css`
-              margin-right: 6px;
-            `}
-            {...props}
-          />
-        )}
       >
         {items.map((item) => (
           <MenuItem key={item.value} value={item.value}>
@@ -105,3 +110,41 @@ const SelectBox = <T extends boolean = false>({
 };
 
 export default SelectBox;
+
+const menuPaperSx = (theme: any) => ({
+  backgroundColor: theme.palette.background.primary,
+  borderRadius: '8px',
+  boxShadow:
+    '0px 12px 24px 0px rgba(23, 23, 23, 0.30), 0px 4px 4px 0px rgba(23, 23, 23, 0.12)',
+  mt: '4px',
+  border: `1px solid ${theme.palette.border.primary}`,
+  maxHeight: '350px',
+  '&::-webkit-scrollbar-track': {
+    background: theme.palette.background.quaternary,
+  },
+  '& .MuiList-root': {
+    padding: 0,
+  },
+  '& .MuiMenuItem-root': {
+    ...theme.typo.body.l,
+    padding: '14px 16px',
+    fontSize: '14px',
+    color: theme.palette.text.tertiary,
+    borderBottom: `1px solid ${theme.palette.border.primary}`,
+    '&.Mui-selected': {
+      backgroundColor: theme.palette.background.secondary,
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.background.quaternary,
+    },
+    '&:first-of-type': {
+      borderTopLeftRadius: '4px',
+      borderTopRightRadius: '4px',
+    },
+    '&:last-of-type': {
+      borderBottomLeftRadius: '4px',
+      borderBottomRightRadius: '4px',
+      borderBottom: 'none',
+    },
+  },
+});

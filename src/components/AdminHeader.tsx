@@ -1,10 +1,11 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Box } from '@mui/material';
-import { css, useTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Button } from '@mui/material';
+import { css, useTheme } from '@mui/material/styles';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { typography } from '@styles/foundation';
 
 const Header = () => {
   const theme = useTheme();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,80 +13,48 @@ const Header = () => {
     navigate('/role-selection');
   };
 
-  const logoStyle = css`
-    flex-grow: 1;
-    background-color: transparent;
-    padding: 5px 10px;
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: ${theme.palette.text.primary};
+  const headerStyle = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: ${theme.spacing(2)} 0;
   `;
 
-  const navLinkStyle = (active: boolean) => css`
+  const logoStyle = css`
+    font-weight: 800;
+    font-size: 28px;
+    font-family: ${typography.fontFamily.Montserrat};
     color: ${theme.palette.text.primary};
-    text-decoration: none;
-    position: relative;
-    padding: 8px 16px;
-    border-radius: 4px;
-    &:hover {
-      text-decoration: underline;
-    }
-    ${active &&
-    `
-      font-weight: bold;
-      &::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: white;
-      }
-      &:hover {
-        text-decoration: none;
-      }
-    `}
   `;
 
   const logoutButtonStyle = css`
+    background-color: ${theme.palette.background.quaternary};
     color: ${theme.palette.text.primary};
-    background: none;
-    border: none;
-    cursor: pointer;
+    border-radius: 18px;
     padding: 8px 16px;
-    font-size: 1rem;
-    &:hover {
-      text-decoration: underline;
+    border: none;
+    .MuiSvgIcon-root {
+      color: ${theme.palette.icon.tertiary};
     }
   `;
 
   return (
-    <AppBar
-      position="static"
-      elevation={0}
-      sx={{
-        backgroundColor: 'transparent',
-        boxShadow: 'none',
-      }}
-    >
-      <Toolbar>
-        <Typography variant="h6" css={logoStyle}>
-          F'LINK
-        </Typography>
-        <Box>
-          <Link
-            to="/admin"
-            css={navLinkStyle(location.pathname === '/admin')}
-          >
-            대시보드
-          </Link>
-          <button css={logoutButtonStyle} onClick={handleLogout}>
-            로그아웃
-          </button>
-        </Box>
-      </Toolbar>
-    </AppBar>
+    <Box component="header" css={headerStyle}>
+      <Typography variant="h6" css={logoStyle}>
+        Dashboard
+      </Typography>
+      <Button
+        variant="contained"
+        startIcon={<LogoutOutlinedIcon />}
+        onClick={handleLogout}
+        css={logoutButtonStyle}
+      >
+        로그아웃
+      </Button>
+    </Box>
   );
 };
 

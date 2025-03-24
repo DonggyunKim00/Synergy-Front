@@ -166,4 +166,31 @@ export const globalStyles = css`
     margin: 0;
     padding: 0;
   }
+
+  /* ✅ 스크롤바 스타일 추가 */
+  *::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: none; /* 스크롤바 트랙 색상 */
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #949494; /* 스크롤바 색상 */
+    border-radius: 10px; /* 둥근 모서리 */
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: #949494; /* 호버 시 색상 변경 */
+  }
+
+  textarea {
+    ::-webkit-scrollbar {
+      color: #949494;
+      background-color: #949494;
+      background: #949494;
+    }
+  }
 `;

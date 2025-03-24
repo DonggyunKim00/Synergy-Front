@@ -10,7 +10,7 @@ const DefaultHeader = ({ backgroundColor }: Props) => {
   return (
     <header
       css={css`
-        position: fixed;
+        position: sticky;
         top: 0;
         width: 100%;
         max-width: 600px;

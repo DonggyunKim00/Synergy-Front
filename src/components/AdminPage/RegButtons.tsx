@@ -1,31 +1,59 @@
 import { useState } from 'react';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import ConferenceModal from './Modal/ConferenceModal';
+import ConferenceForm from './Popup/ConferenceForm';
+import { useConferenceStore } from '@stores/client/useConferenceStore';
 
-const ConferenceRegistration = () => {
+interface ConferenceRegistrationProps {
+  onRegister?: () => void;
+}
+
+const ConferenceRegistration = ({ onRegister = () => {} }: ConferenceRegistrationProps) => {
   const { palette, typography, radius } = useTheme();
   const [isConferenceRegistered, setIsConferenceRegistered] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<'add' | 'edit'>('add');
+  const [conferenceData, setConferenceData] = useState<any>(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleRegister = () => {
-    handleOpen(); // 모달 열기
+    setMode('add');
+    setConferenceData(null);
+    handleOpen();
   };
 
   const handleModify = () => {
     if (isConferenceRegistered) {
-      // TODO: 컨퍼런스 수정 로직
+      const dummyData = {
+        name: '샘플 컨퍼런스',
+        host: '주최자',
+        startDate: '2025.04.01',
+        startTime: '10:00',
+        endDate: '2025.04.01',
+        endTime: '17:00',
+        location: '그랜드볼룸',
+        placeType: 'on-site',
+        conferenceType: 'IT',
+        description: '컨퍼런스 설명입니다.',
+        imageFile: null,
+      };
+
+      setMode('edit');
+      setConferenceData(dummyData);
+      handleOpen();
     }
   };
 
-  const handleModalRegister = () => {
+  const handleModalSubmit = (data: any) => {
+    console.log('등록 또는 수정 완료:', data);
+    useConferenceStore.getState().setConferenceRegistered(true);
     setIsConferenceRegistered(true);
     handleClose();
+    onRegister();
   };
 
   const buttonStyle = css`
@@ -93,16 +121,13 @@ const ConferenceRegistration = () => {
           컨퍼런스 수정
         </Typography>
       </Button>
-
-      <Modal
+      <ConferenceForm
+        mode={mode}
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        disableEnforceFocus
-      >
-        <ConferenceModal onClose={handleClose} onRegister={handleModalRegister} />
-      </Modal>
+        onSubmit={handleModalSubmit}
+        initialData={conferenceData}
+      />
     </Box>
   );
 };

@@ -57,7 +57,7 @@ const OnBoarding = () => {
         css={css`
           flex: 1;
           height: 100%;
-          padding: 60px 16px 16px;
+          padding: 0px 16px 16px;
           overflow-y: auto;
           &::-webkit-scrollbar {
             display: none;

@@ -27,7 +27,7 @@ const GradeRankingCard = () => {
             </Typography>
             <Paper
                 css={css`
-                    background-color: ${palette.background.inverse};
+                    background-color: ${palette.background.secondary};
                     border-radius: ${radius.sm}px;
                     padding: 16px;
                     text-align: center;

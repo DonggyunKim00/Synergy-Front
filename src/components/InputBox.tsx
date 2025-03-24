@@ -54,6 +54,9 @@ const InputBox = ({
             border: 1px solid ${palette.border.secondary};
             padding: 0;
           }
+          &.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: ${palette.border.focused};
+          }
         `}
       />
     </FormControl>

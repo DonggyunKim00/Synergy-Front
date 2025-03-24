@@ -67,28 +67,30 @@ export const experience_range = [
   { value: '5+', text: '5년 이상' },
 ];
 
-// 희망 회사 규모
-export const company_type = [
-  { value: 'startup', text: '스타트업' },
-  { value: 'sme', text: '중소기업' },
-  { value: 'mid', text: '중견기업' },
-  { value: 'enterprise', text: '대기업' },
+// 직장 선택 요소
+export const company_selection_factors = [
+  { value: 'growth_learning', text: '성장 기회 및 학습 지원' },
+  { value: 'salary_benefits', text: '연봉 및 복리후생' },
+  { value: 'work_life_balance', text: '워라밸 (Work-Life Balance)' },
+  { value: 'project_challenge', text: '프로젝트의 규모와 도전성' },
+  { value: 'stability_vision', text: '회사의 안정성 및 비전' },
 ];
 
 // 선호 기업 문화
 export const company_culture = [
-  { value: 'horizontal', text: '수평적인 조직 문화' },
-  { value: 'growth', text: '개인의 성장을 중시' },
-  { value: 'teamwork', text: '팀워크를 중시' },
-  { value: 'flexible', text: '유연한 근무 환경' },
+  { value: 'open_communication', text: '수평적 소통 문화' },
+  { value: 'tech_innovation', text: '지속적인 기술 혁신 추구' },
+  { value: 'collaboration_sharing', text: '협업과 지식 공유 중시' },
+  { value: 'flexible_work', text: '유연한 근무 환경' },
+  { value: 'performance_based', text: '성과 중심 평가' },
 ];
 
 // 컨퍼런스 참여 목적
 export const conference_purpose = [
-  { value: 'networking', text: '네트워킹' },
-  { value: 'learning', text: '최신 기술 트렌드 학습' },
-  { value: 'career', text: '커리어 기회 탐색' },
-  { value: 'project', text: '프로젝트 아이디어 구상' },
+  { value: 'job_networking', text: '취업 및 인맥 확장' },
+  { value: 'tech_trend', text: '최신 기술 및 트렌드 학습' },
+  { value: 'personal_interest', text: '개인적인 관심사 및 호기심' },
+  { value: 'education_research', text: '교육 및 연구 목적' },
 ];
 
 // 근무 지역
