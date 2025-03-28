@@ -2,6 +2,7 @@ export { color, typography, radius };
 
 const color = {
   gray0: '#171717',
+  gray0a: '#000000B3',
   gray100: '#1e1e1e',
   gray200: '#292929',
   gray300: '#333333',

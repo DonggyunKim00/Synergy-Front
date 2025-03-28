@@ -4,18 +4,21 @@ import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
 import { css, useTheme } from '@mui/material';
+import { useLoginMutation } from '@stores/server/auth';
 
 const ParticipantLogin = (): React.JSX.Element => {
   const theme = useTheme();
-  const { palette, typography, shape } = theme;
+  const { palette, typo, shape } = theme;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  const loginMutation = useLoginMutation();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('로그인 시도:', email, password);
+    loginMutation.mutate({ email, password });
   };
 
   const handleKakaoLogin = () => {
@@ -24,10 +27,6 @@ const ParticipantLogin = (): React.JSX.Element => {
 
   const handleSignupRedirect = () => {
     navigate('/signup');
-  };
-
-  const handleFindIdRedirect = () => {
-    navigate('/find-id');
   };
 
   const handleFindPasswordRedirect = () => {
@@ -49,29 +48,24 @@ const ParticipantLogin = (): React.JSX.Element => {
     margin-bottom: 10px;
     text-align: center;
     color: ${palette.text.primary};
-    font-family: ${typography.fontFamily};
+    font-family: ${typo.fontFamily.Montserrat};
   `;
 
   const subtitleStyle = css`
     font-size: 26px;
     margin-bottom: 30px;
     text-align: center;
-    color: ${palette.text.secondary};
-    font-family: ${typography.fontFamily};
+    color: ${palette.text.primary};
+    font-family: ${typo.fontFamily.Pretendard};
   `;
 
   const textFieldStyle = css`
     margin-bottom: 20px;
-
-    .MuiOutlinedInput-root {
-      color: ${palette.text.primary};
-      border-radius: ${shape.borderRadius}px;
-      fieldset {
-        border-color: ${palette.divider_custom.primary};
-      }
-      &:hover fieldset {
-        border-color: ${palette.divider_custom.secondary};
-      }
+    color: ${palette.text.primary};
+    border-radius: 8px;
+    background-color: ${palette.opacity.opa100};
+    fieldset{
+      border-color: ${palette.border.secondary};
     }
   `;
 
@@ -90,19 +84,27 @@ const ParticipantLogin = (): React.JSX.Element => {
   `;
 
   const linkStyle = css`
-    cursor: pointer;
-    text-decoration: none;
-    color: ${palette.text.secondary};
-    &:hover {
-      text-decoration: underline;
-      color: ${palette.primary.main};
-    }
+    color: ${palette.text.primary};
+    font-family: ${typo.fontFamily.Pretendard};
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+
   `;
 
   const helperTextStyle = css`
     color: ${palette.text.quaternary};
-    font-family: ${typography.fontFamily};
+    font-family: ${typo.fontFamily.Pretendard};
   `;
+
+  const iconStyle = css`
+    color: ${palette.icon.primary};
+    display: flex;
+    width: 24px;
+    height: 24px;
+    justify-content: center;
+    align-items: center;
+  `
 
   return (
     <Box css={containerStyle}>
@@ -118,7 +120,7 @@ const ParticipantLogin = (): React.JSX.Element => {
           variant="outlined"
           fullWidth
           InputProps={{
-            startAdornment: <PersonIcon />,
+            startAdornment: <PersonIcon css={iconStyle} />,
           }}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -131,7 +133,7 @@ const ParticipantLogin = (): React.JSX.Element => {
           variant="outlined"
           fullWidth
           InputProps={{
-            startAdornment: <LockIcon />,
+            startAdornment: <LockIcon css={iconStyle} />,
           }}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -163,11 +165,8 @@ const ParticipantLogin = (): React.JSX.Element => {
       </Box>
       <Box sx={{ textAlign: 'center', mt: '10px' }}>
         <Typography variant="body2" css={helperTextStyle}>
-          아이디/비밀번호를 잊었어요?{' '}
-          <Box component="span" onClick={handleFindIdRedirect} css={linkStyle}>
-            아이디 찾기
-          </Box>{' '}
-          |{' '}
+          비밀번호를 잊었어요.{' '}
+          {' '}
           <Box component="span" onClick={handleFindPasswordRedirect} css={linkStyle}>
             비밀번호 찾기
           </Box>

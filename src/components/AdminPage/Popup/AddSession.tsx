@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle, Button, css, useTheme } from '@mui/material';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Button,
+  css,
+  useTheme,
+} from '@mui/material';
 import InputBox from '@components/InputBox';
 import SelectBox from '@components/SelectBox';
 import TextareaBox from '@components/TextareaBox';
@@ -15,7 +22,12 @@ interface AddSessionProps {
   initialData?: any;
 }
 
-const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProps) => {
+const AddSession = ({
+  open,
+  onClose,
+  mode = 'add',
+  initialData,
+}: AddSessionProps) => {
   const theme = useTheme();
   const { palette, typo } = theme;
 
@@ -30,7 +42,9 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
   const [maxCapacity, setMaxCapacity] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
 
-  const setSessionRegistered = useSessionStore((state) => state.setSessionRegistered);
+  const setSessionRegistered = useSessionStore(
+    (state) => state.setSessionRegistered,
+  );
 
   useEffect(() => {
     if (mode === 'edit' && initialData) {
@@ -58,9 +72,9 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
   }, [open, mode, initialData]);
 
   const capacityOptions = [
-    { value: '150', text: '150명' },
-    { value: '200', text: '200명' },
-    { value: '250', text: '250명' },
+    { code: '150', name: '150명' },
+    { code: '200', name: '200명' },
+    { code: '250', name: '250명' },
   ];
 
   const handleSubmit = () => {
@@ -77,7 +91,8 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
     });
 
     if (!result.success) {
-      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      const firstError =
+        result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
       setFormError(firstError);
       return;
     }

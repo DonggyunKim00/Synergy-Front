@@ -1,12 +1,33 @@
 import { Button, css, Typography, useTheme } from '@mui/material';
 import ImageModifier from './ImageModifier';
+import { POINT_SYSTEM } from 'src/constant/point-system';
 
-const Information = ({ buttonClick }: { buttonClick: () => void }) => {
+type MembershipLevel = 'DEFAULT' | 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
+interface Props {
+  membershipLevel: MembershipLevel;
+  name: string;
+  totalPoints: number;
+  buttonClick: () => void;
+  nextPointResponseDto: {
+    needPoint: number;
+    nextMembershipLevel: MembershipLevel;
+  };
+  profileImg: string | null;
+}
+
+const Information = ({
+  membershipLevel,
+  name,
+  totalPoints,
+  buttonClick,
+  nextPointResponseDto,
+  profileImg,
+}: Props) => {
   const { palette, typo, radius } = useTheme();
 
   return (
     <>
-      <ImageModifier />
+      <ImageModifier profileImg={profileImg} />
       <div
         css={css`
           display: flex;
@@ -22,17 +43,42 @@ const Information = ({ buttonClick }: { buttonClick: () => void }) => {
             margin-top: 2px;
           `}
         >
-          김지원 님, 반갑습니다.
+          {name} 님, 반갑습니다.
         </Typography>
         <Typography
           variant="h3"
           css={css`
+            display: flex;
+            align-items: center;
             ${typo.title.xs}
             color: ${palette.text.primary};
             margin: 8px 0px 4px;
           `}
         >
-          BRONZE 250P
+          {membershipLevel !== 'DEFAULT' && (
+            <img
+              src={POINT_SYSTEM[membershipLevel].image}
+              width={26}
+              height={30}
+              alt={`${membershipLevel} 등급 이미지`}
+              css={css`
+                padding: 1px 5px;
+                box-sizing: content-box;
+              `}
+            />
+          )}
+
+          <span>
+            {membershipLevel === 'DEFAULT' ? '내 포인트' : membershipLevel}
+          </span>
+          <span
+            css={{
+              color: palette.text.secondary,
+              marginLeft: '4px',
+            }}
+          >
+            {totalPoints}P
+          </span>
         </Typography>
         <Typography
           variant="h3"
@@ -41,7 +87,7 @@ const Information = ({ buttonClick }: { buttonClick: () => void }) => {
             color: ${palette.text.primary};
           `}
         >
-          50P
+          {nextPointResponseDto.needPoint}P
           <span
             css={css`
               color: ${palette.text.secondary};
@@ -50,14 +96,14 @@ const Information = ({ buttonClick }: { buttonClick: () => void }) => {
           >
             더모으면
           </span>
-          SILVER
+          {nextPointResponseDto.nextMembershipLevel}
         </Typography>
       </div>
       <Button
         css={css`
           ${typo.sub.xs}
           padding: 10px 20px;
-          background-color: ${palette.opacity.opa100};
+          background: ${palette.opacity.opa100};
           border-radius: ${radius.xl};
           color: ${palette.text.primary};
           border: none;

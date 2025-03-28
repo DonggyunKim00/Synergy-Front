@@ -2,30 +2,13 @@ import { Box, Button, css, Typography, useTheme } from '@mui/material';
 import QnaDialog from './QnaDialog';
 import { useState } from 'react';
 
-const json = {
-  qna: [
-    {
-      id: 1,
-      user: '김지훈',
-      content:
-        '디지털 환경에서는 팀원들이 자율성을 가지는 것이 중요하다고 하지만, 동시에 일정 관리와 성과를 모니터링해야 하는데, 리더로서 이 균형을 어떻게 맞춰야 할까요?',
-    },
-    {
-      id: 2,
-      user: '이동현',
-      content:
-        '세대별로 일하는 방식과 커뮤니케이션 스타일이 다른데, 디지털 시대의 리더가 다양한 연령대의 팀원들과 효과적으로 협업하려면 어떤 접근 방식이 필요할까요?',
-    },
-    {
-      id: 3,
-      user: '박수민',
-      content:
-        '재택근무가 보편화되면서 팀원 간 신뢰 형성이 어려워지는 것 같습니다. 원격 근무 환경에서도 신뢰 기반의 팀 문화를 구축하는 효과적인 방법이 있을까요?',
-    },
-  ],
+type QnaData = {
+  id: number;
+  name: string;
+  content: string;
 };
 
-const QnaSection = () => {
+const QnaSection = ({ qnaData }: { qnaData: QnaData[] }) => {
   const [open, setOpen] = useState(false);
   const { palette, typo, radius } = useTheme();
 
@@ -62,9 +45,24 @@ const QnaSection = () => {
             padding-right: 10px;
           `}
         >
-          {json.qna.map((item) => (
-            <Question key={item.id} {...item} />
-          ))}
+          {qnaData.length ? (
+            qnaData.map((item) => <Question key={item.id} {...item} />)
+          ) : (
+            <span
+              css={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                textAlign: 'center',
+                color: palette.text.secondary,
+                ...typo.body.m,
+              }}
+            >
+              작성된 Q&A 가 없습니다. <br /> Q&A를 작성하고 포인트를 받아가세요!
+            </span>
+          )}
         </Box>
       </Box>
       <Button
@@ -79,7 +77,7 @@ const QnaSection = () => {
         `}
         onClick={() => setOpen(true)}
       >
-        질문 제출하기
+        질문 작성하기
       </Button>
 
       <QnaDialog
@@ -94,12 +92,7 @@ const QnaSection = () => {
 
 export default QnaSection;
 
-interface Props {
-  id: number;
-  user: string;
-  content: string;
-}
-const Question = ({ user, content }: Props) => {
+const Question = ({ name, content }: QnaData) => {
   const { palette, typo } = useTheme();
 
   return (
@@ -116,7 +109,7 @@ const Question = ({ user, content }: Props) => {
           color: ${palette.text.primary};
         `}
       >
-        {user}
+        {name}
       </span>
       <p
         css={css`

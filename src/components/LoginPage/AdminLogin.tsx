@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import { css, useTheme } from '@mui/material';
+import { useAdminLoginMutation } from '@stores/server/auth';
 
 const AdminLogin = (): React.JSX.Element => {
   const theme = useTheme();
-  const { palette, typography, shape, spacing } = theme;
+  const { palette, typo, shape, spacing } = theme;
 
-  const [adminId, setAdminId] = useState('');
+  const [adminAuthCode, setAdminAuthCode] = useState('');
+  const adminLoginMutation = useAdminLoginMutation();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 백엔드 API 호출 및 인증 처리
-    console.log('관리자 ID:', adminId);
-    alert('로그인 시도');
-    setAdminId('');
+    adminLoginMutation.mutate({ adminAuthCode });
+    setAdminAuthCode('');
   };
 
   const containerStyle = css`
-    width: 300px;
+    width: 350px;
     margin: 20px auto;
     text-align: center;
   `;
@@ -27,14 +27,15 @@ const AdminLogin = (): React.JSX.Element => {
     font-weight: bold;
     margin-bottom: ${spacing(1)};
     color: ${palette.text.primary};
-    font-family: ${typography.fontFamily};
+    font-family: ${typo.fontFamily.Montserrat};
   `;
 
   const subtitleStyle = css`
-     font-size: 26px;
+    font-size: 26px;
     margin-bottom: ${spacing(3)};
     color: ${palette.text.primary};
-    font-family: ${typography.fontFamily};
+    font-family: ${typo.fontFamily.Pretendard};
+    font-weight: bold;
   `;
 
   const formStyle = css`
@@ -42,19 +43,12 @@ const AdminLogin = (): React.JSX.Element => {
   `;
 
   const textFieldStyle = css`
-    margin-bottom: ${spacing(2)};
-    .MuiOutlinedInput-root {
-      color: ${palette.text.primary};
-      border-radius: ${shape.borderRadius}px;
-      fieldset {
-        border-color: ${palette.divider_custom.primary};
-      }
-      &:hover fieldset {
-        border-color: ${palette.divider_custom.secondary};
-      }
-      &.Mui-focused fieldset {
-        border-color: ${palette.primary.main};
-      }
+    margin-bottom: 20px;
+    color: ${palette.text.primary};
+    border-radius: 8px;
+    background-color: ${palette.opacity.opa100};
+    fieldset{
+      border-color: ${palette.border.secondary};
     }
   `;
 
@@ -67,17 +61,15 @@ const AdminLogin = (): React.JSX.Element => {
     background-color: ${palette.background.quaternary};
     color: ${palette.text.primary};
     border-radius: ${shape.borderRadius}px;
-    &:hover {
-      background-color: ${palette.background.tertiary};
-    }
   `;
 
   const labelStyle = css`
     margin-bottom: 8px;
     color: ${palette.text.primary};
-    font-family: ${typography.fontFamily};
+    font-family: ${typo.fontFamily.Pretendard};
     font-weight: 500;
     text-align: left;
+    font-size: 16px;
   `;
 
   return (
@@ -95,9 +87,8 @@ const AdminLogin = (): React.JSX.Element => {
         </Typography>
         <TextField
           fullWidth
-          id="adminId"
-          value={adminId}
-          onChange={(e) => setAdminId(e.target.value)}
+          value={adminAuthCode}
+          onChange={(e) => setAdminAuthCode(e.target.value)}
           placeholder="관리자 ID를 입력해 주세요."
           required
           css={textFieldStyle}

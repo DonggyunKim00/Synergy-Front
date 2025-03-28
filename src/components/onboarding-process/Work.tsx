@@ -10,11 +10,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { Jobs } from 'src/types/funnel/onboarding.type';
-import { jobs } from 'src/constant/onboarding';
 import SelectBox from '@components/SelectBox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useFormStore } from '@stores/client/useFormStore';
+import { JOB_GROUPS, JOB_POSITIONS } from 'src/constant/onboarding-lookups';
 
 interface Props {
   onNext: (work: Jobs) => void;
@@ -76,15 +76,15 @@ const Work = ({ onNext }: Props) => {
           {/* 부모 직업 선택 */}
           <SelectBox
             id="parent-job"
-            label="직업"
-            items={jobs}
+            label="직군"
+            items={JOB_GROUPS}
             value={form.parent || ''}
             onChange={(value) => {
               handleChange('parent', value.toString());
               handleChange('child', '');
             }}
             isRequired
-            placeholder="현재 직업을 선택해주세요."
+            placeholder="선택"
           />
 
           {/* 자식 직무 선택 */}
@@ -92,14 +92,15 @@ const Work = ({ onNext }: Props) => {
             id="child-job"
             label="직무"
             items={
-              jobs.find((parent) => parent.value === form.parent)?.children ||
-              []
+              JOB_POSITIONS.filter(
+                (position) => position.job_group_id == form.parent,
+              ) || []
             }
             value={form.child ?? ''}
             onChange={(value) => handleChange('child', value.toString())}
             disabled={!form.parent}
             isRequired
-            placeholder="현재 직무를 선택해주세요."
+            placeholder="선택"
           />
 
           {/* 채용 희망 여부 선택 */}

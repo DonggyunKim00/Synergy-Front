@@ -7,7 +7,8 @@ export type Jobs = {
 
 export type Infos = {
   // 필수 속성
-  hope_job: string;
+  hope_job_group: string;
+  hope_job_position: string;
   education: string;
   age: string;
   skills: string;
@@ -17,9 +18,9 @@ export type Infos = {
   // 선택 속성
   profile_img?: File | null;
   others_experience?: string;
-  company?: string;
-  culture?: string;
-  purpose?: string;
+  company?: string[];
+  culture?: string[];
+  purpose?: string[];
 };
 
 // 1. 아무것도 입력 안됨

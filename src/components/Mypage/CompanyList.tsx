@@ -1,6 +1,15 @@
 import { css, Typography, useTheme } from '@mui/material';
 
-const CompanyList = () => {
+type RecruiterType = {
+  company: string;
+  responsibility: string;
+  name: string;
+};
+interface Props {
+  data: RecruiterType[];
+}
+
+const CompanyList = ({ data }: Props) => {
   const { palette, typo } = useTheme();
   const styles = {
     container: css`
@@ -37,8 +46,9 @@ const CompanyList = () => {
       </Typography>
 
       <div css={styles.content}>
-        <Column title="CodeSphere" desc="HR팀 매니저, 박수진" />
-        <Column title="OpenStack Korea" desc="HR팀 매니저, 김주은" />
+        {data.map((item, idx) => (
+          <Column key={idx} {...item} />
+        ))}
       </div>
     </div>
   );
@@ -46,11 +56,7 @@ const CompanyList = () => {
 
 export default CompanyList;
 
-interface ColumnProps {
-  title: string;
-  desc: string;
-}
-const Column = (props: ColumnProps) => {
+const Column = ({ company, responsibility, name }: RecruiterType) => {
   const { palette, typo } = useTheme();
   const styles = {
     container: css`
@@ -69,8 +75,10 @@ const Column = (props: ColumnProps) => {
   };
   return (
     <div css={styles.container}>
-      <span css={styles.title}>{props.title}</span>
-      <span css={styles.desc}>{props.title}</span>
+      <span css={styles.title}>{company}</span>
+      <span css={styles.desc}>
+        {responsibility} {name}
+      </span>
     </div>
   );
 };

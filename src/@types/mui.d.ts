@@ -57,6 +57,7 @@ declare module '@mui/material/styles' {
     tertiary: string;
     inverse: string;
     quaternary: string;
+    disabled: string;
   }
 
   interface TypeGraph {

@@ -1,28 +1,23 @@
 import BoothColumn from '@components/BoothPage/BoothColumn';
 import DefaultHeader from '@components/headers/DefaultHeader';
 import { css, styled, Typography, useTheme } from '@mui/material';
+import { useBoothList } from '@stores/server/booth';
 
-const json = {
-  data: [
-    {
-      id: 1,
-      title: 'CodeSphere',
-      desc: '클라우드 서비스',
-      location: '234C',
-      hall: 'C HALL',
-    },
-    {
-      id: 2,
-      title: 'OpenStack Korea',
-      desc: '클라우드 오픈소스',
-      location: '456C',
-      hall: 'C HALL',
-    },
-  ],
+export type BoothContent = {
+  id: number;
+  companyName: string;
+  companyType: string;
+  boothLocation: string;
+  boothNumber: string;
+  image: string;
 };
 
 const BoothPage = () => {
   const { palette, typo } = useTheme();
+  const {
+    data: { data },
+  } = useBoothList();
+
   return (
     <>
       <DefaultHeader backgroundColor={palette.background.primary} />
@@ -44,8 +39,8 @@ const BoothPage = () => {
             gap: 24px;
           `}
         >
-          {json.data.map((item) => (
-            <BoothColumn {...item} />
+          {data.content.map((item: BoothContent) => (
+            <BoothColumn key={item.id} {...item} />
           ))}
         </div>
       </Wrapper>

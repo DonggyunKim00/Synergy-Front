@@ -1,28 +1,24 @@
 import DefaultHeader from '@components/headers/DefaultHeader';
 import SessionColumn from '@components/SessionPage/SessionColumn';
 import { css, styled, Typography, useTheme } from '@mui/material';
+import { useSessionList } from '@stores/server/session';
 
-const json = {
-  data: [
-    {
-      id: 1,
-      title: '디지털 시대의 리더십과 팀 빌딩',
-      speaker: '이종현, FlowLink HR 팀 총괄',
-      startTime: '10:30',
-      sessionTime: '1시간',
-    },
-    {
-      id: 2,
-      title: '클라우드 네이티브, 아키텍처의 미래',
-      speaker: '박찬영, 클라우드 솔루션 전문가',
-      startTime: '14:00',
-      sessionTime: '1시간',
-    },
-  ],
+export type SessionContent = {
+  id: number;
+  imageUrl: string;
+  title: string;
+  speaker: string;
+  speakerPosition: string;
+  startTime: string;
+  endTime: string;
 };
 
 const SessionPage = () => {
   const { palette, typo } = useTheme();
+  const {
+    data: { data },
+  } = useSessionList();
+
   return (
     <>
       <DefaultHeader backgroundColor={palette.background.primary} />
@@ -44,8 +40,8 @@ const SessionPage = () => {
             gap: 24px;
           `}
         >
-          {json.data.map((item) => (
-            <SessionColumn {...item} />
+          {data.map((item: SessionContent) => (
+            <SessionColumn key={item.id} {...item} />
           ))}
         </div>
       </Wrapper>

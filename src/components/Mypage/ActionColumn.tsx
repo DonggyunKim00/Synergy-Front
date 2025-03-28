@@ -13,7 +13,7 @@ const ActionColumn = ({ onClick, text }: Props) => {
       css={css`
         ${typo.sub.s}
         display: flex;
-        padding: 21.5px 16px;
+        padding: 20.5px 16px;
         justify-content: space-between;
         align-items: center;
         align-self: stretch;

@@ -18,6 +18,8 @@ import ErrorPopover from '@components/ErrorPopover';
 import DefaultHeader from '@components/headers/DefaultHeader';
 import BackHeader from '@components/headers/BackHeader';
 import { useFormStore } from '@stores/client/useFormStore';
+import { useOnboardingPatch } from '@stores/server/attendee';
+import { useNavigate } from 'react-router-dom';
 
 const OnBoarding = () => {
   const { palette } = useTheme();
@@ -32,7 +34,7 @@ const OnBoarding = () => {
       context: {},
     },
   });
-
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   const handleSetError = (newError: string) => {
@@ -41,6 +43,7 @@ const OnBoarding = () => {
   };
 
   const { setForm, initForm, form } = useFormStore();
+  const { basicMutation, detailMutation } = useOnboardingPatch();
 
   return (
     <>
@@ -103,14 +106,14 @@ const OnBoarding = () => {
                 }
 
                 setError(null);
-                setForm('work', work);
+                basicMutation.mutate({ form });
 
-                if (work.employeement_agree === 'yes')
-                  return history.push('info', (prev) => ({ ...prev, work }));
-
-                // TODO: initform, API 요청
-                initForm();
-                console.log(context.interested_list, work);
+                if (work.employeement_agree === 'no') {
+                  initForm();
+                  navigate('/mypage');
+                } else {
+                  history.push('info', (prev) => ({ ...prev, work }));
+                }
               }}
             />
           )}
@@ -124,17 +127,14 @@ const OnBoarding = () => {
                   info,
                 });
 
-                if (!result.success) {
-                  handleSetError(result.error.errors[0].message);
-                  return;
-                }
+                if (!result.success)
+                  return handleSetError(result.error.errors[0].message);
 
                 setError(null);
                 setForm('info', info);
-
-                console.log('최종 데이터:', { ...form }); // 최종 데이터 확인
-                // TODO: initForm, API 요청
+                detailMutation.mutate({ form });
                 initForm();
+                navigate('/mypage');
               }}
             />
           )}

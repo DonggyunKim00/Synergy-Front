@@ -5,10 +5,10 @@ interface Props {
   name: string;
   jobName: string;
   experience: string;
-  image: string;
+  profileImg: string;
 }
 
-const BasicInformation = ({ name, jobName, experience, image }: Props) => {
+const BasicInformation = ({ name, jobName, experience, profileImg }: Props) => {
   const { palette, typo } = useTheme();
 
   return (
@@ -34,7 +34,7 @@ const BasicInformation = ({ name, jobName, experience, image }: Props) => {
         </Typography>
       </Box>
       <img
-        src={image || images}
+        src={profileImg || images}
         width={130}
         height={160}
         css={{ backgroundColor: palette.background.paper }}

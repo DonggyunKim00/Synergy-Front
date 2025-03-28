@@ -8,15 +8,20 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { checkboxItems } from 'src/constant/onboarding';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { INTERESTS } from 'src/constant/onboarding-lookups';
+import { useAttendeeProfile } from '@stores/server/attendee';
 interface Props {
   onNext: (interested_list: string[]) => void;
 }
 
 const Interested = (props: Props) => {
   const { palette, typo, radius } = useTheme();
+  const {
+    data: { data },
+  } = useAttendeeProfile();
+  console.log(data);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const handleCheckboxChange = (id: string) => {
@@ -46,7 +51,7 @@ const Interested = (props: Props) => {
             ${typo.title.l};
           `}
         >
-          김지원 님! <br />
+          {data.name} 님! <br />
           지금 정보를 입력하고, <br />
           포인트를 적립하여 <br />
           특별한 혜택을 누려보세요
@@ -60,17 +65,17 @@ const Interested = (props: Props) => {
             ${typo.body.l}
           `}
         >
-          관심 있는 분야를 선택해주세요.
+          관심 있는 분야를 3개 선택해주세요.
         </Typography>
 
         <FormGroup row sx={{ gap: '16px', width: '100%', margin: '0px' }}>
-          {checkboxItems.map((item) => (
+          {INTERESTS.map((item) => (
             <FormControlLabel
-              key={item.id}
+              key={item.code}
               control={
                 <Checkbox
-                  checked={selectedItems.includes(item.id)}
-                  onChange={() => handleCheckboxChange(item.id)}
+                  checked={selectedItems.includes(item.code.toString())}
+                  onChange={() => handleCheckboxChange(item.code.toString())}
                   sx={{
                     color: palette.icon.primary,
                     '& .MuiSvgIcon-root': { fontSize: 16 },
@@ -83,7 +88,7 @@ const Interested = (props: Props) => {
                   checkedIcon={<CheckCircleIcon color={'inherit'} />}
                 />
               }
-              label={item.label}
+              label={item.name}
               css={css`
                 ${typo.body.m}
                 color: ${palette.text.secondary};

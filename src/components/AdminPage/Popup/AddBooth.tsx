@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle, Button, css, useTheme } from '@mui/material';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Button,
+  css,
+  useTheme,
+} from '@mui/material';
 import InputBox from '@components/InputBox';
 import SelectBox from '@components/SelectBox';
 import TextareaBox from '@components/TextareaBox';
@@ -39,13 +46,17 @@ const AddBooth = ({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const setIsBoothRegistered = useBoothStore((state) => state.setIsBoothRegistered);
-  const setHasAggregationData = useBoothStore((state) => state.setHasAggregationData);
+  const setIsBoothRegistered = useBoothStore(
+    (state) => state.setIsBoothRegistered,
+  );
+  const setHasAggregationData = useBoothStore(
+    (state) => state.setHasAggregationData,
+  );
 
   const locationOptions = [
-    { value: 'hallA', text: 'Hall A' },
-    { value: 'hallB', text: 'Hall B' },
-    { value: 'hallC', text: 'Hall C' },
+    { code: 'hallA', name: 'Hall A' },
+    { code: 'hallB', name: 'Hall B' },
+    { code: 'hallC', name: 'Hall C' },
   ];
 
   useEffect(() => {
@@ -77,7 +88,8 @@ const AddBooth = ({
     });
 
     if (!result.success) {
-      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      const firstError =
+        result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
       setFormError(firstError);
       return;
     }

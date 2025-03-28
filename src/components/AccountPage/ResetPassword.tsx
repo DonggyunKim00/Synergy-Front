@@ -1,6 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import { css, useTheme } from '@mui/material';
+import {
+  useRequestAuthCodeMutation,
+  useConfirmAuthCodeMutation,
+  useResetPasswordRequestMutation,
+  useResetPasswordMutation
+} from '@stores/server/auth';
+import { signupSchema } from '@utils/schemas/signup-schema';
+import ErrorPopover from '@components/ErrorPopover';
+
+const passwordSchema = signupSchema.shape.password;
 
 const ResetPassword = (): React.JSX.Element => {
   const theme = useTheme();
@@ -9,29 +19,59 @@ const ResetPassword = (): React.JSX.Element => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [authCode, setAuthCode] = useState('');
   const [phone, setPhone] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [error, setFormError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      console.log('비밀번호 재설정 요청:', { name, email, phone });
-      // TODO: API 호출 로직
-      setStep(2);
-    } catch (error) {
-      console.error('비밀번호 재설정 에러:', error);
-      alert('비밀번호 재설정 중 오류가 발생했습니다.');
-    }
+  const requestAuthCodeMutation = useRequestAuthCodeMutation();
+  const confirmAuthCodeMutation = useConfirmAuthCodeMutation();
+  const resetPasswordRequestMutation = useResetPasswordRequestMutation();
+  const resetPasswordMutation = useResetPasswordMutation();
+
+  useEffect(() => {
+      if (timeLeft === null) return;
+  
+      if (timeLeft <= 0) {
+        setTimeLeft(null);
+        return;
+      }
+  
+      const timerId = setInterval(() => {
+        setTimeLeft((prev) => (prev !== null ? prev - 1 : null));
+      }, 1000);
+  
+      return () => clearInterval(timerId);
+    }, [timeLeft]);
+  
+    const formatTime = (seconds: number) => {
+      const min = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const sec = String(seconds % 60).padStart(2, '0');
+      return `${min}:${sec}`;
+    };
+
+  const handleAuthCodeRequest = async () => {
+    requestAuthCodeMutation.mutate(email, {
+      onSuccess: () => {
+        setTimeLeft(300);
+      },
+    });
+  };
+
+  const handleAuthCodeConfirm = async () => {
+    confirmAuthCodeMutation.mutate({ email, code: authCode });
   };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      // API 호출 로직
-    } catch (error) {
-      console.error('비밀번호 설정 에러:', error);
-      alert('비밀번호 설정 중 오류가 발생했습니다.');
+    const result = passwordSchema.safeParse(newPassword);
+    if (!result.success) {
+      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      setFormError(firstError);
+      return;
     }
+    resetPasswordMutation.mutateAsync({ email, newPassword });
   };
 
   const containerStyle = css`
@@ -61,18 +101,11 @@ const ResetPassword = (): React.JSX.Element => {
 
   const textFieldStyle = css`
     margin-bottom: ${spacing(2)};
-    .MuiOutlinedInput-root {
-      color: ${palette.text.primary};
-      border-radius: ${shape.borderRadius}px;
-      fieldset {
-        border-color: ${palette.divider_custom.primary};
-      }
-      &:hover fieldset {
-        border-color: ${palette.divider_custom.secondary};
-      }
-      &.Mui-focused fieldset {
-        border-color: ${palette.primary.main};
-      }
+    color: ${palette.text.primary};
+    border-radius: 8px;
+    background-color: ${palette.opacity.opa100};
+    fieldset{
+      border-color: ${palette.border.secondary};
     }
   `;
 
@@ -99,6 +132,13 @@ const ResetPassword = (): React.JSX.Element => {
     text-align: left;
   `;
 
+  const flexRowStyle = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: ${spacing(2)};
+  `;
+
   return (
     <Box css={containerStyle}>
       <Typography variant="h1" css={titleStyle}>
@@ -108,7 +148,7 @@ const ResetPassword = (): React.JSX.Element => {
         비밀번호 재설정
       </Typography>
       {step === 1 ? (
-        <form onSubmit={handleSubmit} css={formStyle}>
+        <form onSubmit={(e) => e.preventDefault()} css={formStyle}>
           <Typography variant="body1" css={labelStyle}>
             성함
           </Typography>
@@ -124,29 +164,85 @@ const ResetPassword = (): React.JSX.Element => {
           <Typography variant="body1" css={labelStyle}>
             이메일
           </Typography>
-          <TextField
-            fullWidth
-            type="email"
-            placeholder="example@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            css={textFieldStyle}
-          />
+          <Box css={flexRowStyle}>
+            <TextField
+              fullWidth
+              type="email"
+              placeholder="example@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              css={textFieldStyle}
+              InputProps={{
+                endAdornment: (
+                  <Button onClick={handleAuthCodeRequest}
+                    css={css`
+                      background-color: ${palette.background.quaternary};
+                      color: ${palette.text.primary};
+                      border: none;
+                      padding: 4px 10px;
+                      font-size: 12px;
+                      border-radius: 18px;
+                      white-space: nowrap;
+                      line-height: 1;
+                      height: 32px;
+                      margin-right: -8px;
+                    `}
+                  >
+                    인증번호 요청
+                  </Button>
+                ),
+              }}
+            />
+          </Box>
+
+          <Typography variant="body1" css={labelStyle}>
+            인증번호 입력
+          </Typography>
+          <Box css={flexRowStyle}>
+            <TextField
+              fullWidth
+              placeholder={timeLeft !== null ? formatTime(timeLeft) : '인증번호를 입력해주세요.'}
+              value={authCode}
+              onChange={(e) => setAuthCode(e.target.value)}
+              required
+              css={textFieldStyle}
+              InputProps={{
+                endAdornment: (
+                  <Button onClick={handleAuthCodeConfirm}
+                    css={css`
+                      background-color: ${palette.background.quaternary};
+                      color: ${palette.text.primary};
+                      border: none;
+                      padding: 4px 10px;
+                      font-size: 12px;
+                      border-radius: 18px;
+                      white-space: nowrap;
+                      line-height: 1;
+                      height: 30px;
+                      margin-right: -8px;
+                    `}
+                  >
+                    확인
+                  </Button>
+                ),
+              }}
+            />
+          </Box>
 
           <Typography variant="body1" css={labelStyle}>
             휴대폰 번호
           </Typography>
           <TextField
             fullWidth
-            placeholder="010-0000-0000"
+            placeholder="- 없이 숫자만 입력해주세요"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
             css={textFieldStyle}
           />
 
-          <Button type="submit" css={buttonStyle}>
+          <Button onClick={() => setStep(2)} css={buttonStyle}>
             확인
           </Button>
         </form>
@@ -180,6 +276,7 @@ const ResetPassword = (): React.JSX.Element => {
           </Button>
         </form>
       )}
+      <ErrorPopover error={error} />
     </Box>
   );
 };

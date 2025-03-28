@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, css, useTheme } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Button,
+  css,
+  useTheme,
+} from '@mui/material';
 import InputBox from '@components/InputBox';
 import SelectBox from '@components/SelectBox';
 import { conferenceSchema } from '@utils/schemas/adminpopup-schema';
@@ -23,7 +30,13 @@ interface ConferenceFormProps {
   };
 }
 
-const ConferenceForm = ({ mode, open, onClose, onSubmit, initialData }: ConferenceFormProps) => {
+const ConferenceForm = ({
+  mode,
+  open,
+  onClose,
+  onSubmit,
+  initialData,
+}: ConferenceFormProps) => {
   const theme = useTheme();
   const { palette, typo } = theme;
 
@@ -66,16 +79,16 @@ const ConferenceForm = ({ mode, open, onClose, onSubmit, initialData }: Conferen
   }, [mode, initialData, open]);
 
   const locationTypeOptions = [
-    { value: '그랜드볼룸', text: '그랜드볼룸' },
-    { value: '아셈볼룸', text: '아셈볼룸' },
-    { value: 'THE PLATZ', text: 'THE PLATZ' },
-    { value: '오디토리움', text: '오디토리움' },
+    { code: '그랜드볼룸', name: '그랜드볼룸' },
+    { code: '아셈볼룸', name: '아셈볼룸' },
+    { code: 'THE PLATZ', name: 'THE PLATZ' },
+    { code: '오디토리움', name: '오디토리움' },
   ];
 
   const conferenceTypeOptions = [
-    { value: 'IT', text: 'IT' },
-    { value: '무역', text: '무역' },
-    { value: '산업', text: '산업' },
+    { code: 'IT', name: 'IT' },
+    { code: '무역', name: '무역' },
+    { code: '산업', name: '산업' },
   ];
 
   const handleSubmit = () => {
@@ -92,7 +105,8 @@ const ConferenceForm = ({ mode, open, onClose, onSubmit, initialData }: Conferen
     });
 
     if (!result.success) {
-      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      const firstError =
+        result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
       setFormError(firstError);
       return;
     }
@@ -135,78 +149,78 @@ const ConferenceForm = ({ mode, open, onClose, onSubmit, initialData }: Conferen
         `}
       >
         <InputBox
-            label="컨퍼런스 명"
-            id="name"
-            isRequired
-            placeholder="컨퍼런스 명을 입력해 주세요."
-            value={name}
-            onChange={setName}
+          label="컨퍼런스 명"
+          id="name"
+          isRequired
+          placeholder="컨퍼런스 명을 입력해 주세요."
+          value={name}
+          onChange={setName}
         />
         <InputBox
-            label="컨퍼런스 주최자"
-            id="host"
-            isRequired
-            placeholder="주최자를 입력해 주세요."
-            value={host}
-            onChange={setHost}
+          label="컨퍼런스 주최자"
+          id="host"
+          isRequired
+          placeholder="주최자를 입력해 주세요."
+          value={host}
+          onChange={setHost}
         />
         <InputBox
-            label="시작일"
-            id="startDate"
-            isRequired
-            placeholder="컨퍼런스 시작 날짜를 입력해 주세요."
-            value={startDate}
-            onChange={setStartDate}
+          label="시작일"
+          id="startDate"
+          isRequired
+          placeholder="컨퍼런스 시작 날짜를 입력해 주세요."
+          value={startDate}
+          onChange={setStartDate}
         />
         <InputBox
-            label="시작 시간"
-            id="startTime"
-            isRequired
-            placeholder="컨퍼런스 시작 시간을 입력해 주세요."
-            value={startTime}
-            onChange={setStartTime}
+          label="시작 시간"
+          id="startTime"
+          isRequired
+          placeholder="컨퍼런스 시작 시간을 입력해 주세요."
+          value={startTime}
+          onChange={setStartTime}
         />
         <InputBox
-            label="종료일"
-            id="endDate"
-            isRequired
-            placeholder="컨퍼런스 종료 날짜를 입력해 주세요."
-            value={endDate}
-            onChange={setEndDate}
+          label="종료일"
+          id="endDate"
+          isRequired
+          placeholder="컨퍼런스 종료 날짜를 입력해 주세요."
+          value={endDate}
+          onChange={setEndDate}
         />
         <InputBox
-            label="종료 시간"
-            id="endTime"
-            isRequired
-            placeholder="컨퍼런스 종료 시간을 입력해 주세요."
-            value={endTime}
-            onChange={setEndTime}
+          label="종료 시간"
+          id="endTime"
+          isRequired
+          placeholder="컨퍼런스 종료 시간을 입력해 주세요."
+          value={endTime}
+          onChange={setEndTime}
         />
         <InputBox
-            label="컨퍼런스 장소"
-            id="place"
-            isRequired
-            placeholder="장소를 입력해 주세요."
-            value={place}
-            onChange={setPlace}
+          label="컨퍼런스 장소"
+          id="place"
+          isRequired
+          placeholder="장소를 입력해 주세요."
+          value={place}
+          onChange={setPlace}
         />
         <SelectBox
-            id="locationType"
-            label="컨퍼런스 위치"
-            isRequired
-            placeholder="선택"
-            items={locationTypeOptions}
-            value={location}
-            onChange={setLocation}
+          id="locationType"
+          label="컨퍼런스 위치"
+          isRequired
+          placeholder="선택"
+          items={locationTypeOptions}
+          value={location}
+          onChange={setLocation}
         />
-        <SelectBox 
-            id="conferenceType"
-            label="컨퍼런스 유형"
-            isRequired
-            placeholder="선택"
-            items={conferenceTypeOptions}
-            value={conferenceType}
-            onChange={setConferenceType}
+        <SelectBox
+          id="conferenceType"
+          label="컨퍼런스 유형"
+          isRequired
+          placeholder="선택"
+          items={conferenceTypeOptions}
+          value={conferenceType}
+          onChange={setConferenceType}
         />
 
         <Button

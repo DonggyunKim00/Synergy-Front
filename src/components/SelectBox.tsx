@@ -4,7 +4,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 type SelectBoxProps<T extends boolean> = {
   id: string;
   label: string;
-  items: { value: string | number; text: string }[];
+  items: { code: number | string; name: string }[];
   value: T extends true ? string[] : string; // 조건부 타입
   onChange: (value: T extends true ? string[] : string) => void;
   disabled?: boolean;
@@ -49,16 +49,23 @@ const SelectBox = <T extends boolean = false>({
           if (!selected || (Array.isArray(selected) && selected.length === 0)) {
             return placeholder;
           }
+
           return Array.isArray(selected)
             ? selected
-                .map((v) => items.find((item) => item.value === v)?.text || v)
+                .map(
+                  (v) =>
+                    items.find((item) => item.code.toString() === v.toString())
+                      ?.name || v,
+                )
                 .join(', ')
-            : items.find((item) => item.value === selected)?.text || selected;
+            : items.find((item) => item.code.toString() === selected)?.name ||
+                selected;
         }}
         onChange={(e) => {
           const selectedValues = multiple
-            ? (e.target.value as string[]) // multiple이 true이면 배열로 변환
-            : (e.target.value as string); // multiple이 false이면 string으로 설정
+            ? (e.target.value as any[]).map(String)
+            : String(e.target.value);
+
           onChange(selectedValues as any);
         }}
         IconComponent={KeyboardArrowDownIcon}
@@ -100,8 +107,8 @@ const SelectBox = <T extends boolean = false>({
         `}
       >
         {items.map((item) => (
-          <MenuItem key={item.value} value={item.value}>
-            {item.text}
+          <MenuItem key={item.code} value={item.code}>
+            {item.name}
           </MenuItem>
         ))}
       </Select>

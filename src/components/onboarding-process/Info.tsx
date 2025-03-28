@@ -2,19 +2,19 @@ import InputBox from '@components/InputBox';
 import SelectBox from '@components/SelectBox';
 import TextareaBox from '@components/TextareaBox';
 import { Button, css, useTheme } from '@mui/material';
-import {
-  age_range,
-  company_culture,
-  company_selection_factors,
-  conference_purpose,
-  education_levels,
-  experience_range,
-  hope_job,
-  location,
-} from 'src/constant/onboarding';
 import { Infos } from 'src/types/funnel/onboarding.type';
 import FileInputBox from '@components/FileInputBox';
 import { useFormStore } from '@stores/client/useFormStore';
+import { JOB_GROUPS, JOB_POSITIONS } from 'src/constant/onboarding-lookups';
+import {
+  AGE_GROUPS,
+  CONFERENCE_PARTICIPATION_PURPOSE,
+  EDUCATION_LEVELS,
+  EXPERIENCE_LEVEL_TYPE,
+  PREFERRED_CORPORATE_CULTURE,
+  REGION_TYPE,
+  WORKPLACE_SELECTION_FACTOR,
+} from 'src/constant/onboarding-codes';
 
 const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
   const { palette, typo, radius } = useTheme();
@@ -38,14 +38,35 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           height: 100%;
         `}
       >
+        {/* 희망 직군 선택 */}
+        <SelectBox
+          id="hope_job_group"
+          label="희망 직군"
+          items={JOB_GROUPS}
+          value={form.hope_job_group || ''}
+          onChange={(value) => {
+            handleChange('hope_job_group', value.toString());
+            handleChange('hope_job_position', '');
+          }}
+          isRequired
+          placeholder="선택"
+        />
+
         {/* 희망 직무 선택 */}
         <SelectBox
-          id="hope_job"
+          id="hope_job_position"
           label="희망 직무"
-          items={hope_job}
-          value={form.hope_job || ''}
-          onChange={(value) => handleChange('hope_job', value)}
+          items={
+            JOB_POSITIONS.filter(
+              (position) => position.job_group_id == form.hope_job_group,
+            ) || []
+          }
+          value={form.hope_job_position || ''}
+          onChange={(value) =>
+            handleChange('hope_job_position', value.toString())
+          }
           isRequired
+          disabled={!form.hope_job_group}
           placeholder="희망 직무를 선택해 주세요."
         />
 
@@ -53,9 +74,9 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
         <SelectBox
           id="education"
           label="학력"
-          items={education_levels}
+          items={EDUCATION_LEVELS}
           value={form.education || ''}
-          onChange={(value) => handleChange('education', value)}
+          onChange={(value) => handleChange('education', value.toString())}
           isRequired
           placeholder="학력을 선택해 주세요."
         />
@@ -64,9 +85,9 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
         <SelectBox
           id="age"
           label="연령대"
-          items={age_range}
+          items={AGE_GROUPS}
           value={form.age || ''}
-          onChange={(value) => handleChange('age', value)}
+          onChange={(value) => handleChange('age', value.toString())}
           isRequired
           placeholder="연령대를 선택해 주세요."
         />
@@ -84,9 +105,9 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
         <SelectBox
           id="experience"
           label="경력"
-          items={experience_range}
+          items={EXPERIENCE_LEVEL_TYPE}
           value={form.experience || ''}
-          onChange={(value) => handleChange('experience', value)}
+          onChange={(value) => handleChange('experience', value.toString())}
           isRequired
           placeholder="경력을 선택해주세요."
         />
@@ -95,7 +116,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
         <SelectBox
           id="hope_location"
           label="희망 근무 지역"
-          items={location}
+          items={REGION_TYPE}
           value={form.hope_location || []}
           onChange={(value) => handleChange('hope_location', value)}
           isRequired
@@ -137,30 +158,33 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
         <SelectBox
           id="company"
           label="직장 선택 요소"
-          items={company_selection_factors}
-          value={form.company || ''}
-          onChange={(value) => handleChange('company', value)}
+          items={WORKPLACE_SELECTION_FACTOR}
+          value={form.company || []}
+          onChange={(value) => handleChange('company', value.toString())}
           placeholder="선택"
+          multiple
         />
 
         {/* 선호하는 기업 문화 */}
         <SelectBox
           id="culture"
           label="선호하는 기업 문화"
-          items={company_culture}
-          value={form.culture || ''}
-          onChange={(value) => handleChange('culture', value)}
+          items={PREFERRED_CORPORATE_CULTURE}
+          value={form.culture || []}
+          onChange={(value) => handleChange('culture', value.toString())}
           placeholder="선택"
+          multiple
         />
 
         {/* 컨퍼런스 참여 목적 */}
         <SelectBox
           id="purpose"
           label="컨퍼런스 참여 목적"
-          items={conference_purpose}
-          value={form.purpose || ''}
-          onChange={(value) => handleChange('purpose', value)}
+          items={CONFERENCE_PARTICIPATION_PURPOSE}
+          value={form.purpose || []}
+          onChange={(value) => handleChange('purpose', value.toString())}
           placeholder="선택"
+          multiple
         />
       </div>
 
@@ -168,18 +192,19 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
       <Button
         onClick={() =>
           onSubmit({
-            hope_job: form.hope_job || '',
-            education: form.education || '',
-            age: form.age || '',
-            skills: form.skills || '',
-            experience: form.experience || '',
-            hope_location: form.hope_location || [],
-            cover_letter: form.cover_letter || '',
+            hope_job_group: form.hope_job_group,
+            hope_job_position: form.hope_job_position,
+            education: form.education,
+            age: form.age,
+            skills: form.skills,
+            experience: form.experience,
+            hope_location: form.hope_location,
+            cover_letter: form.cover_letter,
             profile_img: form.profile_img || null,
             others_experience: form.others_experience || '',
-            company: form.company || '',
-            culture: form.culture || '',
-            purpose: form.purpose || '',
+            company: form.company,
+            culture: form.culture,
+            purpose: form.purpose,
           })
         }
         css={css`

@@ -1,6 +1,16 @@
 import { css, Typography, useTheme } from '@mui/material';
 
-const MyPoint = () => {
+type PointLogType = {
+  createdTime: string;
+  details: string;
+  point: number;
+  title: string;
+};
+interface Props {
+  data: PointLogType[];
+}
+
+const MyPoint = ({ data }: Props) => {
   const { palette, typo } = useTheme();
   const styles = {
     container: css`
@@ -31,6 +41,7 @@ const MyPoint = () => {
       padding: 10px 0px;
     `,
   };
+
   return (
     <div css={styles.container}>
       <Typography variant="h2" css={styles.title}>
@@ -44,11 +55,9 @@ const MyPoint = () => {
       </Typography>
 
       <div css={styles.content}>
-        <Column title="부스 방문" desc="OpenStack Korea" point={20} />
-        <Column title="부스 방문" desc="OpenStack Korea" point={20} />
-        <Column title="부스 방문" desc="OpenStack Korea" point={20} />
-        <Column title="부스 방문" desc="OpenStack Korea" point={20} />
-        <Column title="부스 방문" desc="OpenStack Korea" point={20} />
+        {data.map((item, idx) => (
+          <Column key={idx} {...item} />
+        ))}
       </div>
     </div>
   );
@@ -56,12 +65,7 @@ const MyPoint = () => {
 
 export default MyPoint;
 
-interface ColumnProps {
-  title: string;
-  desc: string;
-  point: number;
-}
-const Column = (props: ColumnProps) => {
+const Column = ({ createdTime, details, point, title }: PointLogType) => {
   const { palette, typo } = useTheme();
   const styles = {
     container: css`
@@ -89,10 +93,10 @@ const Column = (props: ColumnProps) => {
   return (
     <div css={styles.container}>
       <div css={styles.inner}>
-        <span css={styles.title}>{props.title}</span>
-        <span css={styles.desc}>{props.title}</span>
+        <span css={styles.title}>{title}</span>
+        <span css={styles.desc}>{details}</span>
       </div>
-      <div css={styles.point}>+{props.point}P</div>
+      <div css={styles.point}>+{point}P</div>
     </div>
   );
 };

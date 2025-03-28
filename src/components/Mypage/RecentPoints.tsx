@@ -1,53 +1,40 @@
-import { css, useTheme } from '@mui/material';
+import { Box, css, useTheme } from '@mui/material';
 
-const RecentPoints = () => {
-  const json = {
-    data: [
-      {
-        title: '부스 방문',
-        desc: 'OpenStack Korea',
-        point: 20,
-      },
-      {
-        title: '세션 참여',
-        desc: '디지털 시대의 리더십과 팀 빌딩',
-        point: 30,
-      },
-      {
-        title: '부스 방문',
-        desc: 'CodeSphere',
-        point: 20,
-      },
-    ],
-  };
+type PointLogType = {
+  createdTime: string;
+  details: string;
+  point: number;
+  title: string;
+};
+interface Props {
+  data: PointLogType[];
+}
+
+const RecentPoints = ({ data }: Props) => {
+  const { palette } = useTheme();
+
   return (
-    <>
-      {json.data.map((item) => (
-        <Column {...item} />
+    <Box width={'100%'} borderBottom={`1px solid ${palette.border.primary}`}>
+      {data.map((item, idx) => (
+        <Column key={idx} {...item} />
       ))}
-    </>
+    </Box>
   );
 };
 
 export default RecentPoints;
 
-interface Props {
-  title: string;
-  desc: string;
-  point: number;
-}
-const Column = ({ title, desc, point = 0 }: Props) => {
+const Column = ({ createdTime, details, point, title }: PointLogType) => {
   const { palette, typo } = useTheme();
 
   return (
     <div
       css={css`
         display: flex;
-        padding: 14px 16px;
+        padding: 18px 16px;
         justify-content: space-between;
         align-items: center;
         align-self: stretch;
-        border-bottom: 1px solid ${palette.border.primary};
         width: 100%;
       `}
     >
@@ -71,7 +58,7 @@ const Column = ({ title, desc, point = 0 }: Props) => {
             color: ${palette.text.secondary};
           `}
         >
-          {desc}
+          {details}
         </span>
       </div>
       <span

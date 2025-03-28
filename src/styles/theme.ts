@@ -37,7 +37,7 @@ const theme = createTheme({
     },
     opacity: {
       opa100: color.gray500a,
-      opa200: color.gray700a,
+      opa200: color.gray0a,
     },
     icon: {
       primary: color.gray600,
@@ -45,6 +45,7 @@ const theme = createTheme({
       tertiary: color.gray900,
       inverse: color.gray0,
       quaternary: color.blue500,
+      disabled: color.gray500,
     },
     graph: {
       default: color.blue100,

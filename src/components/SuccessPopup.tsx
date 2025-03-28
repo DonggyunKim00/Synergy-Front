@@ -3,26 +3,16 @@ import { Button, css, Typography, useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useNavigate } from 'react-router-dom';
+import { useAttendeeProfile } from '@stores/server/attendee';
 
 export interface Props {
   open: boolean;
   onClose: () => void;
   title: string;
   earnPoint: number;
-  totalPoint: number;
-  needPoint: number;
-  rating: string;
 }
 
-const SuccessPopup = ({
-  open,
-  onClose,
-  title,
-  earnPoint,
-  totalPoint,
-  needPoint,
-  rating,
-}: Props) => {
+const SuccessPopup = ({ open, onClose, title, earnPoint }: Props) => {
   const { typo, palette, radius } = useTheme();
   const navigate = useNavigate();
 
@@ -30,6 +20,10 @@ const SuccessPopup = ({
     navigate('/mypage');
     onClose();
   };
+
+  const {
+    data: { data: userProfile },
+  } = useAttendeeProfile();
 
   const styles = {
     dialogPaper: css`
@@ -108,11 +102,16 @@ const SuccessPopup = ({
           <b css={{ color: palette.text.primary }}>{earnPoint}P</b> 적립완료
         </span>
         <span css={styles.subText}>
-          총 포인트 <b css={styles.highlight}>{totalPoint}P</b>
+          총 포인트 <b css={styles.highlight}>{userProfile.totalPoint}P</b>
         </span>
         <span css={styles.subText}>
-          <b css={styles.highlight}>{needPoint}P</b> 더 모으면{' '}
-          <b css={styles.highlight}>{rating}</b>
+          <b css={styles.highlight}>
+            {userProfile.nextPointResponseDto.needPoint}P
+          </b>{' '}
+          더 모으면{' '}
+          <b css={styles.highlight}>
+            {userProfile.nextPointResponseDto.nextMembershipLevel}
+          </b>
         </span>
 
         {/* 버튼 */}

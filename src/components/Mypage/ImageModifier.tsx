@@ -1,18 +1,15 @@
 import { ButtonBase, css, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { useRef, useState } from 'react';
-
-const ImageModifier = () => {
+import { useRef } from 'react';
+import DefaultProfileImg from '@assets/profile-rectangle/useDefault.png';
+const ImageModifier = ({ ...props }) => {
   const { palette } = useTheme();
-  const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 파일 선택 핸들러
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl); // 선택된 이미지를 상태에 저장
     }
   };
 
@@ -21,13 +18,12 @@ const ImageModifier = () => {
       css={css`
         display: flex;
         position: relative;
-        aspect-ratio: 1;
         width: 100px;
       `}
     >
       <img
-        src={'#'}
-        alt="picture1"
+        src={props.profileImg || DefaultProfileImg}
+        alt="profile_img"
         css={css`
           aspect-ratio: 1;
           width: 100%;
