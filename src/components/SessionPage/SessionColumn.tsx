@@ -29,7 +29,7 @@ const SessionColumn = ({
       `}
       onClick={() => navigate(`/session/${id}`)}
     >
-      <StyledImage src={imageUrl.trim() || DefaultImage} />
+      <StyledImage src={imageUrl || DefaultImage} />
       <div
         css={css`
           ${flexrow}

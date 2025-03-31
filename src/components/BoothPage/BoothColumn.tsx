@@ -27,7 +27,7 @@ const BoothColumn = ({
       `}
       onClick={() => navigate(`/booth/${id}`)}
     >
-      <StyledImage src={image.trim() || DefaultImage} />
+      <StyledImage src={image || DefaultImage} />
       <div
         css={css`
           ${flexrow}
