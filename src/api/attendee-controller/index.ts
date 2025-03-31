@@ -79,7 +79,7 @@ export const patchOnboardingDetails = async ({ form }: any) => {
 
     // 파일이 있을 경우만 추가
     if (form.profile_img) {
-      formData.append('multipartFile', form.profile_img);
+      formData.append('profileImage', form.profile_img);
     }
 
     const res = await apiClient.patch(
