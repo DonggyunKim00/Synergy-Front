@@ -13,7 +13,8 @@ import TextareaBox from '@components/TextareaBox';
 import FileInputBox from '@components/FileInputBox';
 import { sessionSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
-import { useSessionStore } from '@stores/client/useSessionStore';
+import { useCreateSession, useModifySession } from '@stores/server/session';
+import dayjs from 'dayjs';
 
 interface AddSessionProps {
   open: boolean;
@@ -28,6 +29,7 @@ const AddSession = ({
   mode = 'add',
   initialData,
 }: AddSessionProps) => {
+  console.log(initialData);
   const theme = useTheme();
   const { palette, typo } = theme;
 
@@ -42,21 +44,24 @@ const AddSession = ({
   const [maxCapacity, setMaxCapacity] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
 
-  const setSessionRegistered = useSessionStore(
-    (state) => state.setSessionRegistered,
-  );
+  const { mutate: createMutate } = useCreateSession();
+  const { mutate: modifyMutate } = useModifySession();
 
   useEffect(() => {
+    if (open) {
+      setFormError(null); // 다이얼로그 열릴 때 에러 초기화
+    }
+
     if (mode === 'edit' && initialData) {
       setTitle(initialData.title || '');
-      setPresenter(initialData.presenter || '');
-      setPresenterRole(initialData.presenterRole || '');
-      setDate(initialData.date || '');
-      setStartTime(initialData.startTime || '');
-      setEndTime(initialData.endTime || '');
-      setSessionDescription(initialData.sessionDescription || '');
+      setPresenter(initialData.speaker || '');
+      setPresenterRole(initialData.speakerPosition || '');
+      setDate(initialData.progressDate || '');
+      setStartTime(dayjs(initialData.startDate).format('HH:mm') || '');
+      setEndTime(dayjs(initialData.endDate).format('HH:mm') || '');
+      setSessionDescription(initialData.description || '');
       setImageFile(initialData.imageFile || null);
-      setMaxCapacity(initialData.maxCapacity || '');
+      setMaxCapacity(initialData.maximum.toString() || '');
     } else {
       // add 모드일 때 초기화
       setTitle('');
@@ -77,7 +82,7 @@ const AddSession = ({
     { code: '250', name: '250명' },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = sessionSchema.safeParse({
       title,
       presenter,
@@ -97,13 +102,35 @@ const AddSession = ({
       return;
     }
 
-    if (mode === 'edit') {
-      console.log('수정 완료', result.data);
-    } else {
-      console.log('등록 완료', result.data);
-      setSessionRegistered(true);
-    }
+    const startDateTime = dayjs(`${date} ${startTime}`).format(
+      'YYYY-MM-DDTHH:mm',
+    );
+    const endDateTime = dayjs(`${date} ${endTime}`).format('YYYY-MM-DDTHH:mm');
 
+    const sessionReqDtoBlob = new Blob(
+      [
+        JSON.stringify({
+          title,
+          speaker: presenter,
+          speakerPosition: presenterRole,
+          progressDate: date,
+          startTime: startDateTime,
+          endTime: endDateTime,
+          description: sessionDescription,
+          maximum: Number(maxCapacity),
+        }),
+      ],
+      { type: 'application/json' },
+    );
+
+    const formData = new FormData();
+    formData.append('sessionReqDto', sessionReqDtoBlob);
+    if (imageFile) formData.append('multipartFile', imageFile);
+
+    if (mode === 'edit') {
+      console.log('제출했음 edit');
+      modifyMutate({ sessionId: initialData.sessionId, formData });
+    } else createMutate(formData);
     onClose();
   };
 
@@ -195,7 +222,7 @@ const AddSession = ({
           label="세션 설명"
           id="sessionDescription"
           isRequired
-          max_length={150}
+          max_length={200}
           value={sessionDescription}
           onChange={setSessionDescription}
           placeholder="세션 설명을 입력해 주세요."
@@ -203,7 +230,11 @@ const AddSession = ({
         <FileInputBox
           label="이미지"
           id="imageFile"
-          placeholder="필요한 이미지를 첨부해 주세요."
+          placeholder={
+            mode === 'edit'
+              ? '이미지 미첨부 시 이전 이미지가 적용됩니다.'
+              : '필요한 이미지를 첨부해 주세요.'
+          }
           onChange={setImageFile}
         />
         <SelectBox

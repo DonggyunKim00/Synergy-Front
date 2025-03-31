@@ -1,13 +1,17 @@
 import apiClient from '@utils/axios';
+import { AxiosError } from 'axios';
 
 export const signupRequest = async (data: {
   name: string;
   email: string;
+  ticketCode: string;
   password: string;
   phone: string;
 }) => {
-  const response = await apiClient.post('/api/v1/auth/attendee/signup', data);
-  return response.data;
+    const response = await apiClient.post(
+      '/api/v1/auth/attendee/signup', data
+    );
+    return response.data;
 };
 
 export const requestAuthCode = async (email: string) => {
@@ -15,7 +19,7 @@ export const requestAuthCode = async (email: string) => {
   return response.data;
 };
 
-export const confirmAuthCode = async (data: { email: string; code: string }) => {
+export const confirmAuthCode = async (data: { email: string; code: string; purpose: string }) => {
   const response = await apiClient.post('/api/v1/auth/email/verification/confirm', data);
   return response.data;
 };
@@ -38,4 +42,11 @@ export const loginRequest = async (data: { email: string; password: string }) =>
 export const adminLoginRequest = async (data: { adminAuthCode: string }) => {
   const response = await apiClient.post('/api/v1/auth/admin/login', data);
   return response.data.data;
+};
+
+export const logoutRequest = async () => {
+  const response = await apiClient.post('/api/v1/auth/logout', {}, {
+    withCredentials: true,
+  });
+  return response.data;
 };

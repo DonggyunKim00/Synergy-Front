@@ -1,5 +1,5 @@
 import { css, FormControl, OutlinedInput, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
   label: string;
@@ -22,6 +22,12 @@ const TextareaBox = ({
 }: Props) => {
   const { typo, palette } = useTheme();
   const [text, setText] = useState('');
+
+  useEffect(() => {
+    if (value.length) {
+      setText(value);
+    }
+  }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);

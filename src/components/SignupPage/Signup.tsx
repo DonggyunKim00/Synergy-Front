@@ -9,7 +9,7 @@ import { signupSchema } from '@utils/schemas/signup-schema';
 
 const Signup = (): React.JSX.Element => {
   const theme = useTheme();
-  const { palette, typo, shape, spacing } = theme;
+  const { palette, typo, shape, spacing, breakpoints } = theme;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -64,7 +64,7 @@ const Signup = (): React.JSX.Element => {
       setFormError(firstError);
       return;
     }
-    signupMutation.mutate({ name, email, password, phone });
+    signupMutation.mutate({ name, email, ticketCode,password, phone });
   };
 
   const handleRequestAuthCode = () => { 
@@ -75,18 +75,24 @@ const Signup = (): React.JSX.Element => {
     });
   };
 
-  const handleConfirmAuthCode = () => { 
-    confirmAuthCodeMutation.mutate({ email, code: authCode });
+  const handleConfirmAuthCode = async() => { 
+    try {
+      const response = await confirmAuthCodeMutation.mutate({
+        email,
+        code: authCode,
+        purpose: 'SIGNUP',
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const textFieldStyle = css`
-    margin-bottom: ${spacing(1)};
     color: ${palette.text.primary};
     border-radius: 8px;
     background-color: ${palette.opacity.opa100};
-    fieldset{
-      border-color: ${palette.border.secondary};
-    }
+    margin-bottom: 16px;
   `;
 
   const labelStyle = css`
@@ -98,8 +104,10 @@ const Signup = (): React.JSX.Element => {
 
   const flexRowStyle = css`
     display: flex;
-    gap: 8px;
-    margin-bottom: ${spacing(1)};
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: var(--spacing-6, 6px);
+    align-self: stretch;
   `;
 
   const buttonStyle = css`
@@ -123,9 +131,9 @@ const Signup = (): React.JSX.Element => {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 400px;
+        max-width: 600px;
         margin: 0 auto;
-        padding: ${spacing(1)};
+        padding: 16px;
         height: 100vh;
         overflow-y: auto;
         &::-webkit-scrollbar {
@@ -221,7 +229,7 @@ const Signup = (): React.JSX.Element => {
             InputProps={{
               endAdornment: (
                 <Button
-                onClick={handleConfirmAuthCode}
+                  onClick={handleConfirmAuthCode}
                   css={css`
                     background-color: ${palette.background.quaternary};
                     color: ${palette.text.primary};
@@ -302,57 +310,59 @@ const Signup = (): React.JSX.Element => {
           css={textFieldStyle}
         />
 
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={agreePersonalInfo}
-              onChange={() => setAgreePersonalInfo(!agreePersonalInfo)}
-              sx={{
-                color: palette.icon.primary,
-                '& .MuiSvgIcon-root': { fontSize: '20px' },
-                '&.Mui-checked': {
+        <Box css={flexRowStyle}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={agreePersonalInfo}
+                onChange={() => setAgreePersonalInfo(!agreePersonalInfo)}
+                sx={{
                   color: palette.icon.primary,
-                },
-                '&:hover': { backgroundColor: 'transparent' },
-              }}
-              icon={<CheckCircleOutlineIcon />}
-              checkedIcon={<CheckCircleIcon />}
-            />
-          }
-          label="개인정보 수집에 동의합니다."
-          css={css`
-            color: ${palette.text.secondary};
-            font-family: ${typo.fontFamily.Pretendard};
-            padding-left: ${spacing(1)};
-            padding-right: ${spacing(2)};
-          `}
-        />
+                  '& .MuiSvgIcon-root': { fontSize: '20px' },
+                  '&.Mui-checked': {
+                    color: palette.icon.primary,
+                  },
+                  '&:hover': { backgroundColor: 'transparent' },
+                }}
+                icon={<CheckCircleOutlineIcon />}
+                checkedIcon={<CheckCircleIcon />}
+              />
+            }
+            label="개인정보 수집에 동의합니다."
+            css={css`
+              color: ${palette.text.secondary};
+              font-family: ${typo.fontFamily.Pretendard};
+              padding-left: ${spacing(1)};
+              padding-right: ${spacing(2)};
+            `}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={agreeTerms}
+                onChange={() => setAgreeTerms(!agreeTerms)}
+                sx={{
+                  color: palette.icon.primary,
+                  '& .MuiSvgIcon-root': { fontSize: '20px' },
+                  '&.Mui-checked': {
+                    color: palette.icon.primary,
+                  },
+                  '&:hover': { backgroundColor: 'transparent' },
+                }}
+                icon={<CheckCircleOutlineIcon />}
+                checkedIcon={<CheckCircleIcon />}
+              />
+            }
+            label="이용 약관에 동의합니다."
+            css={css`
+              color: ${palette.text.secondary};
+              font-family: ${typo.fontFamily.Pretendard};
+              padding-left: ${spacing(1)};
+              padding-right: ${spacing(2)};
+            `}
+          />
+        </Box>
 
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={agreeTerms}
-              onChange={() => setAgreeTerms(!agreeTerms)}
-              sx={{
-                color: palette.icon.primary,
-                '& .MuiSvgIcon-root': { fontSize: '20px' },
-                '&.Mui-checked': {
-                  color: palette.icon.primary,
-                },
-                '&:hover': { backgroundColor: 'transparent' },
-              }}
-              icon={<CheckCircleOutlineIcon />}
-              checkedIcon={<CheckCircleIcon />}
-            />
-          }
-          label="이용 약관에 동의합니다."
-          css={css`
-            color: ${palette.text.secondary};
-            font-family: ${typo.fontFamily.Pretendard};
-            padding-left: ${spacing(1)};
-            padding-right: ${spacing(2)};
-          `}
-        />
         <Button type="submit" variant="contained" fullWidth css={buttonStyle}>
           가입 완료
         </Button>

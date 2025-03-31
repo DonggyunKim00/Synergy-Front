@@ -2,14 +2,17 @@ import { ButtonBase, css, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useRef } from 'react';
 import DefaultProfileImg from '@assets/profile-rectangle/useDefault.png';
+import { useModifyProfileImage } from '@stores/server/attendee';
 const ImageModifier = ({ ...props }) => {
   const { palette } = useTheme();
+  const { mutate } = useModifyProfileImage();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 파일 선택 핸들러
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
+      mutate({ profileImgFile: file });
     }
   };
 

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@stores/client/useAuthStore';
 import {
   loginRequestQuery,
@@ -10,11 +10,13 @@ import {
   resetPasswordRequestQuery,
   resetPasswordQuery,
 } from './queries';
+import { logoutRequest } from '@api/auth';
 
 // 참가자 로그인
 export const useLoginMutation = () => {
   const { setAuth } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
   return useMutation({
     mutationKey: loginRequestQuery.queryKey,
@@ -26,7 +28,9 @@ export const useLoginMutation = () => {
         role: data.role,
         id: data.id,
       });
-      navigate('/mypage');
+      const params = new URLSearchParams(location.search);
+      const redirectTo = params.get('redirectTo') || '/mypage';
+      navigate(redirectTo);
     },
     onError: (error: any) => {
       alert(error.message || '로그인 중 오류가 발생했습니다.');
@@ -64,13 +68,27 @@ export const useAdminLoginMutation = () => {
 // 회원가입
 export const useAuthSignupMutation = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { setAuth } = useAuthStore();
 
   return useMutation({
     mutationKey: signupRequestQuery.queryKey,
     mutationFn: signupRequestQuery.queryFn,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setAuth({
+        accessToken: data.data.accessToken,
+        identifier: data.data.identifier,
+        role: data.data.role,
+        id: data.data.id,
+      })
       alert('회원가입이 완료되었습니다.');
-      navigate('/onboarding');
+      
+      const params = new URLSearchParams(location.search);
+      const redirectTo = params.get('redirectTo') || '';
+
+      navigate(`/onboarding${redirectTo 
+        ? `?redirectTo=${encodeURIComponent(redirectTo)}` 
+        : ''}`);
     },
     onError: (error: any) => {
       alert(error.message || '회원가입 중 오류가 발생했습니다.');
@@ -129,6 +147,7 @@ export const useResetPasswordMutation = () => {
     mutationFn: resetPasswordQuery.queryFn,
     onSuccess: () => {
       alert('비밀번호가 성공적으로 변경되었습니다.');
+      useAuthStore.getState().clearAuth();
       navigate('/participant-login');
     },
     onError: (error: any) => {
@@ -141,9 +160,7 @@ export const useLogoutMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: async () => {
-      console.log(document.cookie);
-    },
+    mutationFn: logoutRequest,
     onSuccess: () => {
       alert('로그아웃 되었습니다.');
       useAuthStore.getState().clearAuth();

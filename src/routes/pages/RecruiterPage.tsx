@@ -3,24 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import FilterMultiSelectModal from '@components/RecruiterPage/FilterModal';
 import CardContent from '@components/RecruiterPage/CardContent';
-
-const jobOptions = [
-  '프론트엔드 개발자', '백엔드 개발자', '풀스택 개발자', 'AI/머신러닝 엔지니어',
-  '클라우드 엔지니어', 'DevOps 엔지니어', '데이터 엔지니어', '모바일 앱 개발자',
-  '임베디드 시스템 개발자', '블록체인 개발자', '프로덕트 디자이너', '그래픽 디자이너',
-  '웹디자이너', '프로젝트 매니저', '데이터 분석가', '마케터', '학생', '취업 준비생', '연구원'
-];
-
-const educationOptions = ['고등학교 졸업', '2~3년제 졸업', '4년제 졸업', '대학원 석/박사'];
-
-const ageOptions = ['20~24세 이하', '25~29세 이하', '30~34세 이하', '35세 이상'];
-
-const experienceOptions = ['신입', '1~2년 이하', '3~4년 이하', '5년 이상'];
-
-const regionOptions = [
-  '수도권', '부산광역시', '대구광역시', '대전광역시', '광주광역시', '울산광역시',
-  '세종특별자치시', '강원권', '충청권', '전라권', '경상권', '제주특별자치도'
-];
+import { jobOptions, regionOptions, ageOptions, experienceOptions, educationOptions } from 'src/constant/attendee-options';
 
 const RecruiterPage = () => {
   const { palette, typo } = useTheme();
@@ -36,21 +19,33 @@ const RecruiterPage = () => {
   const openModal = (type: string) => setModalType(type);
   const closeModal = () => setModalType(null);
   
+  const filters = {
+    page: 0,
+    size: 0,
+    occupations: jobFilter.join(','),
+    educationLevel: educationFilter.join(','),
+    ageGroup: ageFilter.join(','),
+    experienceLevel: experienceFilter.join(','),
+    regions: regionFilter.join(','),
+  };
+
   return (
     <Box
       css={css`
-        width: 100%;
-        max-width: 600px;
-        height: 100%;
-        background-color: ${palette.background.primary};
         display: flex;
+        width: 100%;
+        height: 100%;
+        min-width: 375px;
+        max-width: 600px;
+        background-color: ${palette.background.primary};
         flex-direction: column;
-        margin: 0 auto;
+        align-items: flex-start;
+        gap: 10px;
       `}
     >
       <Box
         css={css`
-          padding: 24px 16px 0;
+          padding: 16px 16px 0px;
           flex-shrink: 0;
         `}
       >
@@ -124,13 +119,15 @@ const RecruiterPage = () => {
 
       <Box
         css={css`
-          flex-grow: 1;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+          padding: 0 10px;
           overflow-y: auto;
-          padding: 0 16px 16px;
         }
         `}
       >
-        <CardContent />
+        <CardContent filters={filters}/> 
       </Box>
 
       {/* 모달 */}

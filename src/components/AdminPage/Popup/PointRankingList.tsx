@@ -9,30 +9,15 @@ import {
   css,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { UserPointDataType } from '../PointRankingCard';
 
 interface PointRankingProps {
   open: boolean;
   onClose: () => void;
+  data: UserPointDataType[];
 }
 
-const dummyPointData = [
-  { rank: 1, name: '김구름', points: '000' },
-  { rank: 1, name: '박푸디', points: '000' },
-  { rank: 1, name: '이사과', points: '000' },
-  { rank: 1, name: '최딸기', points: '000' },
-  { rank: 1, name: '홍수박', points: '000' },
-  { rank: 1, name: '강블루', points: '000' },
-  { rank: 1, name: '하초코', points: '000' },
-  { rank: 1, name: '문라떼', points: '000' },
-  { rank: 1, name: '이프디', points: '000' },
-  { rank: 1, name: '최프디', points: '000' },
-  { rank: 1, name: '김프디', points: '000' },
-  { rank: 1, name: '박프디', points: '000' },
-  { rank: 1, name: '정프디', points: '000' },
-  { rank: 1, name: '주프디', points: '000' },
-];
-
-const PointRanking = ({ open, onClose }: PointRankingProps) => {
+const PointRankingList = ({ open, onClose, data }: PointRankingProps) => {
   const { palette, typo } = useTheme();
 
   return (
@@ -87,8 +72,13 @@ const PointRanking = ({ open, onClose }: PointRankingProps) => {
           <span>참가자 이름</span>
           <span>누적 포인트</span>
         </Box>
-        <Box height="1px" width="100%" bgcolor={palette.border.secondary} mb="8px" />
-        {dummyPointData.map((item, idx) => (
+        <Box
+          height="1px"
+          width="100%"
+          bgcolor={palette.border.secondary}
+          mb="8px"
+        />
+        {data.map((item, idx) => (
           <Box
             key={idx}
             display="grid"
@@ -96,9 +86,9 @@ const PointRanking = ({ open, onClose }: PointRankingProps) => {
             alignItems="center"
             py="6px"
           >
-            <Typography fontSize="13px">{item.rank}</Typography>
-            <Typography fontSize="13px">{item.name}</Typography>
-            <Typography fontSize="13px">{item.points}</Typography>
+            <Typography fontSize="13px">{idx + 1}</Typography>
+            <Typography fontSize="13px">{item.attendeeName}</Typography>
+            <Typography fontSize="13px">{item.totalPoints}P</Typography>
           </Box>
         ))}
       </DialogContent>
@@ -106,4 +96,4 @@ const PointRanking = ({ open, onClose }: PointRankingProps) => {
   );
 };
 
-export default PointRanking;
+export default PointRankingList;

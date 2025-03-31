@@ -1,34 +1,52 @@
 export const INTERESTS = [
   {
+    'id': 1,
     'code': 101,
-    'name': '데이터 분석 / AI',
+    'name': '데이터 분석',
   },
   {
+    'id': 2,
     'code': 102,
-    'name': '클라우드 / DevOps',
+    'name': 'AI',
   },
   {
+    'id': 3,
     'code': 103,
+    'name': '클라우드',
+  },
+  {
+    'id': 4,
+    'code': 104,
+    'name': 'DevOps',
+  },
+  {
+    'id': 5,
+    'code': 105,
     'name': '소프트웨어 개발',
   },
   {
-    'code': 104,
+    'id': 6,
+    'code': 106,
     'name': '디자인',
   },
   {
-    'code': 105,
+    'id': 7,
+    'code': 107,
     'name': '정보 보안',
   },
   {
-    'code': 106,
+    'id': 8,
+    'code': 108,
     'name': '신기술 연구',
   },
   {
-    'code': 107,
+    'id': 9,
+    'code': 109,
     'name': '커리어 개발',
   },
   {
-    'code': 108,
+    'id': 10,
+    'code': 110,
     'name': '기획/운영',
   },
 ];

@@ -1,7 +1,11 @@
+import BRONZE_IMG from '@assets/rankicon/bronze.png';
+import SILVER_IMG from '@assets/rankicon/silver.png';
+import GOLD_IMG from '@assets/rankicon/gold.png';
+import PLATINUM_IMG from '@assets/rankicon/platinum.png';
+
 export const POINT_SYSTEM = {
   BRONZE: {
-    image:
-      'https://s3-alpha-sig.figma.com/img/b5be/dd12/93985b80f543c2cec6df696fd0b4c70a?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=PbK5kqoWAYd4b4Df3MVzI8WsVbJpW0fUJVQoifTvHJ1Bp7INgmrIVCXxgdgfjVSUw42KTVKOqpfC1uzI9vah7igVin0hJUG6aA7PzA8mwKBj~JcI-Nnc~0HemXIimgTRe4oIv4lERzQxFx1iQdu9gXAj3zTNrp0~bLR-sNzc~oFw1frZDxONGQX2U0iATXQHZcakNuo0j2B8KhRVDvJj~RJ7BDIIV-SzE4sSQk5DEM0h7HthnUe~piSrHww~gRCPoS3w9SsoD9i0Viv0MGYGXACo5Rb7MeslDPPNruJjRq3vDaesAaYv8Bj3Gf1fnq6Zj-s0TzBNyRSzcHZ8N6VNHw__',
+    image: BRONZE_IMG,
     desc: '100P-299P',
     content: [
       '세션 자료 다운로드',
@@ -11,8 +15,7 @@ export const POINT_SYSTEM = {
     ],
   },
   SILVER: {
-    image:
-      'https://s3-alpha-sig.figma.com/img/a355/56e2/ffd3228d1b986326e753e3796248114e?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=KC0Wrrt8K9BxxOmnT~nK8hn49-7-G0JGj~se1-GQlLC77EMAI5-5DmGwdpAQZNYfs~40hWU7GSh7AirPeR0apgIITDfd2IbS3ZTzVASZmwW1~7iGR9zcHRwK3-h5lmnhh1zbg0ONIaljw7VWWQ3gOPoTFC3Uo~6sDBiBd0yTBrYfAACtpRhuRYhd-Ni0-lMKslpE5s4082IlqL-5IqfsHTHTdSD3a-PE0JIrtv2n4lpHlOuNUNRpUlwUbeojsMQB-qNAOfYkvyI9bZHP~pBvCTumivpQNS53m8amIbqN6dlo0dn5podYS0mCHl5512fHzyMfZ-A2xJsXRY~S~fhAhw__',
+    image: SILVER_IMG,
     desc: '300P-799P',
     content: [
       '+ BRONZE 혜택',
@@ -22,8 +25,7 @@ export const POINT_SYSTEM = {
     ],
   },
   GOLD: {
-    image:
-      'https://s3-alpha-sig.figma.com/img/aa83/187e/f1c32373d2e23f79312a6cf23afd5994?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=uJ3NJXlEKl-Lj2oWiI0lOMy1cyFfTLMEDB39BubD8gtS2mNZB710IdqZc2DMW~QZcZiue5HLO6n3lQHIk-auU8uvUPBxlS0UDzPiDgV4CTon19cTwd6E~cBLTamabD~9Rb9rh6h61-h-aQ6bkhLIEi63yj2zj5UwuenDgptQx2~J6ANytgk44LXxF-xvnMakxJ9g69QzQ7BWn~PqP3NE~uI5xOO7d2CXyfE3uJstMXUZfAfHEPlnNf~yGO8mePHVEUMwMx7xoilEXDs5Rtm1ykOuPKI~1jFHFl1PjYG5CZFBo2EwuutnYAYJweUaEJvD8LlzFxgXkB9DLz6BsZVWqQ__',
+    image: GOLD_IMG,
     desc: '800P-1,299P',
     content: [
       '+ SILVER 혜택',
@@ -33,8 +35,7 @@ export const POINT_SYSTEM = {
     ],
   },
   PLATINUM: {
-    image:
-      'https://s3-alpha-sig.figma.com/img/ca10/9860/53c5594e00742d992f4a8284255a17f9?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=gh9dwSpBsJN6DRUKqIY2XiW35NPkj~8f-TNZSeYvnlOeq0y5R9sM~7dQAbswtQrlBLyNlS1uFrq6u5dGYJQ14H0qmzbEjHYRGftQu8T5rsiG~wT863y9VnS-IHanNOJhsqTmCceruN-Hd9wEnufkuJcSTnJRbv96wyr~JYTIg0KP0F8uFPGf3-WZNC1TH3u6UQ5fVlkSPBN4QF0FBmmv1hlKgIM-kgKrPoJcLY9zQfR6oqXv9Nbh9kGVl~bJ~c0d18-~Xyz2c1wczOWuxCk2n16oV96-tDxYfdqglmAj83Ko9Gi7yak19yfdG-7agnxB77T6usC-~nqfjfYgJIrnFA__',
+    image: PLATINUM_IMG,
     desc: 'VIP 전용',
     content: [
       '+ GOLD 혜택',

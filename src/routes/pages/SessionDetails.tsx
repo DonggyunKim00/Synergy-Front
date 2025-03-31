@@ -6,20 +6,41 @@ import { useQrVerifyCheck } from '@hooks/useQrVerifyCheck';
 import { styled, useTheme } from '@mui/material';
 import { useSessionDetail } from '@stores/server/session';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 
 const SessionDetails = () => {
   const { palette } = useTheme();
-  const navigate = useNavigate();
   const { id } = useParams();
-  const {
-    data: { data },
-  } = useSessionDetail(Number(id));
+  const { pathname } = useLocation();
+  const [searchParams, _] = useSearchParams();
+  const navigate = useNavigate();
 
   const [qrSuccess, setQrSuccess] = useState(false);
   const [qnaSuccess, setQnaSuccess] = useState(false);
 
-  useQrVerifyCheck({ onQrSuccess: () => setQrSuccess(true) });
+  const {
+    data: { data },
+  } = useSessionDetail(
+    Number(id),
+    `${pathname}?qrCode=${searchParams.get('qrCode')}`,
+  );
+
+  useQrVerifyCheck({
+    isAlreadyVerifyed: data.isQRVerify,
+    onQrSuccess: () => {
+      navigate(`/session/${id}`);
+      setQrSuccess(true);
+    },
+  });
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <>
@@ -42,7 +63,11 @@ const SessionDetails = () => {
         />
 
         {/* Q&A */}
-        <QnaSection qnaData={data.questionResDto} />
+        <QnaSection
+          isQRVerify={data.isQRVerify}
+          qnaData={data.questionResDto}
+          onSuccess={() => setQnaSuccess(true)}
+        />
       </Container>
 
       {qnaSuccess && (

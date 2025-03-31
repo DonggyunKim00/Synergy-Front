@@ -58,7 +58,7 @@ const Information = ({
           {membershipLevel !== 'DEFAULT' && (
             <img
               src={POINT_SYSTEM[membershipLevel].image}
-              width={26}
+              width={32}
               height={30}
               alt={`${membershipLevel} 등급 이미지`}
               css={css`

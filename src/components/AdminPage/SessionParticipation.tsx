@@ -4,21 +4,31 @@ import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from './Popup/AddSession';
 import { useConferenceStore } from '@stores/client/useConferenceStore';
-import { useSessionStore } from '@stores/client/useSessionStore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
 import ConferenceForm from './Popup/ConferenceForm';
 import PreviewChart from './PreviewChart';
+import { useDashboardSessions } from '@stores/server/dashboard';
+
+export type TodaySessionItem = {
+  title: string;
+  currentDate: string;
+  currentAttendee: number;
+  maximumAttendee: number;
+};
 
 const SessionParticipation = () => {
-  const { palette, typography, radius } = useTheme();
+  const { palette, typo, radius } = useTheme();
+  const navigate = useNavigate();
   const isConferenceRegistered = useConferenceStore(
     (state) => state.isConferenceRegistered,
   );
-  const { isSessionRegistered, hasAggregationData } = useSessionStore();
+  const {
+    data: { data },
+  } = useDashboardSessions();
+
   const [showAddSession, setShowAddSession] = useState(false);
   const [showAddConference, setShowAddConference] = useState(false);
-  const navigate = useNavigate();
 
   const handleAddIconClick = () => {
     if (isConferenceRegistered) {
@@ -37,6 +47,7 @@ const SessionParticipation = () => {
   };
   const handleConferenceSubmit = (data: any) => {
     console.log('컨퍼런스 등록 완료:', data);
+    useConferenceStore.getState().setConferenceRegistered(1);
     setShowAddConference(false);
   };
 
@@ -53,7 +64,7 @@ const SessionParticipation = () => {
           fontWeight="bold"
           css={css`
             color: ${palette.text.primary};
-            font-family: ${typography.fontFamily};
+            ${typo.title.m}
           `}
         >
           세션 참여 현황
@@ -70,9 +81,14 @@ const SessionParticipation = () => {
       {!isConferenceRegistered ? (
         <Paper
           css={css`
-            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 280px;
             color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
+            border-radius: ${radius.xl};
             background-color: ${palette.background.secondary};
             padding: 50px;
             border: ${palette.divider_custom.primary};
@@ -92,12 +108,18 @@ const SessionParticipation = () => {
             컨퍼런스 등록 후 확인 가능합니다.
           </Typography>
         </Paper>
-      ) : !isSessionRegistered ? (
+      ) : !data.length ? (
         <Paper
           css={css`
-            text-align: center;
-            color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 280px;
+            color: ${palette.text.primary};
+            border-radius: ${radius.xl};
             background-color: ${palette.background.secondary};
             padding: 50px;
             border: ${palette.divider_custom.primary};
@@ -107,31 +129,18 @@ const SessionParticipation = () => {
         >
           <AddIcon
             css={css`
-              font-size: 40px;
-              color: ${palette.text.secondary};
+              font-size: 70px;
               margin-bottom: 16px;
             `}
+            sx={{
+              color: palette.icon.primary,
+            }}
           />
           <Typography variant="body2">등록된 세션이 없습니다.</Typography>
           <Typography variant="body2">세션 등록 후 확인 가능합니다.</Typography>
         </Paper>
-      ) : !hasAggregationData ? (
-        <Paper
-          css={css`
-            text-align: center;
-            color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
-            background-color: ${palette.background.secondary};
-            padding: 50px;
-            border: ${palette.divider_custom.primary};
-          `}
-        >
-          <Typography variant="body2" mb={1}>
-            집계된 정보가 없습니다.
-          </Typography>
-        </Paper>
       ) : (
-        <PreviewChart />
+        <PreviewChart data={data} />
       )}
 
       {showAddSession && (

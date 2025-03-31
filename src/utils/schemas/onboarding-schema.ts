@@ -59,9 +59,9 @@ export const MoreInfoSchema = z.object({
         '사진은 jpg, jpeg, png 형식만 등록 가능합니다.',
       ),
     others_experience: z.string().optional(),
-    company: z.string().optional(),
-    culture: z.string().optional(),
-    purpose: z.string().optional(),
+    company: z.array(z.string()).optional(),
+    culture: z.array(z.string()).optional(),
+    purpose: z.array(z.string()).optional(),
   }),
 });
 

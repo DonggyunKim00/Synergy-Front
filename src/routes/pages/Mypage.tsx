@@ -74,7 +74,11 @@ const Mypage = () => {
         open={modalOpen === 'my-point'}
         onClose={() => setModalOpen(null)}
       >
-        <MyPoint data={myPoints.data} />
+        <MyPoint
+          data={myPoints.data}
+          totalPoints={myData.data.totalPoints}
+          membershipLevel={myData.data.membershipLevel}
+        />
       </AnimatedModal>
 
       <AnimatedModal

@@ -1,6 +1,12 @@
 import { Box, css, Paper, Typography, useTheme } from '@mui/material';
+import { TodaySessionItem } from './SessionParticipation';
+import dayjs from 'dayjs';
+interface PreviewChartProps {
+  data: TodaySessionItem[];
+  isBooth?: boolean;
+}
 
-const PreviewChart = () => {
+const PreviewChart = ({ data, isBooth }: PreviewChartProps) => {
   const { palette, typo, radius } = useTheme();
 
   const styles = {
@@ -40,37 +46,23 @@ const PreviewChart = () => {
         >
           <div css={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant="body1" css={styles.date}>
-              09/15
+              {dayjs(new Date()).format('MM/DD')}
             </Typography>
             <Typography variant="body2" css={styles.now}>
-              18:20 18시 기준
+              {dayjs(new Date()).format('HH:mm')} 기준
             </Typography>
           </div>
           <div css={styles.list}>
-            <ChartColumn
-              text="세션 1-1"
-              title="최신 기술 동향"
-              max={250}
-              current={200}
-            />
-            <ChartColumn
-              text="세션 1-2"
-              title="AI 기반 커뮤니케이션 도구의 발전"
-              max={250}
-              current={180}
-            />
-            <ChartColumn
-              text="세션 2-1"
-              title="디지털 시대의 리더십과 팀 빌딩"
-              max={250}
-              current={150}
-            />
-            <ChartColumn
-              text="세션 2-2"
-              title="원격 근무 환경에서의 생산성 향상 전략"
-              max={250}
-              current={120}
-            />
+            {data.map((item, index) => (
+              <ChartColumn
+                key={index}
+                text={isBooth ? `상위 부스 ${index + 1}` : `세션 ${index + 1}`}
+                title={item.title}
+                max={item.maximumAttendee}
+                current={item.currentAttendee}
+                isBooth={isBooth}
+              />
+            ))}
           </div>
         </div>
       </Box>
@@ -85,13 +77,17 @@ interface ChartColumnProps {
   current: number;
   text: string;
   title: string;
+  isBooth?: boolean;
 }
 const ChartColumn = (props: ChartColumnProps) => {
   const { palette, typo } = useTheme();
   const percentage = Math.ceil((props.current / props.max) * 100);
+  const widthPercentage =
+    Math.ceil(((props.current / props.max) * 100) / 5) * 5 + '%';
 
   const styles = {
     container: css`
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -99,13 +95,18 @@ const ChartColumn = (props: ChartColumnProps) => {
     graph: css`
       display: flex;
       justify-content: end;
-      width: ${percentage}%;
+      width: ${widthPercentage};
       background-color: ${palette.graph.default};
       ${typo.sub.s}
       color: ${palette.text.primary};
       padding: 4px;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
+    `,
+    none_graph: css`
+      background-color: ${palette.graph.default};
+      width: 1px;
+      height: 27px;
     `,
     textlist: css`
       display: flex;
@@ -118,14 +119,28 @@ const ChartColumn = (props: ChartColumnProps) => {
     subText: css`
       ${typo.sub.s}
     `,
+    companyText: css`
+      ${typo.body.m};
+      font-weight: bold;
+      color: ${palette.text.primary};
+    `,
   };
   return (
     <Box css={styles.container}>
-      <div css={styles.graph}>{percentage}%</div>
+      {percentage ? (
+        <div css={styles.graph}>{percentage}%</div>
+      ) : (
+        <div css={styles.none_graph} />
+      )}
+
       <div css={styles.textlist}>
         <span css={styles.bodyText}>{props.text}</span>
         <span css={styles.subText}>{props.title}</span>
-        <span css={styles.bodyText}>{`${props.current}/${props.max}`}</span>
+        {props.isBooth ? (
+          <></>
+        ) : (
+          <span css={styles.bodyText}>{`${props.current}/${props.max}`}</span>
+        )}
       </div>
     </Box>
   );

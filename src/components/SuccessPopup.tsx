@@ -102,7 +102,7 @@ const SuccessPopup = ({ open, onClose, title, earnPoint }: Props) => {
           <b css={{ color: palette.text.primary }}>{earnPoint}P</b> 적립완료
         </span>
         <span css={styles.subText}>
-          총 포인트 <b css={styles.highlight}>{userProfile.totalPoint}P</b>
+          총 포인트 <b css={styles.highlight}>{userProfile.totalPoints}P</b>
         </span>
         <span css={styles.subText}>
           <b css={styles.highlight}>

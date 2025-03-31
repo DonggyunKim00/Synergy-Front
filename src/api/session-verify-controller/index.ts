@@ -2,10 +2,13 @@ import apiClient from '@utils/axios';
 import { AxiosError } from 'axios';
 
 // 세션 Q&A 제출
-export const postQna = async (sessionId: number) => {
+export const postQna = async (sessionId: number, content: string) => {
   try {
     const res = await apiClient.post(
-      `/api/v1/verify/${sessionId}/participation`,
+      `/api/v1/verify/session/${sessionId}/participation`,
+      {
+        content,
+      },
     );
     return res.data;
   } catch (err) {

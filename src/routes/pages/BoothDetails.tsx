@@ -3,19 +3,43 @@ import SuccessPopup from '@components/SuccessPopup';
 import { css, styled, Typography, useTheme } from '@mui/material';
 import { useBoothDetail } from '@stores/server/booth';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import DefaultImage from '@assets/default-booth-image.png';
+import { useQrVerifyCheck } from '@hooks/useQrVerifyCheck';
 
 const BoothDetails = () => {
   const { palette, typo } = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
-  const {
-    data: { data },
-  } = useBoothDetail(Number(id));
-  console.log(data);
+  const { pathname } = useLocation();
+  const [searchParams, _] = useSearchParams();
 
   const [qrSuccess, setQrSuccess] = useState(false);
+
+  const {
+    data: { data },
+  } = useBoothDetail(
+    Number(id),
+    `${pathname}?qrCode=${searchParams.get('qrCode')}`,
+  );
+
+  useQrVerifyCheck({
+    isAlreadyVerifyed: data.isQRVerify,
+    onQrSuccess: () => {
+      navigate(`/booth/${id}`);
+      setQrSuccess(true);
+    },
+    isBooth: true,
+  });
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <>

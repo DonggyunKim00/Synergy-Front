@@ -2,11 +2,12 @@ import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { css, useTheme } from '@mui/material';
+import loginBackground from '@assets/background/login-bg.png';
 
 const RoleSelectionPage = (): React.JSX.Element => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const { palette, typography, shape, breakpoints } = theme;
+  const { palette, typo, shape, breakpoints } = theme;
 
   const handleRoleSelection = (roleName: string) => {
     if (roleName === '참가자') {
@@ -21,61 +22,60 @@ const RoleSelectionPage = (): React.JSX.Element => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    height: 812px;
+    min-width: 375px;
+    max-width: 600px;
+    padding: 16px;
+    background-image: url(${loginBackground});
   `;
 
   const titleStyle = css`
-    font-size: 48px;
-    font-weight: bold;
-    margin-bottom: ${theme.spacing(2)};
+    font-size: 74px;
+    font-weight: 700;
     text-align: center;
+    font-style: normal;
+    font-height: normal;
     color: ${palette.text.primary};
-    font-family: ${typography.fontFamily};
-    ${breakpoints.down('md')} {
-      font-size: 74px;
+    font-family: ${typo.fontFamily.Montserrat};
+    width: 100%;
+    height: Auto;
     }
   `;
 
   const subtitleStyle = css`
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: ${theme.spacing(4)};
+    font-size: 26px;
+    font-weight: 700;
     text-align: center;
-    color: ${palette.text.secondary};
-    font-family: ${typography.fontFamily};
-    ${breakpoints.down('md')} {
-      font-size: 26px;
-    }
+    font-style: noraml;
+    line-height: normal;
+    color: ${palette.text.primary};
+    font-family: ${typo.fontFamily.Montserrat};
+    margin-bottom: 30px;
   `;
 
   const buttonStyle = css`
-    width: 300px;
-    padding: 15px;
-    margin-bottom: ${theme.spacing(2)};
+    display: flex;
+    width: 100%;
+    height: 54px;
+    padding: 12px;
     font-size: 16px;
     font-weight: bold;
+    font-family: ${typo.fontFamily.Pretendard};
     border:none;
-    background-color: ${palette.background.quaternary};
+    border-radius: 12px;
+    background: var(--opacity-opa100, rgba(67, 67, 67, 0.50));
     color: ${palette.text.primary};
-    border-radius: ${shape.borderRadius}px;
-    &:hover {
-      background-color: ${palette.background.tertiary};
-    }
-    ${breakpoints.down('md')} {
-      width: 300px;
-      padding: 10px;
-      font-size: 14px;
-    }
+    margin-bottom: 14px;
   `;
 
   return (
     <Box css={containerStyle}>
-      <Typography variant="h1" css={titleStyle}>
+      <Typography css={titleStyle}>
         F'LINK
       </Typography>
 
-      <Typography variant="h2" css={subtitleStyle}>
-        FLINK2025
+      <Typography css={subtitleStyle}>
+        FLINK 2025
       </Typography>
 
       <Button

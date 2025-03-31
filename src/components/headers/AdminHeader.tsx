@@ -53,9 +53,12 @@ const Header = () => {
   return (
     <Box css={headerWrapperStyle}>
       <Box css={headerInnerStyle}>
-        <Typography variant="h6" css={logoStyle}>
-          Dashboard
-        </Typography>
+        <button onClick={() => navigate('/admin')}>
+          <Typography variant="h6" css={logoStyle}>
+            Dashboard
+          </Typography>
+        </button>
+
         <Button
           variant="contained"
           startIcon={<LogoutOutlinedIcon />}

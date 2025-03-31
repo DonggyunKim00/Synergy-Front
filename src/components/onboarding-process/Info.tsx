@@ -160,7 +160,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           label="직장 선택 요소"
           items={WORKPLACE_SELECTION_FACTOR}
           value={form.company || []}
-          onChange={(value) => handleChange('company', value.toString())}
+          onChange={(value) => handleChange('company', value)}
           placeholder="선택"
           multiple
         />
@@ -171,7 +171,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           label="선호하는 기업 문화"
           items={PREFERRED_CORPORATE_CULTURE}
           value={form.culture || []}
-          onChange={(value) => handleChange('culture', value.toString())}
+          onChange={(value) => handleChange('culture', value)}
           placeholder="선택"
           multiple
         />
@@ -182,7 +182,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           label="컨퍼런스 참여 목적"
           items={CONFERENCE_PARTICIPATION_PURPOSE}
           value={form.purpose || []}
-          onChange={(value) => handleChange('purpose', value.toString())}
+          onChange={(value) => handleChange('purpose', value)}
           placeholder="선택"
           multiple
         />

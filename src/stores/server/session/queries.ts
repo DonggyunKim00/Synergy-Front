@@ -10,9 +10,9 @@ export const sessionQueries = {
       queryFn: () => fetchSessionList(),
     }),
   detail: (sessionId: number) => [...sessionQueries.all(), 'detail', sessionId],
-  details: (sessionId: number) =>
+  details: (sessionId: number, redirectTo?: string) =>
     queryOptions({
       queryKey: [...sessionQueries.detail(sessionId)],
-      queryFn: () => fetchSessionDetail(sessionId),
+      queryFn: () => fetchSessionDetail(sessionId, redirectTo),
     }),
 };

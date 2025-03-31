@@ -5,7 +5,7 @@ type SelectBoxProps<T extends boolean> = {
   id: string;
   label: string;
   items: { code: number | string; name: string }[];
-  value: T extends true ? string[] : string; // 조건부 타입
+  value: T extends true ? string[] : string;
   onChange: (value: T extends true ? string[] : string) => void;
   disabled?: boolean;
   isRequired?: boolean;
@@ -13,7 +13,6 @@ type SelectBoxProps<T extends boolean> = {
   multiple?: T;
 };
 
-// 제네릭 <T extends boolean>을 사용하여 multiple에 따라 타입이 결정되도록 설정
 const SelectBox = <T extends boolean = false>({
   id,
   label,
@@ -44,7 +43,7 @@ const SelectBox = <T extends boolean = false>({
         multiple={multiple}
         labelId={`${id}-label`}
         id={id}
-        value={value}
+        value={multiple ? (Array.isArray(value) ? value : []) : value}
         renderValue={(selected) => {
           if (!selected || (Array.isArray(selected) && selected.length === 0)) {
             return placeholder;
@@ -62,11 +61,18 @@ const SelectBox = <T extends boolean = false>({
                 selected;
         }}
         onChange={(e) => {
-          const selectedValues = multiple
-            ? (e.target.value as any[]).map(String)
-            : String(e.target.value);
+          if (multiple) {
+            const selectedValues = (e.target.value as string[]).map(String);
 
-          onChange(selectedValues as any);
+            if (selectedValues.length > 3) {
+              alert('최대 3개까지 선택 가능합니다.');
+              return;
+            }
+
+            onChange(selectedValues as any);
+          } else {
+            onChange(String(e.target.value) as any);
+          }
         }}
         IconComponent={KeyboardArrowDownIcon}
         MenuProps={{
@@ -107,7 +113,7 @@ const SelectBox = <T extends boolean = false>({
         `}
       >
         {items.map((item) => (
-          <MenuItem key={item.code} value={item.code}>
+          <MenuItem key={item.code.toString()} value={item.code.toString()}>
             {item.name}
           </MenuItem>
         ))}

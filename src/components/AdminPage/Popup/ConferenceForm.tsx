@@ -11,6 +11,7 @@ import InputBox from '@components/InputBox';
 import SelectBox from '@components/SelectBox';
 import { conferenceSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
+import { createConference } from '@api/conference-controller/createConference';
 
 interface ConferenceFormProps {
   mode: 'add' | 'edit';
@@ -91,7 +92,7 @@ const ConferenceForm = ({
     { code: '산업', name: '산업' },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = conferenceSchema.safeParse({
       name,
       host,
@@ -111,8 +112,14 @@ const ConferenceForm = ({
       return;
     }
 
-    onSubmit(result.data);
-  };
+    try{
+      const response = await createConference(result.data);
+      onSubmit(result.data);
+      alert('컨퍼런스가 성공적으로 등록되었습니다.');
+    } catch(error){
+      setFormError('컨퍼런스 등록 중 오류가 발생했습니다.');
+    }
+};
 
   return (
     <Dialog

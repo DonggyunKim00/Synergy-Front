@@ -23,7 +23,7 @@ export const authQueries = {
 // 참가자 로그인
 export const loginRequestQuery = {
   queryKey: authQueries.login(),
-  queryFn: (data: { email: string; password: string }) => loginRequest(data),
+  queryFn: (data: { email: string; password: string; redirectTo?: string }) => loginRequest(data),
 };
 
 // 관리자 로그인
@@ -35,7 +35,7 @@ export const adminLoginRequestQuery = {
 // 회원가입
 export const signupRequestQuery = {
   queryKey: authQueries.signup(),
-  queryFn: (data: { name: string; email: string; password: string; phone: string }) => signupRequest(data),
+  queryFn: (data: { name: string; email: string; ticketCode: string; password: string; phone: string; }) => signupRequest(data),
 };
 
 // 회원가입 인증번호 요청
@@ -47,7 +47,7 @@ export const requestAuthCodeQuery = {
 // 회원가입 인증번호 확인
 export const confirmAuthCodeQuery = {
   queryKey: authQueries.confirmAuthCode(),
-  queryFn: (data: { email: string; code: string }) => confirmAuthCode(data),
+  queryFn: (data: { email: string; code: string; purpose: string; }) => confirmAuthCode(data),
 };
 
 // 비밀번호 재설정 요청

@@ -6,13 +6,33 @@ import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from '@components/AdminPage/Popup/AddSession';
+import { useDashboardSessionDetail } from '@stores/server/dashboard';
+import { useDeleteSession } from '@stores/server/session';
 
-const Session = () => {
+export interface SessionData {
+  sessionId: number;
+  title: string;
+  progressDate: string;
+  startDate: string;
+  endDate: string;
+  qrUrl: string;
+  dataset: any[];
+  speaker: string;
+}
+
+const DashboardSessionDetail = () => {
   const theme = useTheme();
   const { palette, spacing } = theme;
   const [openAddSession, setOpenAddSession] = useState(false);
   const [mode, setMode] = useState<'add' | 'edit'>('add');
   const [editData, setEditData] = useState<any | null>(null);
+  const {
+    data: { data: sessions },
+  } = useDashboardSessionDetail();
+
+  const { mutate: deleteMutate } = useDeleteSession();
+
+  console.log(sessions);
 
   const handleRegisterClick = () => {
     setMode('add');
@@ -23,8 +43,8 @@ const Session = () => {
   const handleCloseAddSession = () => {
     setOpenAddSession(false);
   };
-  
-  const handleDeleteSession = () => {
+
+  const handleDeleteSession = (sessionId: number) => {
     console.log('세션 삭제');
   };
 
@@ -38,6 +58,11 @@ const Session = () => {
     display: flex;
     flex-direction: column;
     padding: ${spacing(2)};
+    padding-top: 80px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `;
 
   const titleStyle = css`
@@ -63,12 +88,17 @@ const Session = () => {
     gap: ${spacing(2)}px;
   `;
 
-
   return (
     <Box css={pageStyle}>
       <Header />
 
-      <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        mb={2}
+      >
         <Typography variant="h4" css={titleStyle}>
           세션 참여 현황
         </Typography>
@@ -82,30 +112,29 @@ const Session = () => {
       </Box>
 
       {/* Session List */}
-      <Box css={sessionListStyle} sx={{gap: 2}}>
-      <SessionBox
-          date="9/15"
-          place="세션 1-1"
-          title="최신 기술 동향"
-          time="10:30-11:30"
-          speaker="김지혁"
-          chartData={[]}
-          onDelete={handleDeleteSession}
-          onEdit={() =>
-            handleEditSession({
-              title: '최신 기술 동향',
-              presenter: '김지혁',
-              presenterRole: '수석 연구원',
-              date: '9/15',
-              startTime: '10:30',
-              endTime: '11:30',
-              sessionDescription: 'AI 및 최신 트렌드 소개 세션',
-              imageFile: null,
-              maxCapacity: '200',
-            })
-          }
-        />
-      </Box>
+      {sessions.length === 0 ? (
+        <Typography
+          variant="body2"
+          css={css`
+            text-align: center;
+            margin-top: ${spacing(4)};
+            color: ${palette.text.secondary};
+          `}
+        >
+          등록된 세션이 없습니다.
+        </Typography>
+      ) : (
+        <Box css={sessionListStyle} sx={{ gap: spacing(2) }}>
+          {sessions.map((session: SessionData) => (
+            <SessionBox
+              key={session.sessionId}
+              {...session}
+              onDelete={() => deleteMutate(session.sessionId)}
+              onEdit={() => handleEditSession(session)}
+            />
+          ))}
+        </Box>
+      )}
 
       <AddSession
         open={openAddSession}
@@ -117,4 +146,4 @@ const Session = () => {
   );
 };
 
-export default Session;
+export default DashboardSessionDetail;

@@ -1,4 +1,11 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Typography,
+} from '@mui/material';
 import { css, useTheme } from '@mui/material/styles';
 
 interface ConfirmDeleteDialogProps {
@@ -9,18 +16,25 @@ interface ConfirmDeleteDialogProps {
   onConfirm: () => void;
 }
 
-const ConfirmDeleteDialog = ({ open, title, description, onClose, onConfirm }: ConfirmDeleteDialogProps) => {
+const ConfirmDeleteDialog = ({
+  open,
+  title,
+  description,
+  onClose,
+  onConfirm,
+}: ConfirmDeleteDialogProps) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
 
   const titleStyle = css`
-    font-family: ${typo.fontFamily.Pretendard};
-    font-size: 22px;
-    font-weight: 700;
+    ${typo.title.s}
+    color: ${palette.text.primary};
     text-align: center;
+    padding-bottom: 6px;
   `;
 
   const descriptionStyle = css`
+    ${typo.sub.l}
     text-align: center;
     color: ${palette.text.secondary};
   `;
@@ -36,39 +50,35 @@ const ConfirmDeleteDialog = ({ open, title, description, onClose, onConfirm }: C
     height: 50px;
     width: 160px;
     flex: 1 0 0;
-  `;
-
-  const deleteButtonStyle = css`
-    ${buttonStyle}
-    background-color: ${palette.background.inverse};
-    color: ${palette.text.inverse};
-    border: none;
-  `;
-
-  const cancelButtonStyle = css`
-    ${buttonStyle}
     background-color: ${palette.background.quinary};
     color: ${palette.text.primary};
     border: none;
+    ${typo.sub.s}
   `;
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth
-    PaperProps={{
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="xs"
+      fullWidth
+      PaperProps={{
         sx: {
-          backgroundColor: palette.background.quaternary,
+          backgroundColor: palette.background.tertiary,
+          borderRadius: '18px',
+          padding: '24px',
         },
-    }}
+      }}
     >
       <DialogTitle css={titleStyle}>{title}</DialogTitle>
       <DialogContent>
         <Typography css={descriptionStyle}>{description}</Typography>
       </DialogContent>
       <DialogActions css={actionsStyle}>
-        <Button variant="contained" onClick={onConfirm} css={deleteButtonStyle}>
+        <Button variant="contained" onClick={onConfirm} css={buttonStyle}>
           삭제하기
         </Button>
-        <Button variant="contained" onClick={onClose} css={cancelButtonStyle}>
+        <Button variant="contained" onClick={onClose} css={buttonStyle}>
           취소하기
         </Button>
       </DialogActions>

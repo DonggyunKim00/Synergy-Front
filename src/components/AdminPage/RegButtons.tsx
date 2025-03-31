@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import ConferenceForm from './Popup/ConferenceForm';
 import { useConferenceStore } from '@stores/client/useConferenceStore';
+import { fetchSessionList } from '@api/session-controller';
 
 interface ConferenceRegistrationProps {
   onRegister?: () => void;
@@ -12,10 +13,30 @@ interface ConferenceRegistrationProps {
 
 const ConferenceRegistration = ({ onRegister = () => {} }: ConferenceRegistrationProps) => {
   const { palette, typography, radius } = useTheme();
-  const [isConferenceRegistered, setIsConferenceRegistered] = useState(false);
+  const {
+    isConferenceRegistered,
+    conferenceId,
+    setConferenceRegistered,
+    clearConference
+  } = useConferenceStore();
+
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<'add' | 'edit'>('add');
   const [conferenceData, setConferenceData] = useState<any>(null);
+
+  useEffect(() => {
+    const checkConferenceRegistration = async () => {
+      try {
+        // conferenceId=1로 세션 조회 시도
+        await fetchSessionList();
+        setConferenceRegistered(1);
+      } catch (error) {
+        clearConference(); 
+      }
+    };
+
+    checkConferenceRegistration();
+  }, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -27,7 +48,7 @@ const ConferenceRegistration = ({ onRegister = () => {} }: ConferenceRegistratio
   };
 
   const handleModify = () => {
-    if (isConferenceRegistered) {
+    if (isConferenceRegistered && conferenceId === 1) {
       const dummyData = {
         name: '샘플 컨퍼런스',
         host: '주최자',
@@ -50,8 +71,7 @@ const ConferenceRegistration = ({ onRegister = () => {} }: ConferenceRegistratio
 
   const handleModalSubmit = (data: any) => {
     console.log('등록 또는 수정 완료:', data);
-    useConferenceStore.getState().setConferenceRegistered(true);
-    setIsConferenceRegistered(true);
+    setConferenceRegistered(1);
     handleClose();
     onRegister();
   };

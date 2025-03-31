@@ -8,9 +8,11 @@ type PointLogType = {
 };
 interface Props {
   data: PointLogType[];
+  totalPoints: number;
+  membershipLevel: string;
 }
 
-const MyPoint = ({ data }: Props) => {
+const MyPoint = ({ data, totalPoints, membershipLevel }: Props) => {
   const { palette, typo } = useTheme();
   const styles = {
     container: css`
@@ -48,11 +50,13 @@ const MyPoint = ({ data }: Props) => {
         포인트 적립 내역
       </Typography>
       <Typography variant="h2" css={styles.sub_primary}>
-        총 포인트 250P
+        총 포인트 {totalPoints}P
       </Typography>
-      <Typography variant="h2" css={styles.sub_secondary}>
-        내 등급 BRONZE
-      </Typography>
+      {membershipLevel !== 'DEFAULT' && (
+        <Typography variant="h2" css={styles.sub_secondary}>
+          내 등급 {membershipLevel}
+        </Typography>
+      )}
 
       <div css={styles.content}>
         {data.map((item, idx) => (

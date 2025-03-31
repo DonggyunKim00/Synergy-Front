@@ -7,27 +7,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDeleteDialog from '../ConfirmDeleteDialog';
 import QRPopup from './Popup/QRPopup';
 import DetailChart from './DetailChart';
+import { SessionData } from '@routes/pages/DashboardSessionDetail';
+import { getTimeDifferenceText } from '@utils/time';
+import dayjs from 'dayjs';
 
 interface SessionBoxProps {
-  date: string;
-  place: string;
-  time: string;
-  title: string;
-  speaker: string;
-  chartData?: any[];
   onDelete: () => void;
   onEdit: () => void;
 }
 
 const SessionBox = ({
-  date,
-  place,
-  time,
+  sessionId,
+  endDate,
+  startDate,
   title,
   speaker,
+  progressDate,
+  qrUrl,
+  dataset,
   onDelete,
   onEdit,
-}: SessionBoxProps) => {
+}: SessionBoxProps & SessionData) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -78,6 +78,7 @@ const SessionBox = ({
           onClose={() => setQrPopupOpen(false)}
           qrCodeLabel={title}
           description={speaker}
+          qrUrl={qrUrl}
         />
 
         <Box css={iconContainerStyle}>
@@ -102,15 +103,17 @@ const SessionBox = ({
 
         {/* 정보 영역 */}
         <Typography css={infoStyle}>
-          {date} {place}
+          {dayjs(progressDate).format('MM/DD')} 세션 {sessionId}
         </Typography>
-        <Typography css={infoStyle}>{time}</Typography>
         <Typography css={infoStyle}>
-          {title} {speaker}
+          {getTimeDifferenceText(startDate, endDate)}
+        </Typography>
+        <Typography css={infoStyle}>
+          <strong css={{ ...typo.sub.s }}>{title}</strong> {speaker}
         </Typography>
 
         {/* 차트 데이터 영역 */}
-        <DetailChart />
+        <DetailChart dataset={dataset} />
       </Box>
     </>
   );

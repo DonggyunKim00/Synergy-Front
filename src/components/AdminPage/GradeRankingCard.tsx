@@ -1,65 +1,138 @@
 import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { useMembershipRanking } from '@stores/server/ranking';
+import LevelRankingList from './Popup/LevelRankingList';
+import { useState } from 'react';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import RankingModalOpenBtn from './RankingModalOpenBtn';
+import { useNavigate } from 'react-router-dom';
+import { translateLevel } from '@utils/ranking';
+
+export type UserRankDataType = {
+  userId: number;
+  attendeeName: string;
+  membershipLevel: string;
+  totalPoints: number;
+};
 
 const GradeRankingCard = () => {
-    const { palette, typography, radius } = useTheme();
-    return (
-        <Box
-            css={css`
+  const { palette, typo, radius } = useTheme();
+  const navigate = useNavigate();
+  const {
+    data: { data },
+  } = useMembershipRanking();
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  return (
+    <Box
+      css={css`
+        width: 100%;
+      `}
+    >
+      <Typography
+        variant="subtitle1"
+        css={css`
+          ${typo.title.m}
+          color: ${palette.text.primary};
+          margin-bottom: 8px;
+        `}
+      >
+        등급별 참가자 랭킹
+      </Typography>
+      <Paper
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        css={css`
+          position: relative;
+          background-color: ${palette.background.secondary};
+          border-radius: ${radius.xl};
+          padding: 24px;
+          text-align: center;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        `}
+      >
+        {data.content.length ? (
+          <>
+            <Box
+              css={css`
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                color: ${palette.text.primary};
                 width: 100%;
-                max-width: 300px; 
-                margin: 0 auto;
+                height: 100%;
+              `}
+            >
+              {data.content.slice(0, 8).map((item: UserRankDataType) => {
+                return (
+                  <div
+                    key={item.userId}
+                    css={css`
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      height: 20px;
+                    `}
+                  >
+                    <span css={{ width: '25px', marginRight: '20px' }}>
+                      {translateLevel(item.membershipLevel)}
+                    </span>
+                    <span css={{ width: '80px', textAlign: 'start' }}>
+                      {item.attendeeName}
+                    </span>
+                    <span>{item.totalPoints}P</span>
+                    <button
+                      css={css`
+                        position: relative;
+                        top: -2px;
+                        left: 10px;
+                      `}
+                      onClick={() => {
+                        navigate(`/my-info/${item.userId}`);
+                      }}
+                    >
+                      <ChevronRightIcon
+                        fontSize="small"
+                        sx={{
+                          color: palette.icon.primary,
+                        }}
+                      />
+                    </button>
+                  </div>
+                );
+              })}
+            </Box>
+            <RankingModalOpenBtn
+              visible={isHovered}
+              setModalOpen={() => setModalOpen(true)}
+            />
+          </>
+        ) : (
+          <Typography
+            variant="body2"
+            css={css`
+              ${typo.body.l}
+              color: ${palette.text.secondary};
             `}
-        >
-            <Typography
-                variant="subtitle1"
-                css={css`
-                    color: ${palette.text.primary};
-                    font-family: ${typography.fontFamily};
-                    font-size: 16px;
-                    font-weight: bold;
-                    margin-bottom: 8px;
-                    text-align: left;
-                `}
-            >
-                등급별 참가자 랭킹
-            </Typography>
-            <Paper
-                css={css`
-                    background-color: ${palette.background.secondary};
-                    border-radius: ${radius.sm}px;
-                    padding: 16px;
-                    text-align: center;
-                    width: 100%; 
-                    aspect-ratio: 1 / 1; 
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                `}
-            >
-                <AddIcon 
-                    css={css`
-                        font-size: 40px;
-                        color: ${palette.text.secondary};
-                        margin-bottom: 16px;
-                    `}
-                />
-                <Typography
-                    variant="body2"
-                    css={css`
-                        color: ${palette.text.secondary};
-                        font-family: ${typography.fontFamily};
-                        font-size: 14px;
-                        font-weight: 400;
-                    `}
-                >
-                    컨퍼런스 등록 후 확인 가능합니다.
-                </Typography>
-            </Paper>
-        </Box>
-    );
+          >
+            집계된 사용자가 없습니다.
+          </Typography>
+        )}
+      </Paper>
+
+      <LevelRankingList
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        data={data.content}
+      />
+    </Box>
+  );
 };
 
 export default GradeRankingCard;

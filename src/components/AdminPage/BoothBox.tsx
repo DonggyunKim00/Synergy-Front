@@ -6,18 +6,25 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDeleteDialog from '../ConfirmDeleteDialog';
 import QRPopup from './Popup/QRPopup';
+import DetailChart from './DetailChart';
+import { BoothData } from '@routes/pages/DashboardBoothDetail';
+import dayjs from 'dayjs';
 
 interface BoothBoxProps {
-  date: string;
-  place: string;
-  title: string;
-  category: string;
-  chartData?: any[];
   onDelete: () => void;
   onEdit: () => void;
 }
 
-const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxProps) => {
+const BoothBox = ({
+  progressDate,
+  boothLocation,
+  companyName,
+  companyType,
+  qrCode,
+  dataset,
+  onDelete,
+  onEdit,
+}: BoothBoxProps & BoothData) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -28,10 +35,11 @@ const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxPr
     display: flex;
     flex-direction: column;
     background-color: ${palette.background.quaternary};
-    padding: ${spacing(2)}px;
+    padding: 24px;
     border-radius: 18px;
     margin-bottom: ${spacing(2)}px;
     color: ${palette.text.primary};
+    overflow-x: auto;
   `;
 
   const infoStyle = css`
@@ -43,10 +51,10 @@ const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxPr
   const iconContainerStyle = css`
     color: ${palette.icon.primary};
     position: absolute;
-    top: 8px;           
-    right: 8px;        
+    top: 24px;
+    right: 24px;
     display: flex;
-    gap: 2px;   
+    gap: 2px;
   `;
 
   return (
@@ -62,29 +70,41 @@ const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxPr
         }}
       />
       <QRPopup
-          open={qrPopupOpen}
-          onClose={() => setQrPopupOpen(false)}
-          qrCodeLabel={title}
-          description={place}
-        />
+        open={qrPopupOpen}
+        onClose={() => setQrPopupOpen(false)}
+        qrCodeLabel={companyName}
+        description={companyType}
+        qrUrl={qrCode}
+      />
       <Box css={iconContainerStyle}>
-        <IconButton size="small" color="inherit" onClick={() => setQrPopupOpen(true)}>
+        <IconButton
+          size="small"
+          color="inherit"
+          onClick={() => setQrPopupOpen(true)}
+        >
           <QrCodeIcon fontSize="small" />
         </IconButton>
         <IconButton size="small" color="inherit" onClick={onEdit}>
           <EditIcon fontSize="small" />
         </IconButton>
-        <IconButton size="small" color="inherit" onClick={() => setDeleteDialogOpen(true)}>
+        <IconButton
+          size="small"
+          color="inherit"
+          onClick={() => setDeleteDialogOpen(true)}
+        >
           <DeleteIcon fontSize="small" />
         </IconButton>
       </Box>
-      
-      {/* 정보 영역 */}
-      <Typography css={infoStyle}>{date}  {place}</Typography>
-      <Typography css={infoStyle}>{title}  {category}</Typography>
 
-      {/* 차트 데이터 영역 */}
-      <Typography variant="body2"> !차트 데이터 표시 영역!</Typography>
+      {/* 정보 영역 */}
+      <Typography css={infoStyle}>
+        {dayjs(progressDate).format('MM/DD')} {boothLocation}
+      </Typography>
+      <Typography css={infoStyle}>
+        <strong css={{ ...typo.sub.s }}>{companyName}</strong> {companyType}
+      </Typography>
+
+      <DetailChart dataset={dataset} />
     </Box>
   );
 };

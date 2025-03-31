@@ -17,39 +17,43 @@ const AdminLogin = (): React.JSX.Element => {
   };
 
   const containerStyle = css`
-    width: 350px;
-    margin: 20px auto;
+    display: flex;
+    width: 100%;
+    min-width: 375px;
+    max-width: 600px;
+    padding: 16px;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
   `;
 
   const titleStyle = css`
     font-size: 74px;
-    font-weight: bold;
-    margin-bottom: ${spacing(1)};
+    font-weight: 700;
+    font-style: normal;
+    font-height: normal;
     color: ${palette.text.primary};
     font-family: ${typo.fontFamily.Montserrat};
   `;
 
   const subtitleStyle = css`
     font-size: 26px;
-    margin-bottom: ${spacing(3)};
     color: ${palette.text.primary};
     font-family: ${typo.fontFamily.Pretendard};
     font-weight: bold;
-  `;
-
-  const formStyle = css`
-    width: 100%;
+    margin-bottom: 30px;
   `;
 
   const textFieldStyle = css`
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    align-self: stretch;
+    margin-bottom: 30px;
     color: ${palette.text.primary};
     border-radius: 8px;
     background-color: ${palette.opacity.opa100};
-    fieldset{
-      border-color: ${palette.border.secondary};
-    }
   `;
 
   const buttonStyle = css`
@@ -81,7 +85,7 @@ const AdminLogin = (): React.JSX.Element => {
         관리자 로그인
       </Typography>
 
-      <form onSubmit={handleLogin} css={formStyle}>
+      <form onSubmit={handleLogin}>
         <Typography variant="body1" css={labelStyle}>
           관리자 ID
         </Typography>

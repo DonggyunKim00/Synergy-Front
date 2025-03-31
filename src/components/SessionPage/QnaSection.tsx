@@ -8,7 +8,15 @@ type QnaData = {
   content: string;
 };
 
-const QnaSection = ({ qnaData }: { qnaData: QnaData[] }) => {
+const QnaSection = ({
+  isQRVerify,
+  qnaData,
+  onSuccess,
+}: {
+  isQRVerify: boolean;
+  qnaData: QnaData[];
+  onSuccess: () => void;
+}) => {
   const [open, setOpen] = useState(false);
   const { palette, typo, radius } = useTheme();
 
@@ -65,24 +73,27 @@ const QnaSection = ({ qnaData }: { qnaData: QnaData[] }) => {
           )}
         </Box>
       </Box>
-      <Button
-        css={css`
-          width: 100%;
-          margin-top: 6px;
-          background-color: ${palette.background.quinary};
-          border: none;
-          padding: 18px 0px;
-          ${typo.sub.s}
-          color: ${palette.text.primary};
-        `}
-        onClick={() => setOpen(true)}
-      >
-        질문 작성하기
-      </Button>
+      {isQRVerify && (
+        <Button
+          css={css`
+            width: 100%;
+            margin-top: 6px;
+            background-color: ${palette.background.quinary};
+            border: none;
+            padding: 18px 0px;
+            ${typo.sub.s}
+            color: ${palette.text.primary};
+          `}
+          onClick={() => setOpen(true)}
+        >
+          질문 작성하기
+        </Button>
+      )}
 
       <QnaDialog
         open={open}
         onClose={() => setOpen(false)}
+        onSuccess={onSuccess}
         title="디지털 시대의 리더십과 팀 빌딩"
         speaker="이종현, FlowLink HR 팀 총괄에게 질문하기"
       />

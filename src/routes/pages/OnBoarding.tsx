@@ -19,10 +19,14 @@ import DefaultHeader from '@components/headers/DefaultHeader';
 import BackHeader from '@components/headers/BackHeader';
 import { useFormStore } from '@stores/client/useFormStore';
 import { useOnboardingPatch } from '@stores/server/attendee';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const OnBoarding = () => {
   const { palette } = useTheme();
+  const navigate = useNavigate();
+  const [searchParams, _] = useSearchParams();
+  const redirectURL = searchParams.get('redirectTo');
+
   const funnel = useFunnel<{
     interested: SelectInterested;
     work: SelectWork;
@@ -34,7 +38,6 @@ const OnBoarding = () => {
       context: {},
     },
   });
-  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   const handleSetError = (newError: string) => {
@@ -110,7 +113,8 @@ const OnBoarding = () => {
 
                 if (work.employeement_agree === 'no') {
                   initForm();
-                  navigate('/mypage');
+                  if (redirectURL) navigate(redirectURL);
+                  else navigate('/mypage');
                 } else {
                   history.push('info', (prev) => ({ ...prev, work }));
                 }
@@ -134,7 +138,9 @@ const OnBoarding = () => {
                 setForm('info', info);
                 detailMutation.mutate({ form });
                 initForm();
-                navigate('/mypage');
+
+                if (redirectURL) navigate(redirectURL);
+                else navigate('/mypage');
               }}
             />
           )}

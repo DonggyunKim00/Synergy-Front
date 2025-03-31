@@ -5,7 +5,10 @@ import { useEffect } from 'react';
 
 const MAX_PARTICIPANT = 250;
 
-const DetailChart = () => {
+interface Props {
+  dataset: any[];
+}
+const DetailChart = ({ dataset }: Props) => {
   const { palette, typo } = useTheme();
 
   useEffect(() => {
@@ -20,67 +23,95 @@ const DetailChart = () => {
       css={{
         width: '100%',
         overflowX: 'auto',
+        height: '230px',
       }}
     >
-      <BarChart
-        dataset={dataset}
-        css={css`
-          color: ${palette.text.primary};
-          .MuiChartsAxis-directionY .MuiChartsAxis-tickLabel {
-            transform: translateX(-5px);
-          }
-          .MuiChartsAxis-directionX .MuiChartsAxis-tickLabel {
-            transform: translateY(5px);
-          }
+      {dataset.length ? (
+        <BarChart
+          dataset={dataset}
+          css={css`
+            color: ${palette.text.primary};
+            .MuiChartsAxis-directionY .MuiChartsAxis-tickLabel {
+              transform: translateX(-5px);
+            }
 
-          .MuiBarElement-root {
-            fill: ${palette.graph.default} !important;
-          }
+            .MuiChartsAxis-directionX .MuiChartsAxis-tickLabel {
+              transform: translateY(5px);
+            }
 
-          .MuiBarElement-root[data-index]:hover {
-            fill: ${palette.graph.hovered} !important;
-          }
-        `}
-        xAxis={[
-          {
-            scaleType: 'band',
-            dataKey: 'name',
-            valueFormatter,
-            tickPlacement: 'middle',
-            tickLabelStyle: {
-              ...typo.body.s,
-              color: palette.text.primary,
+            .MuiBarElement-root {
+              fill: ${palette.graph.default} !important;
+            }
+
+            .MuiBarElement-root[data-index]:hover {
+              fill: ${palette.graph.hovered} !important;
+            }
+            .MuiChartsAxis-bottom {
+              position: relative;
+              z-index: 100;
+            }
+          `}
+          xAxis={[
+            {
+              scaleType: 'band',
+              dataKey: 'tech',
+              tickPlacement: 'middle',
+              valueFormatter: (value) => value.replace(/(.{6})/g, '$1\n'),
+              tickLabelStyle: {
+                ...typo.body.s,
+                color: palette.text.primary,
+              },
             },
-          },
-        ]}
-        yAxis={[
-          {
-            tickNumber: 5,
-            tickLabelStyle: {
-              ...typo.body.s,
-              color: palette.text.primary,
+          ]}
+          yAxis={[
+            {
+              min: 0,
+              max: Math.min(
+                250,
+                Math.ceil(
+                  Math.max(...dataset.map((d) => d.attendeeCount)) / 5,
+                ) * 5,
+              ),
+              tickNumber: 5,
+              valueFormatter: (value) => Math.floor(value).toString(),
+              tickLabelStyle: {
+                ...typo.body.s,
+                color: palette.text.primary,
+              },
             },
-          },
-        ]}
-        series={[
-          {
-            dataKey: 'value',
-            highlightScope: {
-              highlight: 'none',
+          ]}
+          series={[
+            {
+              dataKey: 'attendeeCount',
+              highlightScope: {
+                highlight: 'none',
+              },
             },
-          },
-        ]}
-        width={520}
-        height={200}
-        borderRadius={4}
-        tooltip={{ trigger: 'item' }}
-        slots={{
-          itemContent: (props) => (
-            <CustomItemTooltipContent {...props} dataset={dataset} />
-          ),
-        }}
-        margin={{ top: 30, left: 35, right: 10 }}
-      />
+          ]}
+          width={520}
+          height={230}
+          borderRadius={4}
+          tooltip={{ trigger: 'item' }}
+          slots={{
+            itemContent: (props) => (
+              <CustomItemTooltipContent {...props} dataset={dataset} />
+            ),
+          }}
+          margin={{ top: 30, left: 35, right: 10, bottom: 60 }}
+        />
+      ) : (
+        <div
+          css={css`
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          `}
+        >
+          집계된 정보가 없습니다.
+        </div>
+      )}
     </Box>
   );
 };
@@ -90,7 +121,7 @@ export default DetailChart;
 const CustomItemTooltipContent = ({ ...props }) => {
   const { palette, typo, radius } = useTheme();
   console.log(props);
-  const { name, value } = props.dataset[props.itemData.dataIndex];
+  const { tech, attendeeCount } = props.dataset[props.itemData.dataIndex];
 
   return (
     <Paper
@@ -114,49 +145,10 @@ const CustomItemTooltipContent = ({ ...props }) => {
           color: palette.text.primary,
         }}
       >
-        {name}
+        {tech}
       </p>
-      <p>참여: {value}명</p>
-      <p>비율: {Math.ceil((value / MAX_PARTICIPANT) * 100)}%</p>
+      <p>참여: {attendeeCount}명</p>
+      <p>비율: {Math.ceil((attendeeCount / MAX_PARTICIPANT) * 100)}%</p>
     </Paper>
   );
 };
-
-const dataset = [
-  {
-    name: '데이터 분석',
-    value: 205,
-  },
-  {
-    name: 'AI',
-    value: 50,
-  },
-  {
-    name: '디자인',
-    value: 47,
-  },
-  {
-    name: '클라우드',
-    value: 54,
-  },
-  {
-    name: 'DevOps',
-    value: 57,
-  },
-  {
-    name: '소프트웨어 개발',
-    value: 57,
-  },
-  {
-    name: '기획/운영',
-    value: 59,
-  },
-  {
-    name: '기타',
-    value: 103,
-  },
-];
-
-export function valueFormatter(value: string | null) {
-  return `${value?.split(' ').join('\n')}`;
-}

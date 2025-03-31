@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DefaultLayout from './layouts/Default';
-import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import AdminLayout from './layouts/Admin';
 import LoginPage from './pages/ParticipantLoginPage';
@@ -10,8 +9,8 @@ import SignupPage from './pages/SignupPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
-import SessionDetail from './pages/Session';
-import BoothDetail from './pages/Booth';
+import DashboardSessionDetail from './pages/DashboardSessionDetail';
+import DashboardBoothDetail from './pages/DashboardBoothDetail';
 import Mypage from './pages/Mypage';
 import SessionDetails from './pages/SessionDetails';
 import BoothPage from './pages/BoothPage';
@@ -86,11 +85,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin/session',
-        element: <SessionDetail />,
+        element: <DashboardSessionDetail />,
       },
       {
         path: '/admin/booth',
-        element: <BoothDetail />,
+        element: <DashboardBoothDetail />,
       },
     ],
   },
@@ -121,9 +120,9 @@ const router = createBrowserRouter([
       {
         path: 'main',
         element: <RecruiterMain />,
-      }
+      },
     ],
-  }
+  },
 ]);
 
 export default function Router() {

@@ -8,8 +8,12 @@ import { useAuthStore } from '@stores/client/useAuthStore';
 import {
   patchOnboardingDetails,
   patchOnboardingInfos,
+  patchProfileImage,
 } from '@api/attendee-controller';
-import { postQrVerify } from '@api/session-verify-controller';
+import { postQna, postQrVerify } from '@api/session-verify-controller';
+import { sessionQueries } from '../session/queries';
+import { boothQueries } from '../booth/queries';
+import { postQrBoothVerify } from '@api/booth-verify-controller';
 
 export const useAttendeeProfile = () => {
   const { identifier } = useAuthStore.getState().user;
@@ -55,25 +59,81 @@ export const useOnboardingPatch = () => {
   return { basicMutation, detailMutation };
 };
 
-export const useSessionVerify = () => {
+export const useSessionVerify = (sessionId: number) => {
   const queryClient = useQueryClient();
   const { identifier } = useAuthStore.getState().user;
 
   const qrMutation = useMutation({
-    mutationFn: ({
-      sessionId,
-      qrCode,
-    }: {
-      sessionId: number;
-      qrCode: string;
-    }) => postQrVerify(sessionId, qrCode),
-    onSuccess: (data) => {
-      console.log('success:', data);
+    mutationFn: ({ qrCode }: { qrCode: string }) =>
+      postQrVerify(sessionId, qrCode),
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: sessionQueries.detail(sessionId),
       });
     },
   });
 
   return { qrMutation };
+};
+
+export const useSessionQna = (sessionId: number) => {
+  const queryClient = useQueryClient();
+  const { identifier } = useAuthStore.getState().user;
+
+  const qnaMutation = useMutation({
+    mutationFn: ({ content }: { content: string }) =>
+      postQna(sessionId, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: sessionQueries.detail(sessionId),
+      });
+    },
+  });
+
+  return { qnaMutation };
+};
+
+export const useBoothVerify = (boothId: number) => {
+  const queryClient = useQueryClient();
+  const { identifier } = useAuthStore.getState().user;
+
+  const qrMutation = useMutation({
+    mutationFn: ({ qrCode }: { qrCode: string }) =>
+      postQrBoothVerify(boothId, qrCode),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: boothQueries.detail(boothId),
+      });
+    },
+  });
+
+  return { qrMutation };
+};
+
+export const useModifyProfileImage = () => {
+  const queryClient = useQueryClient();
+  const { identifier } = useAuthStore.getState().user;
+
+  return useMutation({
+    mutationFn: ({ profileImgFile }: { profileImgFile: File }) =>
+      patchProfileImage(profileImgFile),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+      alert('프로필 이미지가 정상적으로 변경되었습니다.');
+    },
+    onError: () => {
+      alert('프로필 이미지 변경에 실패하였습니다.');
+    },
+  });
 };

@@ -20,6 +20,7 @@ const AdminLayout = () => {
           min-height: 100vh;
           max-width: 600px;
           margin: 0 auto;
+          gap: 30px;
           padding: 100px 1rem 1rem;
           background-color: ${palette.background.primary};
         `}
@@ -30,12 +31,16 @@ const AdminLayout = () => {
         <Box
           css={css`
             display: flex;
-            justify-content: space-between;
-            gap: 1rem;
+            gap: 30px;
+            flex-wrap: wrap;
           `}
         >
-          <GradeRankingCard />
-          <PointRankingCard />
+          <Box css={{ flex: 1, minWidth: '250px' }}>
+            <GradeRankingCard />
+          </Box>
+          <Box css={{ flex: 1, minWidth: '250px' }}>
+            <PointRankingCard />
+          </Box>
         </Box>
         <ConferenceRegistration />
         <Outlet />

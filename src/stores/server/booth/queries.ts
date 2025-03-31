@@ -10,9 +10,9 @@ export const boothQueries = {
       queryFn: () => fetchBoothList(),
     }),
   detail: (boothId: number) => [...boothQueries.all(), 'detail', boothId],
-  details: (boothId: number) =>
+  details: (boothId: number, redirectTo?: string) =>
     queryOptions({
       queryKey: [...boothQueries.detail(boothId)],
-      queryFn: () => fetchBoothDetail(boothId),
+      queryFn: () => fetchBoothDetail(boothId, redirectTo),
     }),
 };

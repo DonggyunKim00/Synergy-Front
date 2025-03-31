@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { css, useTheme } from '@mui/material';
 import { useLoginMutation } from '@stores/server/auth';
 
@@ -12,18 +12,16 @@ const ParticipantLogin = (): React.JSX.Element => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const redirectTo = searchParams.get('redirectTo') || '';
 
   const loginMutation = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    loginMutation.mutate({ email, password });
-  };
-
-  const handleKakaoLogin = () => {
-    console.log('카카오 로그인 시도');
-  };
+    loginMutation.mutate({ email, password, redirectTo });
+  }; 
 
   const handleSignupRedirect = () => {
     navigate('/signup');
@@ -144,17 +142,6 @@ const ParticipantLogin = (): React.JSX.Element => {
           로그인
         </Button>
       </form>
-      <Box sx={{ height: '10px' }} />
-      <Button
-        variant="contained"
-        onClick={handleKakaoLogin}
-        fullWidth
-        css={css`
-          ${buttonStyle}
-        `}
-      >
-        카카오 로그인
-      </Button>
       <Box sx={{ textAlign: 'center', mt: '10px' }}>
         <Typography variant="body2" css={helperTextStyle}>
           처음이신가요?{' '}
