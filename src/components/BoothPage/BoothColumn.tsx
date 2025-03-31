@@ -7,8 +7,8 @@ const BoothColumn = ({
   id,
   companyName,
   companyType,
-  boothLocation,
-  boothNumber,
+  detailLocation,
+  location,
   image,
 }: BoothContent) => {
   const { palette, typo } = useTheme();
@@ -36,7 +36,7 @@ const BoothColumn = ({
         `}
       >
         <span>{companyName}</span>
-        <span>{boothLocation}</span>
+        <span>{location}</span>
       </div>
       <div
         css={css`
@@ -46,7 +46,7 @@ const BoothColumn = ({
         `}
       >
         <span>{companyType}</span>
-        <span>{boothNumber}</span>
+        <span>{detailLocation}</span>
       </div>
     </div>
   );

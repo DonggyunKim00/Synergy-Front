@@ -7,8 +7,8 @@ export type BoothContent = {
   id: number;
   companyName: string;
   companyType: string;
-  boothLocation: string;
-  boothNumber: string;
+  location: string;
+  detailLocation: string;
   image: string;
 };
 
