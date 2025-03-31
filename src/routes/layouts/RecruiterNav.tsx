@@ -8,7 +8,8 @@ const RecruiterNavLayout = () => {
   const location = useLocation();
 
   const hideHeader = location.pathname.includes('/recruiter/mypage') || location.pathname.includes('/recruiter/main');
-
+  const hideNavigation = location.pathname.includes('/recruiter/main');
+  
   return (
     <div
       css={css`
@@ -36,7 +37,7 @@ const RecruiterNavLayout = () => {
         <Outlet />
       </div>
       <ScrollRestoration />
-      <RecuiterNavigation />
+      {!hideNavigation && <RecuiterNavigation />}
     </div>
   );
 };

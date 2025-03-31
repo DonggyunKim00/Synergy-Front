@@ -8,7 +8,7 @@ const RecruiterMain = () => {
   const { data } = useRecruiterAttendees({});
 
   const likedAttendees = data.data.list.filter((attendee: any) => attendee.liked);
-  
+
   return (
     <>
       <BackHeader
@@ -17,7 +17,8 @@ const RecruiterMain = () => {
       />
       <Box
         css={css`
-          padding: 0 10px;
+          margin-top: 26px;
+          padding: 0 16px;
           background-color: ${palette.background.primary};
         `}
       >
@@ -31,7 +32,7 @@ const RecruiterMain = () => {
             color: ${palette.text.primary};
           `}
         >
-          내가 저장한 인재
+          내가 저장한 인재 ({likedAttendees.length})
         </Typography>
 
         <Box

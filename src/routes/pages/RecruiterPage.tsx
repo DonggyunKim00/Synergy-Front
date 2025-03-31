@@ -122,7 +122,7 @@ const RecruiterPage = () => {
           display: flex;
           flex-wrap: wrap;
           gap: 16px;
-          padding: 0 10px;
+          padding: 0 16px 10px;
           overflow-y: auto;
         }
         `}

@@ -43,10 +43,3 @@ export const adminLoginRequest = async (data: { adminAuthCode: string }) => {
   const response = await apiClient.post('/api/v1/auth/admin/login', data);
   return response.data.data;
 };
-
-export const logoutRequest = async () => {
-  const response = await apiClient.post('/api/v1/auth/logout', {}, {
-    withCredentials: true,
-  });
-  return response.data;
-};
