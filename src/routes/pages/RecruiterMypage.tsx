@@ -71,21 +71,39 @@ const RecruiterMypage = () => {
           <Typography
             css={css`
               color: ${palette.text.primary};
-              font-size: 24px;
-              font-weight: 700;
+              ${typo.title.m}
               margin-bottom: 4px;
             `}
           >
             {profileData?.recruiterName} 님, 반갑습니다.
           </Typography>
-          <Typography
+          <Box
             css={css`
-              font-size: 14px;
-              color: ${palette.text.secondary};
+              display: flex;
+              gap: 4px;
+              justify-content: center;
+              align-items: center;
             `}
           >
-            {profileData?.company} {profileData?.responsibility}
-          </Typography>
+            <Typography
+              css={css`
+                ${typo.sub.s}
+                color: ${palette.text.primary};
+                ${typo.fontFamily.Pretendard}
+              `}
+            >
+              {profileData?.company}
+            </Typography>
+            <Typography
+              css={css`
+                ${typo.fontFamily.Pretendard}
+                ${typo.sub.s}
+                color: ${palette.text.secondary};
+              `}
+            >
+              {profileData?.responsibility}
+            </Typography>
+          </Box>
         </Box>
         <Box
           css={css`
@@ -102,15 +120,14 @@ const RecruiterMypage = () => {
         >
           <LogoutOutlinedIcon 
             css={css`
-              width: 16px;
-              height: 16px;
+              width: 18px;
+              height: 18px;
               color: ${palette.icon.tertiary}
               `}
             />
           <Typography
             css={css`
-              font-size: 14px;
-              font-weight: 500;
+              ${typo.sub.s}
               color: ${palette.text.primary};
             `}
           >
@@ -130,14 +147,13 @@ const RecruiterMypage = () => {
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 5px;
             padding: 20px;
           `}
         >
           <Typography
             css={css`
-              font-size: 16px;
-              font-weight: 700;
+              ${typo.sub.s}
               color: ${palette.text.primary};
               font-family: ${typo.fontFamily.Pretendard};
             `}
@@ -153,6 +169,14 @@ const RecruiterMypage = () => {
             onClick={() => navigate('/recruiter/main')}
           />
         </Box>
+        <Box
+          css={css`
+            width: 100%;
+            height: 1px;
+            background-color: ${palette.border.primary};
+            margin-bottom: 16px;
+          `}
+        />
       </Box>
       <Box
         css={css`

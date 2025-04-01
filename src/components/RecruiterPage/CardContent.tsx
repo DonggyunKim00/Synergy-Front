@@ -4,7 +4,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRecruiterAttendees, useLikeAttendee, useUnlikeAttendee } from '@stores/server/recruiter';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { recruiterQueries } from '@stores/server/recruiter/queries';
 import { useLocation } from 'react-router-dom';
 
 interface CardContentProps {
@@ -30,11 +29,13 @@ const CardContent = ({ filters }: CardContentProps) => {
   });
 
   const location = useLocation();
-  const { palette } = useTheme();
   const likeMutation = useLikeAttendee();
   const unlikeMutation = useUnlikeAttendee();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const theme = useTheme();
+  const { palette, typo, radius } = theme;
 
   const truncateText = (text: string, length: number) => {
     if (text.length > length) {
@@ -63,7 +64,7 @@ const CardContent = ({ filters }: CardContentProps) => {
     navigate(`/my-info/${attendeeId}`);
   };
 
-  const isMypage = location.pathname === '/recruiter/mypage';
+  const isList = location.pathname === '/recruiter/list';
 
   return (
     <Box
@@ -75,7 +76,7 @@ const CardContent = ({ filters }: CardContentProps) => {
       `}
     >
       {data?.data?.list
-        ?.filter((attendee: any) => !isMypage || attendee.liked)
+        ?.filter((attendee: any) => isList || attendee.liked)
         .map((attendee: any) => (
           <Box
             key={attendee.attendeeId}
@@ -84,7 +85,7 @@ const CardContent = ({ filters }: CardContentProps) => {
               display: flex;
               min-width: 166px;
               max-width: 288px;
-              border-radius: 18px;
+              border-radius: ${radius.xl};
               padding: 24px;
               flex-direction: column;
               align-items: flex-start;
@@ -114,8 +115,7 @@ const CardContent = ({ filters }: CardContentProps) => {
 
             <Typography
               css={css`
-                font-size: 16px;
-                font-weight: 700;
+                ${typo.title.s}
                 color: ${palette.text.primary};
                 margin-bottom: 4px;
               `}
@@ -124,8 +124,9 @@ const CardContent = ({ filters }: CardContentProps) => {
             </Typography>
             <Typography
               css={css`
+                font-family: ${typo.fontFamily.Pretendard};
                 font-size: 14px;
-                font-weight: 500;
+                font-weight: 700;
                 color: ${palette.text.primary};
                 margin-bottom: 4px;
               `}
@@ -134,10 +135,8 @@ const CardContent = ({ filters }: CardContentProps) => {
             </Typography>
             <Typography
               css={css`
-                font-size: 12px;
+                ${typo.body.s}
                 color: ${palette.text.primary};
-                margin-bottom: 12px;
-                line-height: 1.4;
               `}
             >
               {truncateText(attendee.techStacks, 15)}
@@ -153,7 +152,7 @@ const CardContent = ({ filters }: CardContentProps) => {
             >
               <Typography
                 css={css`
-                  font-size: 12px;
+                  ${typo.body.s}
                   color: ${palette.text.secondary};
                 `}
               >
@@ -170,9 +169,9 @@ const CardContent = ({ filters }: CardContentProps) => {
                 }}
               >
                 {attendee.liked ? (
-                  <FavoriteIcon sx={{ color: '#EB5050', fontSize: 18 }} />
+                  <FavoriteIcon sx={{ color: '#EB5050', fontSize: 24 }} />
                 ) : (
-                  <FavoriteBorderIcon sx={{ color: palette.text.secondary, fontSize: 18 }} />
+                  <FavoriteBorderIcon sx={{ color: palette.text.secondary, fontSize: 24 }} />
                 )}
               </IconButton>
             </Box>
