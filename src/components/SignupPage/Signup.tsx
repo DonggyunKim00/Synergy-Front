@@ -130,6 +130,7 @@ const Signup = (): React.JSX.Element => {
         margin: 0 auto;
         padding: 16px;
         height: 100vh;
+        padding-bottom: 90px;
         overflow-y: auto;
         &::-webkit-scrollbar {
           display: none;
