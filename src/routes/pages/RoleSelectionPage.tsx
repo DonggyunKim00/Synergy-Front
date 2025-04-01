@@ -34,12 +34,10 @@ const RoleSelectionPage = (): React.JSX.Element => {
     font-weight: 700;
     text-align: center;
     font-style: normal;
-    font-height: normal;
     color: ${palette.text.primary};
     font-family: ${typo.fontFamily.Montserrat};
     width: 100%;
     height: Auto;
-    }
   `;
 
   const subtitleStyle = css`
@@ -58,25 +56,19 @@ const RoleSelectionPage = (): React.JSX.Element => {
     width: 100%;
     height: 54px;
     padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    font-family: ${typo.fontFamily.Pretendard};
-    border:none;
-    border-radius: 12px;
-    background: var(--opacity-opa100, rgba(67, 67, 67, 0.50));
+    border: none;
+    background: ${palette.opacity.opa100};
     color: ${palette.text.primary};
     margin-bottom: 14px;
+    border-radius: 12px;
+    ${typo.sub.s}
   `;
 
   return (
     <Box css={containerStyle}>
-      <Typography css={titleStyle}>
-        F'LINK
-      </Typography>
+      <Typography css={titleStyle}>F'LINK</Typography>
 
-      <Typography css={subtitleStyle}>
-        FLINK 2025
-      </Typography>
+      <Typography css={subtitleStyle}>FLINK 2025</Typography>
 
       <Button
         variant="contained"

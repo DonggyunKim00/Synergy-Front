@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, TextField, Checkbox, Button, FormControlLabel } from '@mui/material';
+import {
+  Box,
+  Typography,
+  TextField,
+  Checkbox,
+  Button,
+  FormControlLabel,
+} from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorPopover from '@components/ErrorPopover';
-import { useAuthSignupMutation, useRequestAuthCodeMutation, useConfirmAuthCodeMutation } from '@stores/server/auth';
+import {
+  useAuthSignupMutation,
+  useRequestAuthCodeMutation,
+  useConfirmAuthCodeMutation,
+} from '@stores/server/auth';
 import { signupSchema } from '@utils/schemas/signup-schema';
+import InputBox from '@components/InputBox';
 
 const Signup = (): React.JSX.Element => {
   const theme = useTheme();
@@ -60,14 +72,15 @@ const Signup = (): React.JSX.Element => {
       agreeTerms,
     });
     if (!result.success) {
-      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      const firstError =
+        result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
       setFormError(firstError);
       return;
     }
-    signupMutation.mutate({ name, email, ticketCode,password, phone });
+    signupMutation.mutate({ name, email, ticketCode, password, phone });
   };
 
-  const handleRequestAuthCode = () => { 
+  const handleRequestAuthCode = () => {
     requestAuthCodeMutation.mutate(email, {
       onSuccess: () => {
         setTimeLeft(300);
@@ -75,7 +88,7 @@ const Signup = (): React.JSX.Element => {
     });
   };
 
-  const handleConfirmAuthCode = async() => { 
+  const handleConfirmAuthCode = async () => {
     try {
       const response = await confirmAuthCodeMutation.mutate({
         email,
@@ -88,26 +101,9 @@ const Signup = (): React.JSX.Element => {
     }
   };
 
-  const textFieldStyle = css`
-    color: ${palette.text.primary};
-    border-radius: 8px;
-    background-color: ${palette.opacity.opa100};
-    margin-bottom: 16px;
-  `;
-
-  const labelStyle = css`
-    margin-bottom: 8px;
-    color: ${palette.text.primary};
-    font-family: ${typo.fontFamily.Pretendard};
-    font-weight: 500;
-  `;
-
   const flexRowStyle = css`
     display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: var(--spacing-6, 6px);
-    align-self: stretch;
+    flex-direction: column;
   `;
 
   const buttonStyle = css`
@@ -118,7 +114,7 @@ const Signup = (): React.JSX.Element => {
     border: none;
     background-color: ${palette.background.quaternary};
     color: ${palette.text.primary};
-    border-radius: ${shape.borderRadius}px;
+    border-radius: 12px;
     &:hover {
       background-color: ${palette.background.tertiary};
     }
@@ -129,7 +125,6 @@ const Signup = (): React.JSX.Element => {
       css={css`
         display: flex;
         flex-direction: column;
-        align-items: center;
         width: 100%;
         max-width: 600px;
         margin: 0 auto;
@@ -167,87 +162,90 @@ const Signup = (): React.JSX.Element => {
         간편 회원가입
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit} css={{ width: '100%' }}>
-        <Typography variant="body1" css={labelStyle}>
-          성함
-        </Typography>
-        <TextField
-          fullWidth
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        css={{
+          width: '100%',
+        }}
+      >
+        <InputBox
+          id="name"
+          label="성함"
           placeholder="성함을 입력해주세요."
           value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          css={textFieldStyle}
+          onChange={setName}
+          bgColor={palette.opacity.opa100}
+          fullWidth
+          padding="16px"
+          margin="0px 0px 16px"
         />
 
-        <Typography variant="body1" css={labelStyle}>
-          이메일
-        </Typography>
-        <Box css={flexRowStyle}>
-          <TextField
+        <Box sx={{ display: 'flex', width: '100%', position: 'relative' }}>
+          <InputBox
+            id="email"
+            label="이메일"
             fullWidth
             placeholder="example@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            css={textFieldStyle}
-            InputProps={{
-              endAdornment: (
-                <Button
-                  onClick={handleRequestAuthCode}
-                  css={css`
-                    background-color: ${palette.background.quaternary};
-                    color: ${palette.text.primary};
-                    border: none;
-                    padding: 4px 10px;
-                    font-size: 12px;
-                    border-radius: 18px;
-                    white-space: nowrap;
-                    line-height: 1;
-                    height: 32px;
-                    margin-right: -8px;
-                  `}
-                >
-                  인증번호 요청
-                </Button>
-              ),
-            }}
+            onChange={setEmail}
+            type="email"
+            bgColor={palette.opacity.opa100}
+            padding="16px"
+            margin="0px 0px 16px"
           />
+          <Button
+            onClick={handleRequestAuthCode}
+            css={css`
+              position: absolute;
+              right: 16px;
+              top: 41px;
+              background-color: ${palette.background.quaternary};
+              color: ${palette.text.primary};
+              border: none;
+              padding: var(--spacing-4, 4px) var(--spacing-15, 15px);
+              font-size: 12px;
+              border-radius: 18px;
+              white-space: nowrap;
+            `}
+          >
+            인증번호 요청
+          </Button>
         </Box>
 
-        <Typography variant="body1" css={labelStyle}>
-          인증번호 입력
-        </Typography>
-        <Box css={flexRowStyle}>
-          <TextField
+        <Box sx={{ display: 'flex', width: '100%', position: 'relative' }}>
+          <InputBox
+            id="otp"
+            label="인증번호 입력"
             fullWidth
-            placeholder={timeLeft !== null ? formatTime(timeLeft) : '인증번호를 입력해주세요.'}
+            placeholder={
+              timeLeft !== null
+                ? formatTime(timeLeft)
+                : '인증번호를 입력해주세요.'
+            }
             value={authCode}
-            onChange={(e) => setAuthCode(e.target.value)}
-            required
-            css={textFieldStyle}
-            InputProps={{
-              endAdornment: (
-                <Button
-                  onClick={handleConfirmAuthCode}
-                  css={css`
-                    background-color: ${palette.background.quaternary};
-                    color: ${palette.text.primary};
-                    border: none;
-                    padding: 4px 10px;
-                    font-size: 12px;
-                    border-radius: 18px;
-                    white-space: nowrap;
-                    line-height: 1;
-                    height: 30px;
-                    margin-right: -8px;
-                  `}
-                >
-                  확인
-                </Button>
-              ),
-            }}
+            onChange={setAuthCode}
+            bgColor={palette.opacity.opa100}
+            padding="16px"
           />
+          <Button
+            onClick={handleConfirmAuthCode}
+            css={css`
+              position: absolute;
+              right: 16px;
+              top: 41px;
+              background-color: ${palette.background.quaternary};
+              color: ${palette.text.primary};
+              border: none;
+              padding: var(--spacing-4, 4px) var(--spacing-10, 10px);
+              font-size: 12px;
+              border-radius: 18px;
+              white-space: nowrap;
+              margin-right: -8px;
+            `}
+          >
+            확인
+          </Button>
         </Box>
 
         <Typography
@@ -262,29 +260,28 @@ const Signup = (): React.JSX.Element => {
           이메일로 발송된 인증번호를 입력해 주세요.
         </Typography>
 
-        <Typography variant="body1" css={labelStyle}>
-          F'LINK 티켓 코드 입력
-        </Typography>
-        <TextField
+        <InputBox
+          id="ticketCode"
+          label="F'LINK 티켓 코드 입력"
           fullWidth
           placeholder="티켓 코드를 입력해주세요."
           value={ticketCode}
-          onChange={(e) => setTicketCode(e.target.value)}
-          required
-          css={textFieldStyle}
+          onChange={setTicketCode}
+          bgColor={palette.opacity.opa100}
+          padding="16px"
+          margin="0px 0px 16px"
         />
 
-        <Typography variant="body1" css={labelStyle}>
-          비밀번호
-        </Typography>
-        <TextField
-          fullWidth
+        <InputBox
+          id="password"
+          label="비밀번호"
           type="password"
+          fullWidth
           placeholder="비밀번호를 입력해주세요."
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          css={textFieldStyle}
+          onChange={setPassword}
+          bgColor={palette.opacity.opa100}
+          padding="16px"
         />
         <Typography
           css={css`
@@ -298,16 +295,16 @@ const Signup = (): React.JSX.Element => {
           비밀번호는 영문자와 숫자를 조합하여 8~20자 이내로 설정해 주세요.
         </Typography>
 
-        <Typography variant="body1" css={labelStyle}>
-          휴대폰 번호
-        </Typography>
-        <TextField
+        <InputBox
+          id="phoneNumber"
+          label="휴대폰 번호"
           fullWidth
           placeholder="- 없이 숫자만 입력해주세요"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-          css={textFieldStyle}
+          onChange={setPhone}
+          bgColor={palette.opacity.opa100}
+          padding="16px"
+          margin="0px 0px 16px"
         />
 
         <Box css={flexRowStyle}>
@@ -318,11 +315,11 @@ const Signup = (): React.JSX.Element => {
                 onChange={() => setAgreePersonalInfo(!agreePersonalInfo)}
                 sx={{
                   color: palette.icon.primary,
-                  '& .MuiSvgIcon-root': { fontSize: '20px' },
+                  '& .MuiSvgIcon-root': { fontSize: 16 },
                   '&.Mui-checked': {
                     color: palette.icon.primary,
                   },
-                  '&:hover': { backgroundColor: 'transparent' },
+                  fontSize: '20px',
                 }}
                 icon={<CheckCircleOutlineIcon />}
                 checkedIcon={<CheckCircleIcon />}
@@ -330,10 +327,8 @@ const Signup = (): React.JSX.Element => {
             }
             label="개인정보 수집에 동의합니다."
             css={css`
+              ${typo.body.m}
               color: ${palette.text.secondary};
-              font-family: ${typo.fontFamily.Pretendard};
-              padding-left: ${spacing(1)};
-              padding-right: ${spacing(2)};
             `}
           />
           <FormControlLabel
@@ -343,11 +338,11 @@ const Signup = (): React.JSX.Element => {
                 onChange={() => setAgreeTerms(!agreeTerms)}
                 sx={{
                   color: palette.icon.primary,
-                  '& .MuiSvgIcon-root': { fontSize: '20px' },
+                  '& .MuiSvgIcon-root': { fontSize: 16 },
                   '&.Mui-checked': {
                     color: palette.icon.primary,
                   },
-                  '&:hover': { backgroundColor: 'transparent' },
+                  fontSize: '20px',
                 }}
                 icon={<CheckCircleOutlineIcon />}
                 checkedIcon={<CheckCircleIcon />}
@@ -355,10 +350,8 @@ const Signup = (): React.JSX.Element => {
             }
             label="이용 약관에 동의합니다."
             css={css`
+              ${typo.body.m}
               color: ${palette.text.secondary};
-              font-family: ${typo.fontFamily.Pretendard};
-              padding-left: ${spacing(1)};
-              padding-right: ${spacing(2)};
             `}
           />
         </Box>

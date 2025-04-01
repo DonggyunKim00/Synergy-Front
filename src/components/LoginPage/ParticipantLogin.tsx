@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  OutlinedInput,
+} from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -21,7 +27,7 @@ const ParticipantLogin = (): React.JSX.Element => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     loginMutation.mutate({ email, password, redirectTo });
-  }; 
+  };
 
   const handleSignupRedirect = () => {
     const queryString = redirectTo ? `?redirectTo=${redirectTo}` : '';
@@ -35,7 +41,6 @@ const ParticipantLogin = (): React.JSX.Element => {
   const containerStyle = css`
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
@@ -59,12 +64,25 @@ const ParticipantLogin = (): React.JSX.Element => {
   `;
 
   const textFieldStyle = css`
-    margin-bottom: 20px;
     color: ${palette.text.primary};
-    border-radius: 8px;
     background-color: ${palette.opacity.opa100};
-    fieldset{
-      border-color: ${palette.border.secondary};
+    border-radius: 12px;
+    width: 100%;
+    margin-bottom: 16px;
+    input {
+      padding: 16px 10px;
+      &::placeholder {
+        color: ${palette.text.tertiary};
+        opacity: 1;
+      }
+    }
+    fieldset {
+      border: 1px solid ${palette.border.secondary};
+      padding: 0;
+    }
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-width: 1px;
+      border-color: ${palette.border.focused};
     }
   `;
 
@@ -76,24 +94,23 @@ const ParticipantLogin = (): React.JSX.Element => {
     border: none;
     background-color: ${palette.background.quaternary};
     color: ${palette.text.primary};
-    border-radius: ${shape.borderRadius}px;
+    border-radius: 12px;
+    margin: 14px 0px 30px;
     &:hover {
       background-color: ${palette.background.tertiary};
     }
   `;
 
   const linkStyle = css`
+    ${typo.body.s}
     color: ${palette.text.primary};
-    font-family: ${typo.fontFamily.Pretendard};
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 700;
-
+    margin-left: 7px;
+    cursor: pointer;
   `;
 
   const helperTextStyle = css`
+    ${typo.body.s}
     color: ${palette.text.quaternary};
-    font-family: ${typo.fontFamily.Pretendard};
   `;
 
   const iconStyle = css`
@@ -103,7 +120,7 @@ const ParticipantLogin = (): React.JSX.Element => {
     height: 24px;
     justify-content: center;
     align-items: center;
-  `
+  `;
 
   return (
     <Box css={containerStyle}>
@@ -114,29 +131,22 @@ const ParticipantLogin = (): React.JSX.Element => {
         참가자 로그인
       </Typography>
       <form onSubmit={handleSubmit}>
-        <TextField
-          placeholder=" 이메일"
-          variant="outlined"
-          fullWidth
-          InputProps={{
-            startAdornment: <PersonIcon css={iconStyle} />,
-          }}
-          value={email}
+        <OutlinedInput
+          id={'email'}
+          placeholder={'이메일'}
+          type={'email'}
+          defaultValue={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
+          startAdornment={<PersonIcon css={iconStyle} />}
           css={textFieldStyle}
         />
-        <TextField
-          placeholder=" 비밀번호"
-          type="password"
-          variant="outlined"
-          fullWidth
-          InputProps={{
-            startAdornment: <LockIcon css={iconStyle} />,
-          }}
-          value={password}
+        <OutlinedInput
+          id={'password'}
+          placeholder={'비밀번호'}
+          type={'password'}
+          defaultValue={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
+          startAdornment={<LockIcon css={iconStyle} />}
           css={textFieldStyle}
         />
         <Button type="submit" variant="contained" fullWidth css={buttonStyle}>
@@ -145,7 +155,7 @@ const ParticipantLogin = (): React.JSX.Element => {
       </form>
       <Box sx={{ textAlign: 'center', mt: '10px' }}>
         <Typography variant="body2" css={helperTextStyle}>
-          처음이신가요?{' '}
+          처음이신가요?
           <Box component="span" onClick={handleSignupRedirect} css={linkStyle}>
             간편가입 하기
           </Box>
@@ -153,9 +163,12 @@ const ParticipantLogin = (): React.JSX.Element => {
       </Box>
       <Box sx={{ textAlign: 'center', mt: '10px' }}>
         <Typography variant="body2" css={helperTextStyle}>
-          비밀번호를 잊었어요.{' '}
-          {' '}
-          <Box component="span" onClick={handleFindPasswordRedirect} css={linkStyle}>
+          비밀번호를 잊었어요.
+          <Box
+            component="span"
+            onClick={handleFindPasswordRedirect}
+            css={linkStyle}
+          >
             비밀번호 찾기
           </Box>
         </Typography>

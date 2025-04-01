@@ -5,10 +5,11 @@ import {
   useRequestAuthCodeMutation,
   useConfirmAuthCodeMutation,
   useResetPasswordRequestMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
 } from '@stores/server/auth';
 import { signupSchema } from '@utils/schemas/signup-schema';
 import ErrorPopover from '@components/ErrorPopover';
+import InputBox from '@components/InputBox';
 
 const passwordSchema = signupSchema.shape.password;
 
@@ -76,7 +77,8 @@ const ResetPassword = (): React.JSX.Element => {
     e.preventDefault();
     const result = passwordSchema.safeParse(newPassword);
     if (!result.success) {
-      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      const firstError =
+        result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
       setFormError(firstError);
       return;
     }
@@ -90,11 +92,10 @@ const ResetPassword = (): React.JSX.Element => {
     padding: 16px;
     flex-direction: column;
     justify-content: flex-start;
-    text-align: center;
     height: 100vh;
     overflow-y: auto;
-    ::-webkit-scrollbar{
-      display: none;  
+    ::-webkit-scrollbar {
+      display: none;
     }
   `;
 
@@ -102,9 +103,9 @@ const ResetPassword = (): React.JSX.Element => {
     font-size: 74px;
     font-weight: 700;
     font-style: normal;
-    font-height: normal;
     color: ${palette.text.primary};
     font-family: ${typo.fontFamily.Montserrat};
+    text-align: center;
   `;
 
   const subtitleStyle = css`
@@ -118,37 +119,15 @@ const ResetPassword = (): React.JSX.Element => {
     margin-bottom: 30px;
   `;
 
-  const textFieldStyle = css`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    align-self: stretch;
-    margin-bottom: 16px;
-    color: ${palette.text.primary};
-    border-radius: 8px;
-    background-color: ${palette.opacity.opa100};
-    width: 100%
-  `;
-
   const buttonStyle = css`
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     font-size: 16px;
     font-weight: bold;
     border: none;
     background-color: ${palette.background.quaternary};
     color: ${palette.text.primary};
-    border-radius: ${shape.borderRadius}px;
-  `;
-
-  const labelStyle = css`
-    margin-bottom: 8px;
-    color: ${palette.text.primary};
-    font-family: ${typo.fontFamily.Pretendard};
-    font-weight: 500;
-    text-align: left;
-    font-size: 16px;
+    border-radius: ${shape.borderRadius};
   `;
 
   return (
@@ -163,100 +142,127 @@ const ResetPassword = (): React.JSX.Element => {
       {step === 1 ? (
         <form onSubmit={(e) => e.preventDefault()}>
           <Grid container sx={{ width: '100%' }}>
-            <Grid item xs={12}>
-              <Typography variant="body1" css={labelStyle}>
-                성함
-              </Typography>
-              <TextField
+            <Grid
+              item
+              xs={12}
+              css={css`
+                margin-bottom: 16px;
+              `}
+            >
+              <InputBox
+                id="name"
+                label="성함"
                 fullWidth
                 placeholder="성함을 입력하세요."
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                css={textFieldStyle}
+                onChange={setName}
+                bgColor={palette.opacity.opa100}
+                padding="16px"
               />
             </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant="body1" css={labelStyle}>
-                이메일
-              </Typography>
-              <Box sx={{ display: 'flex', width: '100%' }}>
-                <TextField
+            <Grid
+              item
+              xs={12}
+              css={css`
+                margin-bottom: 16px;
+              `}
+            >
+              <Box
+                sx={{ display: 'flex', width: '100%', position: 'relative' }}
+              >
+                <InputBox
+                  id="email"
+                  label="이메일"
                   fullWidth
-                  type="email"
                   placeholder="example@email.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  css={textFieldStyle}
-                  InputProps={{
-                    endAdornment: (
-                      <Button onClick={handleAuthCodeRequest}
-                        css={css`
-                          background-color: ${palette.background.quaternary};
-                          color: ${palette.text.primary};
-                          border: none;
-                          padding: var(--spacing-4, 4px) var(--spacing-15, 15px);
-                          font-size: 12px;
-                          border-radius: 18px;
-                          white-space: nowrap;
-                          margin-right: -8px;
-                        `}
-                      >
-                        인증번호 요청
-                      </Button>
-                    ),
-                  }}
+                  onChange={setEmail}
+                  type="email"
+                  bgColor={palette.opacity.opa100}
+                  padding="16px"
                 />
+                <Button
+                  onClick={handleAuthCodeRequest}
+                  css={css`
+                    position: absolute;
+                    right: 16px;
+                    top: 41px;
+                    background-color: ${palette.background.quaternary};
+                    color: ${palette.text.primary};
+                    border: none;
+                    padding: var(--spacing-4, 4px) var(--spacing-15, 15px);
+                    font-size: 12px;
+                    border-radius: 18px;
+                    white-space: nowrap;
+                  `}
+                >
+                  인증번호 요청
+                </Button>
               </Box>
             </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant="body1" css={labelStyle}>
-                인증번호 입력
-              </Typography>
-              <Box sx={{ display: 'flex', width: '100%' }}>
-                <TextField
+            <Grid
+              item
+              xs={12}
+              css={css`
+                margin-bottom: 16px;
+              `}
+            >
+              <Box
+                sx={{ display: 'flex', width: '100%', position: 'relative' }}
+              >
+                <InputBox
+                  id="otp"
+                  label="인증번호 입력"
                   fullWidth
-                  placeholder={timeLeft !== null ? formatTime(timeLeft) : '인증번호를 입력해주세요.'}
+                  placeholder={
+                    timeLeft !== null
+                      ? formatTime(timeLeft)
+                      : '인증번호를 입력해주세요.'
+                  }
                   value={authCode}
-                  onChange={(e) => setAuthCode(e.target.value)}
-                  required
-                  css={textFieldStyle}
-                  InputProps={{
-                    endAdornment: (
-                      <Button onClick={handleAuthCodeConfirm}
-                        css={css`
-                          background-color: ${palette.background.quaternary};
-                          color: ${palette.text.primary};
-                          border: none;
-                          padding: var(--spacing-4, 4px) var(--spacing-10, 10px);
-                          font-size: 12px;
-                          border-radius: 18px;
-                          white-space: nowrap;
-                          margin-right: -8px;
-                        `}
-                      >
-                        확인
-                      </Button>
-                    ),
-                  }}
+                  onChange={setAuthCode}
+                  bgColor={palette.opacity.opa100}
+                  padding="16px"
                 />
+                <Button
+                  onClick={handleAuthCodeConfirm}
+                  css={css`
+                    position: absolute;
+                    right: 16px;
+                    top: 41px;
+                    background-color: ${palette.background.quaternary};
+                    color: ${palette.text.primary};
+                    border: none;
+                    padding: var(--spacing-4, 4px) var(--spacing-10, 10px);
+                    font-size: 12px;
+                    border-radius: 18px;
+                    white-space: nowrap;
+                    margin-right: -8px;
+                  `}
+                >
+                  확인
+                </Button>
               </Box>
             </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant="body1" css={labelStyle}>
-                휴대폰 번호
-              </Typography>
-              <TextField
+            <Grid
+              item
+              xs={12}
+              css={css`
+                margin-bottom: 30px;
+              `}
+            >
+              <InputBox
+                id="phoneNumber"
+                label="휴대폰 번호"
                 fullWidth
                 placeholder="- 없이 숫자만 입력해주세요"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                css={textFieldStyle}
+                onChange={setPhone}
+                bgColor={palette.opacity.opa100}
+                padding="16px"
               />
             </Grid>
 
@@ -279,24 +285,35 @@ const ResetPassword = (): React.JSX.Element => {
         <form onSubmit={handlePasswordSubmit}>
           <Grid container sx={{ width: '100%' }}>
             <Grid item xs={12}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <Typography variant="body1" css={labelStyle}>
-                  새 비밀번호
-                </Typography>
-                <TextField
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                }}
+              >
+                <InputBox
+                  id="newPassword"
+                  label="새 비밀번호"
                   fullWidth
-                  type="password"
-                  placeholder="새로운 비밀번호 입력"
+                  placeholder="새로운 비밀번호를 입력해 주세요."
                   value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                  css={textFieldStyle}
+                  onChange={setNewPassword}
+                  bgColor={palette.opacity.opa100}
+                  padding="16px"
+                  type="password"
                 />
               </Box>
             </Grid>
 
             <Grid item xs={12}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                }}
+              >
                 <Typography
                   variant="body2"
                   css={css`

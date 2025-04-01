@@ -9,6 +9,10 @@ interface Props {
   onChange?: (value: string) => void;
   value?: string;
   type?: HTMLInputTypeAttribute;
+  bgColor?: string;
+  fullWidth?: boolean;
+  padding?: string;
+  margin?: string;
 }
 
 const InputBox = ({
@@ -19,11 +23,15 @@ const InputBox = ({
   onChange,
   value = '',
   type = 'text',
+  bgColor,
+  fullWidth,
+  padding,
+  margin,
 }: Props) => {
   const { palette, typo, radius } = useTheme();
 
   return (
-    <FormControl required={isRequired}>
+    <FormControl required={isRequired} fullWidth={fullWidth}>
       <span
         css={css`
           ${typo.sub.m}
@@ -40,11 +48,12 @@ const InputBox = ({
         defaultValue={value}
         onChange={(e) => onChange?.(e.target.value)}
         css={css`
+          margin: ${margin ?? ''};
           color: ${palette.text.primary};
           border-radius: ${radius.sm};
-          background-color: ${palette.background.quaternary};
+          background-color: ${bgColor ?? palette.background.quaternary};
           input {
-            padding: 15px 20px;
+            padding: ${padding ?? '15px 20px'};
             &::placeholder {
               color: ${palette.text.tertiary};
               opacity: 1;
