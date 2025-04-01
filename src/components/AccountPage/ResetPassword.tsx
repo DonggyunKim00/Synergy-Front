@@ -261,7 +261,15 @@ const ResetPassword = (): React.JSX.Element => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button onClick={() => setStep(2)} css={buttonStyle}>
+              <Button onClick={() => {
+                  if (!confirmAuthCodeMutation.isSuccess) {
+                    setFormError('이메일 인증을 완료해주세요.');
+                    return;
+                  }
+                  setStep(2);
+                }}
+                css={buttonStyle}
+              >
                 확인
               </Button>
             </Grid>
