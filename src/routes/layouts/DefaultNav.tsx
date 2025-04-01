@@ -33,14 +33,14 @@ export default DefaultNavLayout;
 const Navigation = () => {
   return (
     <Nav>
-      <CustomLink to="/booth">
-        <CustomButton>BOOTH</CustomButton>
+      <CustomLink to="/session">
+        <CustomButton>SESSION</CustomButton>
       </CustomLink>
       <CustomLink to="/mypage">
         <CustomButton>MY</CustomButton>
       </CustomLink>
-      <CustomLink to="/session">
-        <CustomButton>SESSION</CustomButton>
+      <CustomLink to="/booth">
+        <CustomButton>BOOTH</CustomButton>
       </CustomLink>
     </Nav>
   );

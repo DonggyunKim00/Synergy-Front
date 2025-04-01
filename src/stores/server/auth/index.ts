@@ -29,7 +29,7 @@ export const useLoginMutation = () => {
         id: data.id,
       });
       const params = new URLSearchParams(location.search);
-      const redirectTo = params.get('redirectTo') || '/mypage';
+      const redirectTo = params.get('redirectTo') || '/session';
       navigate(redirectTo);
     },
     onError: (error: any) => {

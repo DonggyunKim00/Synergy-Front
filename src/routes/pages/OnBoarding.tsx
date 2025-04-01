@@ -114,7 +114,7 @@ const OnBoarding = () => {
                 if (work.employeement_agree === 'no') {
                   initForm();
                   if (redirectURL) navigate(redirectURL);
-                  else navigate('/mypage');
+                  else navigate('/session');
                 } else {
                   history.push('info', (prev) => ({ ...prev, work }));
                 }
@@ -140,7 +140,7 @@ const OnBoarding = () => {
                 initForm();
 
                 if (redirectURL) navigate(redirectURL);
-                else navigate('/mypage');
+                else navigate('/session');
               }}
             />
           )}
