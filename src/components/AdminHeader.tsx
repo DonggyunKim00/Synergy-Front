@@ -7,7 +7,6 @@ import { useLogoutMutation } from '@stores/server/auth';
 
 const Header = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
   const { mutate } = useLogoutMutation();
   const handleLogout = () => {
     mutate();

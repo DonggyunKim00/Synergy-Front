@@ -1,7 +1,7 @@
 import { css, styled, useTheme } from '@mui/material';
 import { BoothContent } from '@routes/pages/BoothPage';
 import { useNavigate } from 'react-router-dom';
-import DefaultImage from '@assets/default-booth-image.png';
+import DefaultImage from '@assets/defaultImg_boothsession.png';
 
 const BoothColumn = ({
   id,

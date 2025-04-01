@@ -3,14 +3,15 @@ import { Box, Typography, Button } from '@mui/material';
 import { css, useTheme } from '@mui/material/styles';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { typography } from '@styles/foundation';
+import { useLogoutMutation } from '@stores/server/auth';
 
 const Header = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { mutate } = useLogoutMutation();
 
   const handleLogout = () => {
-    // TODO: 로그아웃 로직
-    navigate('/role-selection');
+    mutate();
   };
 
   const headerWrapperStyle = css`

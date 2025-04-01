@@ -2,7 +2,7 @@ import { css, styled, useTheme } from '@mui/material';
 import { SessionContent } from '@routes/pages/SessionPage';
 import { getTimeDifferenceText } from '@utils/time';
 import { useNavigate } from 'react-router-dom';
-import DefaultImage from '@assets/deafult-session-image.png';
+import DefaultImage from '@assets/defaultImg_boothsession.png';
 import dayjs from 'dayjs';
 
 const SessionColumn = ({

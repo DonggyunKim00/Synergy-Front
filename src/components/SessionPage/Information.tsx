@@ -1,7 +1,7 @@
 import React from 'react';
 import { css, styled, Typography, useTheme } from '@mui/material';
 import { formatToHourMinute, getTimeDifferenceText } from '@utils/time';
-import DefaultImage from '@assets/deafult-session-image.png';
+import DefaultImage from '@assets/defaultImg_boothsession.png';
 
 interface Props {
   id: number;

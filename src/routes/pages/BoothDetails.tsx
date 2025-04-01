@@ -9,7 +9,7 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom';
-import DefaultImage from '@assets/default-booth-image.png';
+import DefaultImage from '@assets/defaultImg_boothsession.png';
 import { useQrVerifyCheck } from '@hooks/useQrVerifyCheck';
 
 const BoothDetails = () => {

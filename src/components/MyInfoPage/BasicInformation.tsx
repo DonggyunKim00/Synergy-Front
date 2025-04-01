@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import images from '@assets/default-profile-img.png';
+import images from '@assets/profile-rectangle/useDefault.png';
 
 interface Props {
   name: string;
