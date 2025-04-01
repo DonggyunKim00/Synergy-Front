@@ -2,12 +2,17 @@ import { Box, Typography, useTheme, css } from '@mui/material';
 import BackHeader from '@components/headers/BackHeader';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRecruiterAttendees } from '@stores/server/recruiter';
+import { useNavigate } from 'react-router-dom';
 
 const RecruiterMain = () => {
   const { palette, typo } = useTheme();
   const { data } = useRecruiterAttendees({});
+  const navigate = useNavigate();
 
   const likedAttendees = data.data.list.filter((attendee: any) => attendee.liked);
+  const handleCardClick = (attendeeId: number) => {
+    navigate(`/my-info/${attendeeId}`);
+  };
 
   return (
     <>
@@ -58,6 +63,7 @@ const RecruiterMain = () => {
                 align-items: flex-start;
                 flex: 1 0 0;
               `}
+              onClick={() => handleCardClick(attendee.attendeeId)}
             >
               <Box
                 css={css`
