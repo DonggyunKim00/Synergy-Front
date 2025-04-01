@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { css, useTheme } from '@mui/material';
-import loginBackground from '@assets/background/login-bg.png';
+import loginBackground from '@assets/background/root-bg.png';
 
 const RoleSelectionPage = (): React.JSX.Element => {
   const navigate = useNavigate();
