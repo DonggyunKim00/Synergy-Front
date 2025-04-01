@@ -132,7 +132,9 @@ export const useModifyProfileImage = () => {
       });
       alert('프로필 이미지가 정상적으로 변경되었습니다.');
     },
-    onError: () => {
+    onError: (err: any) => {
+      if (err.response.data.message === 'Maximum upload size exceeded')
+        return alert('이미지 사이즈가 너무 큽니다.');
       alert('프로필 이미지 변경에 실패하였습니다.');
     },
   });

@@ -36,9 +36,9 @@ const BackHeader = ({ backgroundColor, onClick, text }: Props) => {
         <Typography
           variant="h3"
           color={palette.text.primary}
-          fontFamily={typo.fontFamily.Montserrat}
           css={css`
-            ${typo.sub.s}
+            ${typo.sub.s};
+            font-family: ${typo.fontFamily.Montserrat};
           `}
         >
           {text}

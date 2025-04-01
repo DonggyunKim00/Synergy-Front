@@ -10,10 +10,11 @@ const ImageModifier = ({ ...props }) => {
 
   // 파일 선택 핸들러
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      mutate({ profileImgFile: file });
-    }
+    const file = event.target.files?.[0];
+    if (!file) return;
+    mutate({ profileImgFile: file });
+    // 같은 파일 다시 업로드 가능하도록 input 초기화
+    event.target.value = '';
   };
 
   return (

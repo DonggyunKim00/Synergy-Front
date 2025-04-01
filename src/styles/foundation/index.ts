@@ -26,21 +26,76 @@ const typography = {
     Montserrat: 'Montserrat',
   },
   title: {
-    l: { fontSize: '26px', fontWeight: 'bold', lineHeight: 'normal' },
-    m: { fontSize: '24px', fontWeight: 'bold', lineHeight: 'normal' },
-    s: { fontSize: '22px', fontWeight: 'bold', lineHeight: 'normal' },
-    xs: { fontSize: '20px', fontWeight: 'bold', lineHeight: 'normal' },
+    l: {
+      fontSize: '26px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    m: {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    s: {
+      fontSize: '22px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    xs: {
+      fontSize: '20px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
   },
   sub: {
-    l: { fontSize: '18px', fontWeight: 'bold', lineHeight: 'normal' },
-    m: { fontSize: '17px', fontWeight: 'bold', lineHeight: 'normal' },
-    s: { fontSize: '16px', fontWeight: 'bold', lineHeight: 'normal' },
-    xs: { fontSize: '14px', fontWeight: 'bold', lineHeight: 'normal' },
+    l: {
+      fontSize: '18px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    m: {
+      fontSize: '17px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    s: {
+      fontSize: '16px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    xs: {
+      fontSize: '14px',
+      fontWeight: 'bold',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
   },
   body: {
-    l: { fontSize: '16px', fontWeight: 'normal', lineHeight: 'normal' },
-    m: { fontSize: '14px', fontWeight: 'normal', lineHeight: 'normal' },
-    s: { fontSize: '12px', fontWeight: 'normal', lineHeight: 'normal' },
+    l: {
+      fontSize: '16px',
+      fontWeight: 'normal',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    m: {
+      fontSize: '14px',
+      fontWeight: 'normal',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
+    s: {
+      fontSize: '12px',
+      fontWeight: 'normal',
+      lineHeight: 'normal',
+      fontFamily: 'Pretendard',
+    },
   },
 } as const;
 
