@@ -15,35 +15,49 @@ const AdminLayout = () => {
       <Header />
       <div
         css={css`
+          position: fixed;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100%;
+          max-width: 600px;
+          height: 100vh;
+          background-color: ${palette.background.primary};
           display: flex;
           flex-direction: column;
-          min-height: 100vh;
-          max-width: 600px;
-          margin: 0 auto;
-          gap: 30px;
-          padding: 100px 1rem 1rem;
-          background-color: ${palette.background.primary};
+          overflow: hidden;
         `}
       >
-        <UserCounts />
-        <SessionParticipation />
-        <BoothParticipation />
-        <Box
+        <div
           css={css`
+            flex: 1;
+            overflow-y: auto;
+            padding: 100px 1rem 1rem;
             display: flex;
+            flex-direction: column;
             gap: 30px;
-            flex-wrap: wrap;
           `}
         >
-          <Box css={{ flex: 1, minWidth: '250px' }}>
-            <GradeRankingCard />
+          <UserCounts />
+          <SessionParticipation />
+          <BoothParticipation />
+          <Box
+            css={css`
+              display: flex;
+              gap: 30px;
+              flex-wrap: wrap;
+            `}
+          >
+            <Box css={{ flex: 1, minWidth: '250px' }}>
+              <GradeRankingCard />
+            </Box>
+            <Box css={{ flex: 1, minWidth: '250px' }}>
+              <PointRankingCard />
+            </Box>
           </Box>
-          <Box css={{ flex: 1, minWidth: '250px' }}>
-            <PointRankingCard />
-          </Box>
-        </Box>
-        <ConferenceRegistration />
-        <Outlet />
+          <ConferenceRegistration />
+          <Outlet />
+        </div>
         <ScrollRestoration />
       </div>
     </>
@@ -51,3 +65,4 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+
