@@ -46,7 +46,7 @@ const Mypage = () => {
           <>
             <ActionColumn
               onClick={() => setModalOpen('company-list')}
-              text={`내 정보를 열람한 기업 (${myRecruiters.data.length})`}
+              text={`내 정보를 저장한 기업 (${myRecruiters.data.length})`}
             />
             <ActionColumn
               onClick={() => navigate(`/my-info/${myData.data.attendeeId}`)}
